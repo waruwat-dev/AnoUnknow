@@ -1,0 +1,85 @@
+body {
+    font-family: 'Kanit';
+}
+
+.main-head {
+    height: 150px;
+    background: #ffdd54;
+}
+
+.sidenav {
+    height: 100%;
+    background-color: #ffdd54;
+    overflow-x: hidden;
+    padding-top: 20px;
+}
+
+.main {
+    padding: 0px 10px;
+}
+
+@media screen and (max-height: 450px) {
+    .sidenav {
+        padding-top: 15px;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    .login-form {
+        margin-top: 10%;
+    }
+    .register-form {
+        margin-top: 10%;
+    }
+}
+
+@media screen and (min-width: 768px) {
+    .main {
+        margin-left: 50%;
+    }
+    .sidenav {
+        width: 40%;
+        position: fixed;
+        z-index: 1;
+        top: 0;
+        left: 0;
+    }
+    .login-form {
+        margin-top: 65%;
+    }
+    .register-form {
+        margin-top: 20%;
+    }
+}
+
+.login-main-text {
+    margin-top: 3%;
+    padding: 80px;
+    color: #000;
+}
+
+.login-main-text h2 {
+    font-weight: 400;
+}
+
+.btn-yellow {
+    background-color: #fbc02d !important;
+    color: #fff;
+}
+
+.btn-orange {
+    background-color: #ff963b;
+    color: #fff;
+}
+
+h1 {
+    font-size: 90px;
+}
+
+p {
+    font-size: 30px;
+}
+
+label {
+    font-size: 35px;
+}
