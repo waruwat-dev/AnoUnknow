@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container">
+    <h1>Room : Test</h1>
+    {% include 'chat/chat_base.html' %}
+    <!-- <textarea id="chat-log" cols="100" rows="20"></textarea><br />
+    <input id="chat-message-input" type="text" size="100" /><br />
+    <input id="chat-message-submit" type="button" value="Send" /> -->
+</div>
+<script>
+    const currentUser = '{{ request.user.username }}'
+    var roomName = "{{ room_name|escapejs }}";
+
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/chat/' + roomName + '/');
+
+    chatSocket.onmessage = function (e) {
+        console.log(e.data)
+        var data = JSON.parse(e.data);
+        drawMessage({ body: data.message, user: data.user, timestamp: new Date().getTime() })
+    };
+
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+
+
+    chatInput.keypress(function (e) {
+        if (e.keyCode == 13)
+            chatButton.click();
+    });
+
+    chatButton.click(function () {
+        if (chatInput.val().length > 0) {
+            chatSocket.send(JSON.stringify({
+                'message': chatInput.val(),
+                'user': currentUser
+            }));
+            chatInput.val('');
+        }
+    });
+</script>
+{% endblock %}

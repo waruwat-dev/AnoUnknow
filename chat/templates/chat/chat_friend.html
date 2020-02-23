@@ -1,0 +1,127 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block main %}
+
+<div class="container">
+    <br />
+    <div class="row">
+        <div class="col-md-4">
+            <div id="user-list" class="list-group">
+                <a href="" class="list-group-item disabled">
+                    <h4 class="list-group-item-heading">My Friend</h4>
+                    {# Users go here #}
+                </a>
+            </div>
+        </div>
+        <div class="col-md-8">
+            {% include 'chat/chat_base.html' %}
+        </div>
+    </div>
+</div>
+
+<script>
+    let sessionKey = '{{ request.session.session_key }}';
+    let currentUser = '{{ request.user.username }}';
+</script>
+<script>
+    let currentRecipient = '';
+    let userList = $('#user-list');
+
+    async function updateUserList() {
+        let get_message = await fetch(`../../user/api/v1/user/`)
+        let data = await get_message.json()
+        userList.children('.user').remove();
+        console.log(data)
+        for (let i = 0; i < data.length; i++) {
+            const userItem = `<a class="list-group-item user">${data[i]['username']}</a>`;
+            $(userItem).appendTo('#user-list');
+        }
+        $('.user').click(function () {
+            userList.children('.active').removeClass('active');
+            let selected = event.target;
+            $(selected).addClass('active');
+            setCurrentRecipient(selected.text);
+        });
+
+    }
+
+    async function getConversation(recipient) {
+        let get_message = await fetch(`../api/v1/message/?target=${recipient}`)
+        let data = await get_message.json()
+        messageList.children('.message').remove();
+        for (let i = data['results'].length - 1; i >= 0; i--) {
+            drawMessage(data['results'][i]);
+        }
+        // messageList.animate({ scrollTop: messageList.prop('scrollHeight') });
+
+    }
+
+    async function getMessageById(message) {
+        id = JSON.parse(message).message
+        let get_message = await fetch(`../api/v1/message/${id}/`)
+        let data = await get_message.json()
+        if (data.user === currentRecipient ||
+            (data.recipient === currentRecipient && data.user == currentUser)) {
+            drawMessage(data);
+        }
+        // messageList.animate({ scrollTop: messageList.prop('scrollHeight') });
+    }
+
+    function sendMessage(recipient, body) {
+        const formData = new FormData();
+        formData.append('recipient', recipient);
+        formData.append('body', body);
+
+        fetch('../api/v1/message/', {
+            method: 'POST',
+            body: formData
+        }).catch(err => alert("Error Message Not Sent"))
+    }
+
+    function setCurrentRecipient(username) {
+        currentRecipient = username;
+        getConversation(currentRecipient);
+        enableInput();
+    }
+
+
+    function enableInput() {
+        chatInput.prop('disabled', false);
+        chatButton.prop('disabled', false);
+        chatInput.focus();
+    }
+
+    function disableInput() {
+        chatInput.prop('disabled', true);
+        chatButton.prop('disabled', true);
+    }
+
+    $(document).ready(function () {
+        updateUserList();
+        disableInput();
+
+        //    let socket = new WebSocket(`ws://127.0.0.1:8000/?session_key=${sessionKey}`);
+        var socket = new WebSocket(
+            'ws://' + window.location.host +
+            `/ws?session_key=${sessionKey}`)
+
+        chatInput.keypress(function (e) {
+            if (e.keyCode == 13)
+                chatButton.click();
+        });
+
+        chatButton.click(function () {
+            if (chatInput.val().length > 0) {
+                sendMessage(currentRecipient, chatInput.val());
+                chatInput.val('');
+            }
+        });
+
+        socket.onmessage = function (e) {
+            getMessageById(e.data);
+        };
+    });
+</script>
+
+{% endblock %}
