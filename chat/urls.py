@@ -10,9 +10,6 @@ router.register('message', MessageModelViewSet, basename='message-api')
 
 urlpatterns = [
     path('api/v1/', include(router.urls)),
-
-    path('chat/', views.chat, name='home'),
-
     path('', views.index, name='index'),
     path('<str:room_name>/', views.room, name='room'),
 ]
