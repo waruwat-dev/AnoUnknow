@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect
+from django.shortcuts import render, HttpResponseRedirect, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -25,27 +25,28 @@ def signup(request):
 
 
 def signin(request):
+    context = {}
     if request.user.is_authenticated:
         return render(request, 'homepage.html')
     if request.method == 'POST':
-        username = request.POST['username']
-        password = request.POST['password']
+        username = request.POST.get('username')
+        password = request.POST.get('password')
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return HttpResponseRedirect(request.GET.get('next','/'))
+            return redirect(request.GET.get('next','/'))
         else:
-            form = AuthenticationForm(request.POST)
-            return render(request, 'signin.html', {'form': form})
+            context['username'] = username
+            context['error'] = "username or password is wrong"
+            return render(request, 'signin.html', context)
     else:
-        form = AuthenticationForm()
-        return render(request, 'signin.html', {'form': form})
+        return render(request, 'signin.html')
 
 
 def signout(request):
     if request.user.is_authenticated:
         logout(request)
-    return HttpResponseRedirect('/')
+    return redirect('home')
 
 
 def update_profile(request, user_id):
