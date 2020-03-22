@@ -13,6 +13,6 @@ urlpatterns = [
 
     path('chat/', views.chat, name='home'),
 
-    path('', views.index, name='index'),
+    path('', views.index, name='chat_index'),
     path('<str:room_name>/', views.room, name='room'),
 ]
