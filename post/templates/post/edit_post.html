@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block main %}
+
+<div class='container'>
+
+    <div class="card m-1">
+        <form action="{% url 'edit_post' posts.id %}" method="POST">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Let's edit your status!</label>
+                    <textarea class="form-control card-text" id="txt" name='txt' rows="3">{{ posts.text }}</textarea>
+                </div>
+                <div class="form-group row">
+                    <div class="col-3">
+                        <select class="form-control" id='tag' name='tag'>
+                            <option value="GEN">General</option>
+                        </select>
+                    </div>
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-primary">Finish</button>
+                    </div> 
+                </div>
+            </div>
+        </form>
+    </div>
+
+</div>
+
+{% endblock main %}
