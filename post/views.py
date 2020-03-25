@@ -3,7 +3,7 @@ import urllib
 from urllib import parse, request
 from urllib.parse import urlencode
 from django.shortcuts import redirect, render
-import requests
+
 from post.form import PostForm
 from post.models import Post, tag_choices
 
