@@ -20,10 +20,12 @@ def view_all_posts(request):
     return render(request,template_name='post/post_index.html',context=context)
 
 def create_post(request):
+    user = request.user
     form = PostForm(request.POST)
     if form.is_valid():
         post = Post.objects.create(
-            text=form.cleaned_data['text']
+            text=form.cleaned_data['text'],
+            createBy=user
         )
         post.save()
         print('post is saved')
