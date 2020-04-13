@@ -1,6 +1,16 @@
+<<<<<<< HEAD
+=======
+from idlelib.textview import view_file
+
+>>>>>>> parent of 9b48b3e... view all post
 from django.db import models
 from django.contrib.auth.models import User
 
+
+tag_choices = [
+        ('POL', 'Politics'),
+        ('GEN', 'General'),
+]
 
 class Post(models.Model):
     view = models.IntegerField(default=0)

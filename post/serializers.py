@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from post.models import Post
+from post.models import Post, tag_choices
 from datetime import datetime
 
 
@@ -33,7 +33,12 @@ class PostSerializer(serializers.Serializer):
         instance.haha = validated_data.get('haha', instance.haha)
         instance.sad = validated_data.get('sad', instance.sad)
         instance.angry = validated_data.get('angry', instance.angry)
+<<<<<<< HEAD
         instance.numberOfDistribution = validated_data.get('numberOfDistribution', instance.numberOfDistribution)
+=======
+        instance.tag = validated_data.get('tag', instance.tag)
+        instance.number_of_distribution = validated_data.get('number_of_distribution', instance.number_of_distribution)
+>>>>>>> parent of 9b48b3e... view all post
         instance.save()
     
         return instance
