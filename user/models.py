@@ -5,10 +5,16 @@ from django.dispatch import receiver
 from datetime import datetime
 import random
 
+
 class Admin(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
 
+
+class NormalUser(models.Model):
+    user = models.OneToOneField(
+        User, on_delete=models.CASCADE, primary_key=True)
+    score = models.IntegerField(default=0, null=True)
 
 class RandomUserModel(models.Model):
     user = models.OneToOneField(
@@ -16,7 +22,7 @@ class RandomUserModel(models.Model):
     name = models.CharField(max_length=255, default='')
 
 
-class BanUserModel(models.Model):
+class BanUser(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
     ban_date = models.DateField(null=True, default=datetime.now())
@@ -31,12 +37,17 @@ class Authen_User(models.Model):
     ban_user = models.BooleanField(default=False)
     admin = models.BooleanField(default=False)
 
-
     def randomName(self):
         randomlist = ['A', 'B', 'C', 'D']
         random.shuffle(randomlist)
         return RandomUserModel.objects.create(name=randomlist[0], user=self.user)
 
+    def getNormalUser(self):
+        if self.normal_user:
+            return NormalUser.objects.get(pk=self.user.id)
+        else:
+            return None
+    
     def getAdmin(self):
         if self.admin:
             return Admin.objects.get(pk=self.user.id)
@@ -56,7 +67,7 @@ class Authen_User(models.Model):
 
     def getBan(self):
         if self.ban_user:
-            return BanUserModel.objects.get(pk=self.user.id)
+            return BanUser.objects.get(pk=self.user.id)
         else:
             return None
 
@@ -65,10 +76,11 @@ class Authen_User(models.Model):
             return
         if val == True:
             self.ban_user = True
-            BanUserModel.objects.create(user=self.user, remark=remark, admin=admin)
+            BanUser.objects.create(
+                user=self.user, remark=remark, admin=admin)
             self.save()
         else:
-            ban_user = BanUserModel.objects.get(pk=self.user.id)
+            ban_user = BanUser.objects.get(pk=self.user.id)
             ban_user.delete()
 
 
@@ -76,6 +88,7 @@ class Authen_User(models.Model):
 def create_user(sender, instance, created, **kwargs):  # create_normal_user
     if created:
         Authen_User.objects.create(user=instance)
+        NormalUser.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
