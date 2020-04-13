@@ -1,6 +1,6 @@
 from django.db import models
 from user.models import RandomUserModel
-
+# from django.contrib.auth.models import User
 class Post(models.Model):
     view = models.IntegerField(default=0)
     text = models.TextField()
