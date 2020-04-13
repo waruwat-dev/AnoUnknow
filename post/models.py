@@ -8,15 +8,15 @@ tag_choices = [
 ]
 
 class Post(models.Model):
-    view = models.IntegerField(max_length=10, default=0)
+    view = models.IntegerField(default=0)
     text = models.TextField()
     time = models.DateTimeField(auto_now=True)
-    like = models.IntegerField(max_length=10, default=0)
-    haha = models.IntegerField(max_length=10, default=0)
-    sad = models.IntegerField(max_length=10, default=0)
-    angry = models.IntegerField(max_length=10, default=0)
+    like = models.IntegerField(default=0)
+    haha = models.IntegerField(default=0)
+    sad = models.IntegerField(default=0)
+    angry = models.IntegerField(default=0)
     tag = models.CharField(max_length=3 ,choices=tag_choices, default='GEN')
-    number_of_distribution = models.IntegerField(max_length=10, default=0)
+    number_of_distribution = models.IntegerField(default=0)
 
     class Meta:
         ordering = ['time']
