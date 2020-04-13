@@ -6,13 +6,16 @@ from django.shortcuts import redirect, render
 
 from post.form import PostForm
 from post.models import Post
+from comment.models import Comment
 
 def view_all_posts(request):
     posts = Post.objects.all()
+    comments = Comment.objects.all()
 
     context={
         'posts': posts,
-        'form': PostForm()
+        'form': PostForm(),
+        'comments': comments
     }
     return render(request,template_name='post/post_index.html',context=context)
 
@@ -33,7 +36,7 @@ def view_post(request, pk):
     context={
         'post': post,
     }
-    return render(request, template_name='post/view_post.html', context= {'pk': pk})
+    return render(request, template_name='post/view_post.html', context= context)
 
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)

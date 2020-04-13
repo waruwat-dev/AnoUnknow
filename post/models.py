@@ -10,7 +10,7 @@ class Post(models.Model):
     sad = models.IntegerField(default=0)
     angry = models.IntegerField(default=0)
     numberOfDistribution = models.IntegerField(default=0)
-    createBy = models.ForeignKey(RandomUserModel, on_delete=models.CASCADE)
+    # createBy = models.ForeignKey(RandomUserModel, null=True,on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['time']
