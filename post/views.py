@@ -16,6 +16,13 @@ def view_all_posts(request):
     }
     return render(request,template_name='post/post_index.html',context=context)
 
+def view_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    context={
+        'post': post,
+    }
+    return render(request,template_name='post/view_post.html',context=context)
+
 def create_post(request):
     form = PostForm(request.POST)
     if form.is_valid():

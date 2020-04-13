@@ -12,7 +12,8 @@ class PostSerializer(serializers.Serializer):
     haha = serializers.IntegerField()
     sad = serializers.IntegerField()
     angry = serializers.IntegerField()
-    number_of_distribution = serializers.IntegerField()
+    numberOfDistribution = serializers.RelatedField(many=True, read_only=True)
+    
 
     def create(self, validated_data):
         """
@@ -32,7 +33,7 @@ class PostSerializer(serializers.Serializer):
         instance.haha = validated_data.get('haha', instance.haha)
         instance.sad = validated_data.get('sad', instance.sad)
         instance.angry = validated_data.get('angry', instance.angry)
-        instance.number_of_distribution = validated_data.get('number_of_distribution', instance.number_of_distribution)
+        instance.numberOfDistribution = validated_data.get('numberOfDistribution', instance.numberOfDistribution)
         instance.save()
     
         return instance

@@ -1,5 +1,6 @@
-from idlelib.textview import view_file
 from django.db import models
+from django.contrib.auth.models import User
+
 
 class Post(models.Model):
     view = models.IntegerField(default=0)
@@ -9,7 +10,9 @@ class Post(models.Model):
     haha = models.IntegerField(default=0)
     sad = models.IntegerField(default=0)
     angry = models.IntegerField(default=0)
-    number_of_distribution = models.IntegerField(default=0)
+    numberOfDistribution = models.IntegerField(default=0)
+    createBy = models.ForeignKey(User, on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['time']
+
