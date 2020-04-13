@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from post.models import Post, tag_choices
+from post.models import Post
 from datetime import datetime
 
 
@@ -12,7 +12,6 @@ class PostSerializer(serializers.Serializer):
     haha = serializers.IntegerField()
     sad = serializers.IntegerField()
     angry = serializers.IntegerField()
-    tag = serializers.ChoiceField(choices=tag_choices)
     number_of_distribution = serializers.IntegerField()
 
     def create(self, validated_data):
@@ -33,7 +32,6 @@ class PostSerializer(serializers.Serializer):
         instance.haha = validated_data.get('haha', instance.haha)
         instance.sad = validated_data.get('sad', instance.sad)
         instance.angry = validated_data.get('angry', instance.angry)
-        instance.tag = validated_data.get('tag', instance.tag)
         instance.number_of_distribution = validated_data.get('number_of_distribution', instance.number_of_distribution)
         instance.save()
     
