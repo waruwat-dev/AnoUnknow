@@ -1,4 +1,4 @@
-from django.shortcuts import render, HttpResponseRedirect, redirect
+from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
@@ -49,10 +49,18 @@ def signout(request):
     return redirect('home')
 
 
-def update_profile(request, user_id):
-    user = User.objects.get(pk=user_id)
-    user.profile.bio = 'Lorem ipsum dolor sit amet, consectetur adipisicing elit...'
-    user.save()
+
+# def ban_user(request, user_id):
+#     if request.user.admin:
+#         admin = request.user.getAdmin()
+#     else:
+#         redirect('home')
+#     if request.method == "POST":
+#         user = get_object_or_404(User, pk=user_id)
+#         remark = request.POST.get("remark")
+#         user.authen_user.ban(admin=admin, remark=remark)
+#     return redirect('home')
+
 
 @login_required(login_url='login')
 def main(request):
