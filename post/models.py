@@ -1,5 +1,5 @@
 from django.db import models
-from user.models import RandomUserModel
+from user.models import RandomUser
 # from django.contrib.auth.models import User
 class Post(models.Model):
     view = models.IntegerField(default=0)
@@ -10,7 +10,7 @@ class Post(models.Model):
     sad = models.IntegerField(default=0)
     angry = models.IntegerField(default=0)
     numberOfDistribution = models.IntegerField(default=0)
-    createBy = models.ForeignKey(RandomUserModel, null=True,on_delete=models.CASCADE)
+    createBy = models.ForeignKey(RandomUser, null=True,on_delete=models.CASCADE)
 
     class Meta:
         ordering = ['time']
