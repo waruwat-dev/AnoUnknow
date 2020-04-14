@@ -2,10 +2,6 @@ from django.shortcuts import render,redirect
 from post.models import Post
 from comment.models import Comment
 from comment.forms import CommentForm
-# Create your views here.
-def comment(request):
-    comments = Comment.objects.all()
-    return render(request, template_name='comment/comment.html', context= {'form': form,'comments': comments})
 
 def addComment(request, pk):
     post = Post.objects.get(pk=pk)

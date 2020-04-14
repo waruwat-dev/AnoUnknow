@@ -50,11 +50,11 @@
         </form>
   
 
-    {% for comment in comments %}
-        {% if comment.post_id_id == post.id %}
+    {% for key, value in comment.items %}
+        {% if key == post.id %}
             <div class="card m-1">
                 <div class="card-body">
-                    <h6>{{comment.text}}</h6>
+                    <h6>{{value}}</h6>
                 </div>
             </div>
         {% endif %}
