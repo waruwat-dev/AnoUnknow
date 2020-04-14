@@ -35,7 +35,7 @@ def create_post(request):
     if form.is_valid():
         post = Post.objects.create(
             text=form.cleaned_data['text'],
-            createBy=user
+            createBy=user.authen_user.randomName()
         )
         post.save()
         print('post is saved')

@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
-from datetime import datetime
+# from django.utils.timezone import now
 import random
 
 
@@ -25,7 +25,7 @@ class RandomUserModel(models.Model):
 class BanUser(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
-    ban_date = models.DateField(null=True, default=datetime.now())
+    ban_date = models.DateTimeField(null=True, auto_now_add=True)  #.DaField(null=True, default=now())
     remark = models.TextField(null=True)
     admin = models.ForeignKey(Admin, on_delete=models.DO_NOTHING)
 
