@@ -37,6 +37,7 @@ def view_all_posts(request):
     return render(request, template_name='post/post_index.html', context=context)
 
 
+
 def create_post(request):
     user = request.user
     form = PostForm(request.POST)
@@ -47,17 +48,16 @@ def create_post(request):
         )
         post.save()
         print('post is saved')
-        return redirect('view_all_posts')
+        # return redirect('view_all_posts')
+        return redirect('view_post', pk=post.id)
 
     return redirect('get_post', context={'form': form})
 
 
 def view_post(request, pk):
     post = Post.objects.get(pk=pk)
-    comments = Comment.objects.filter(post_id_id=pk)
     context = {
-        'post': post,
-        'comments': comments
+        'post': post
     }
     return render(request, template_name='post/view_post.html', context=context)
 
@@ -79,7 +79,7 @@ def edit_post(request, pk):
             post.text = form.cleaned_data['text']
             post.save()
             print('post is saved')
-            return redirect('view_all_posts')
+            return redirect('view_post', pk=pk)
 
     return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})
 
@@ -105,6 +105,7 @@ def emotionPost(request, pk, type_emotion):
 
 
 def message(post_id, json):
+    json["post"] = post_id
     channel_layer = get_channel_layer()
     async_to_sync(channel_layer.group_send)(
         "post_post%d" % post_id, {

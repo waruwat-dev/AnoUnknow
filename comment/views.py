@@ -27,16 +27,20 @@ def emotionComment(request, pk, type_emotion):
     comment = Comment.objects.get(pk=pk)
     if type_emotion == 1:
         comment.like += 1
-        message(comment.post_id.id, {"like": comment.like, "comment":comment.id})
+        message(comment.post_id.id, {
+                "like": comment.like, "comment": comment.id})
     elif type_emotion == 2:
         comment.haha += 1
-        message(comment.post_id.id, {"haha": comment.haha, "comment":comment.id})
+        message(comment.post_id.id, {
+                "haha": comment.haha, "comment": comment.id})
     elif type_emotion == 3:
         comment.angry += 1
-        message(comment.post_id.id, {"angry": comment.angry, "comment":comment.id})
+        message(comment.post_id.id, {
+                "angry": comment.angry, "comment": comment.id})
     elif type_emotion == 4:
         comment.sad += 1
-        message(comment.post_id.id, {"sad": comment.sad, "comment":comment.id})
+        message(comment.post_id.id, {
+                "sad": comment.sad, "comment": comment.id})
     comment.save()
     return HttpResponse(status=201)
 

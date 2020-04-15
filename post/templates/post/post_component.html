@@ -1,0 +1,82 @@
+<div class="card m-1 bg-info" id="post_{{post.id}}">
+    <div class="card-body">
+
+        <div>โพสเมื่อ {{post.time}}</div>
+        <h5 class="card-title">{{post.createBy.name}}</h5>
+        <h6 class="card-text">{{post.text}}</h6>
+        <div class="btn-group mr-2" role="group" aria-label="First group">
+            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 1, this)">👍<span
+                    class="like">{{post.like}}</span></button>
+            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 2, this)">😂<span
+                    class="haha">{{post.haha}}</span></button>
+            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 3, this)">😠<span
+                    class="angry">{{post.angry}}</span></button>
+            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
+                    class="sad">{{post.sad}}</span></button>
+        </div>
+        <!-- </form> -->
+
+        <a href="{% url 'view_post' post.id %}" class="card-link">View</a>
+        <a onclick="distribute()" class="card-link">Distribute {{post.numberOfDistribution}}</a>
+        <a href="{% url 'delete_post' post.id %}" class="card-link">Delete</a>
+        <a href="{% url 'edit_post' post.id %}" class="card-link">Edit</a>
+
+
+
+        <!-- {% comment %} {% include 'comment/comment.html'%}  {% endcomment %} -->
+
+
+
+        {% for comment in post.getComment %}
+        <div class="card m-1" id="comment_{{comment.id}}">
+            <div class="card-body">
+                <h6>{{comment.text}}</h6>
+                <div class="btn-group mr-2" role="group" aria-label="First group">
+                    <button type="submit" class="btn btn-secondary"
+                        onclick="emotion_comment({{comment.id}}, 1, this)">👍<span
+                            class="like">{{comment.like}}</span></button>
+                    <button type="submit" class="btn btn-secondary"
+                        onclick="emotion_comment({{comment.id}}, 2, this)">😂<span
+                            class="haha">{{comment.haha}}</span></button>
+                    <button type="submit" class="btn btn-secondary"
+                        onclick="emotion_comment({{comment.id}}, 3, this)">😠<span
+                            class="angry">{{comment.angry}}</span></button>
+                    <button type="submit" class="btn btn-secondary"
+                        onclick="emotion_comment({{comment.id}}, 4, this)">😭<span
+                            class="sad">{{comment.sad}}</span></button>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+
+
+
+        <form action="{% url 'addComment' post.id %}" method="POST">
+            {% csrf_token %}
+            <div class="card-body">
+                <div class="form-group">
+                    <label>Let's comment the POST!</label>
+                    {{ form.text }}
+                    <small class="form-text text-muted"> {{form.text.errors}} </small>
+                </div>
+                <div class="form-group row">
+                    <div class="col-1">
+                        <button type="submit" class="btn btn-primary">Comment</button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/post/post' + "{{post.id}}" + '/');
+    chatSocket.onmessage = socketOnMessage
+
+
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+</script>

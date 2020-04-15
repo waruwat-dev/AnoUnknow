@@ -1,0 +1,18 @@
+<div class="card m-1">
+    <form action="{% url 'create_post' %}" method="POST">
+        {% csrf_token %}
+        <div class="card-body">
+            <div class="form-group">
+                <label>Let's update your status!</label>
+                <!-- <textarea class="form-control" rows="3"></textarea> -->
+                {{ form.text }}
+                <small class="form-text text-muted"> {{form.text.errors}} </small>
+            </div>
+            <div class="form-group row">
+                <div class="col-1">
+                    <button type="submit" class="btn btn-primary">Post</button>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
