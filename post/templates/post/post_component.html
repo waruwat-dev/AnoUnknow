@@ -1,4 +1,4 @@
-<div class="card m-1 bg-info" id="post_{{post.id}}">
+<div class="card m-1 bg-secondary" id="post_{{post.id}}">
     <div class="card-body">
 
         <div>โพสเมื่อ {{post.time}}</div>
@@ -26,46 +26,36 @@
         <!-- {% comment %} {% include 'comment/comment.html'%}  {% endcomment %} -->
 
 
-
-        {% for comment in post.getComment %}
-        <div class="card m-1" id="comment_{{comment.id}}">
-            <div class="card-body">
-                <h6>{{comment.text}}</h6>
-                <div class="btn-group mr-2" role="group" aria-label="First group">
-                    <button type="submit" class="btn btn-secondary"
-                        onclick="emotion_comment({{comment.id}}, 1, this)">👍<span
-                            class="like">{{comment.like}}</span></button>
-                    <button type="submit" class="btn btn-secondary"
-                        onclick="emotion_comment({{comment.id}}, 2, this)">😂<span
-                            class="haha">{{comment.haha}}</span></button>
-                    <button type="submit" class="btn btn-secondary"
-                        onclick="emotion_comment({{comment.id}}, 3, this)">😠<span
-                            class="angry">{{comment.angry}}</span></button>
-                    <button type="submit" class="btn btn-secondary"
-                        onclick="emotion_comment({{comment.id}}, 4, this)">😭<span
-                            class="sad">{{comment.sad}}</span></button>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
-
-
-
-        <form action="{% url 'addComment' post.id %}" method="POST">
-            {% csrf_token %}
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Let's comment the POST!</label>
-                    {{ form.text }}
-                    <small class="form-text text-muted"> {{form.text.errors}} </small>
-                </div>
-                <div class="form-group row">
-                    <div class="col-1">
-                        <button type="submit" class="btn btn-primary">Comment</button>
+        <div class="comment_area">
+            {% for comment in post.getComment %}
+            <div>
+                <div class="card m-1" id="comment_{{comment.id}}">
+                    <div class="card-body">
+                        <h6>{{comment.text}}</h6>
+                        <div class="btn-group mr-2" role="group" aria-label="First group">
+                            <button type="submit" class="btn btn-secondary"
+                                onclick="emotion_comment({{comment.id}}, 1, this)">👍<span
+                                    class="like">{{comment.like}}</span></button>
+                            <button type="submit" class="btn btn-secondary"
+                                onclick="emotion_comment({{comment.id}}, 2, this)">😂<span
+                                    class="haha">{{comment.haha}}</span></button>
+                            <button type="submit" class="btn btn-secondary"
+                                onclick="emotion_comment({{comment.id}}, 3, this)">😠<span
+                                    class="angry">{{comment.angry}}</span></button>
+                            <button type="submit" class="btn btn-secondary"
+                                onclick="emotion_comment({{comment.id}}, 4, this)">😭<span
+                                    class="sad">{{comment.sad}}</span></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </form>
+
+            {% endfor %}
+        </div>
+
+
+
+        {% include "comment/comment.html" %}
     </div>
 </div>
 
