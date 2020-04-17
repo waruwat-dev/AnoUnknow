@@ -4,84 +4,12 @@
 
 <div class='container'>
 
-    <div class="card m-1">
-        <form action="{% url 'create_post' %}" method="POST">
-            {% csrf_token %}
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Let's update your status!</label>
-                    {{ form.text }}
-                    <small class="form-text text-muted"> {{form.text.errors}} </small>
-                </div>
-                <div class="form-group row">
-                    <div class="col-1">
-                        <button type="submit" class="btn btn-primary">Post</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+    {% include "post/createPost.html" %}
 
     {% for post in posts %}
-    <div class="card m-1">
-        <div class="card-body">
-            <footer class="blockquote-footer">{{post.time}}</footer>
-            <h5 class="card-title">Name</h5>
-            <h6 class="card-text">{{post.text}}</h6>
-            <a href="{% url 'view_post' post.id %}" class="card-link">View</a>
-            <a onclick="distribute()" class="card-link">Distribute {{post.numberOfDistribution}}</a>
-            <a href="{% url 'delete_post' post.id %}" class="card-link">Delete</a>
-            <a href="{% url 'edit_post' post.id %}" class="card-link">Edit</a>
-            {% comment %} {% include 'comment/comment.html'%}  {% endcomment %}
-        <form action="{% url 'addComment' post.id %}" method="POST">
-            {% csrf_token %}
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Let's comment the POST!</label>
-                    {{ form.text }}
-                    <small class="form-text text-muted"> {{form.text.errors}} </small>
-                </div>
-                <div class="form-group row">
-                    <div class="col-1">
-                        <button type="submit" class="btn btn-primary">Comment</button>
-                    </div> 
-                </div>
-            </div>
-        </form>
-  
-
-    {% for key, value in comment.items %}
-        {% if key == post.id %}
-            <div class="card m-1">
-                <div class="card-body">
-                    <h6>{{value}}</h6>
-                </div>
-            </div>
-        {% endif %}
-    {% endfor %}
-        </div>
-    </div>
-
+    {% include "post/post_component.html" %}
     {% endfor %}
 
 </div>
-
-<script>
-    function distribute() {
-        const data = { numberOfDistribution: 1 };
-
-        var url = 'http://127.0.0.1:8000/post/api/post/';
-        var data = { numberOfDistribution: 1 };
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(data), // data can be `string` or {object}!
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
-            .catch(error => console.error('Error:', error));
-    }
-</script>
 
 {% endblock main %}

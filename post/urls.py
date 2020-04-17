@@ -14,5 +14,6 @@ urlpatterns = [
     path('view_post/<int:pk>', views.view_post, name='view_post'),
     path('create_post/', views.create_post, name='create_post'),
     path('delete_post/<int:pk>', views.delete_post, name='delete_post'),
-    path('edit_post/<int:pk>', views.edit_post, name='edit_post')
+    path('edit_post/<int:pk>', views.edit_post, name='edit_post'),
+    path('emotion/<int:pk>/<int:type_emotion>', views.emotionPost, name='emotion_post')
 ]

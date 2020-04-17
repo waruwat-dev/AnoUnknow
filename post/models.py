@@ -12,6 +12,16 @@ class Post(models.Model):
     numberOfDistribution = models.IntegerField(default=0)
     createBy = models.ForeignKey(RandomUser, null=True,on_delete=models.CASCADE)
 
+    @property
+    def getComment(self):
+        print(self.comment_set.all())
+        return self.comment_set.all()
+
     class Meta:
         ordering = ['time']
 
+    
+
+
+# class DistributePost(models.Model):
+#     post_id = 
