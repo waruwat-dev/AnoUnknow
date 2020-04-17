@@ -1,20 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends 'base.html' %}
+{% block main %}
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
     <form action="" method="POST">
-        {% csrf_token %} {{form}}
-        <button type="submit"> submit</button>
+        {% csrf_token %}
+        <div class='container'>
+        <h1>สมัครสมาชิก</h1>
+        {% for field in form %}
+      <div class="form-group">
+        {{ field.label_tag }}<br>
+        {{ field }}
+        {% if field.help_text %}
+          <small style="color: grey">{{ field.help_text }}</small>
+        {% endif %}
+        {% for error in field.errors %}
+          <p style="color: red">{{ error }}</p>
+        {% endfor %}
+      </div>
+    {% endfor %}
+        <button type="submit" class="btn btn-primary"> submit</button>
+        </div>
     </form>
-
-    <input type="text" name="username"> </input>
-    <input type="text" name="password"> </input>
-</body>
-
-</html>
+{% endblock main %}
