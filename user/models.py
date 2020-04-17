@@ -16,11 +16,13 @@ class NormalUser(models.Model):
         User, on_delete=models.CASCADE, primary_key=True)
     score = models.IntegerField(default=0, null=True)
 
-class RandomUserModel(models.Model):
-    user = models.OneToOneField(
-        User, on_delete=models.CASCADE, primary_key=True)
-    name = models.CharField(max_length=255, default='')
-
+# class RandomUserModel(models.Model):
+#     user = models.OneToOneField(
+#         User, on_delete=models.CASCADE, primary_key=True)
+#     name = models.CharField(max_length=255, default='')
+class RandomUser(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    name = models.CharField(max_length=255, default='', null=True)
 
 class BanUser(models.Model):
     user = models.OneToOneField(
@@ -40,7 +42,7 @@ class Authen_User(models.Model):
     def randomName(self):
         randomlist = ['A', 'B', 'C', 'D']
         random.shuffle(randomlist)
-        return RandomUserModel.objects.create(name=randomlist[0], user=self.user)
+        return RandomUser.objects.create(name=randomlist[0], user=self.user)
 
     def getNormalUser(self):
         if self.normal_user:

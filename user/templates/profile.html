@@ -1,8 +1,22 @@
 {% extends 'base.html' %}
-
+{% load static %}
 {% block main %}
-{% block profile%}
-{% endblock %}
+<div class='container' style='background-color:pink;'>
+    <div class="media">
+        <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
+        <div class="media-body">
+            <h2 class="mt-0">Profile 
+                <a href='{% url "logout" %}'>
+                    <button type="button" class="btn btn-danger">Ban</button> 
+                </a>
+            </h2>
+            <div class='row'>
+                <div class='col-2'>Username : {{user}} </div>
+            </div>
+        </div>
+    </div>
+</div>
+
 <div class='container'>
 
     <div class="card m-1">
@@ -50,15 +64,12 @@
             </div>
         </form>
   
-
-    {% for key, value in comment.items %}
-        {% if key == post.id %}
-            <div class="card m-1">
-                <div class="card-body">
-                    <h6>{{value}}</h6>
-                </div>
-            </div>
-        {% endif %}
+    {% for i in post.getComment %}
+    <div class='card m-1'>
+        <div class="card-body">
+            <h6>{{i.text}}</h6>
+        </div>
+    </div>
     {% endfor %}
         </div>
     </div>
@@ -66,23 +77,4 @@
     {% endfor %}
 
 </div>
-
-<script>
-    function distribute() {
-        const data = { numberOfDistribution: 1 };
-
-        var url = 'http://127.0.0.1:8000/post/api/post/';
-        var data = { numberOfDistribution: 1 };
-        fetch(url, {
-            method: 'POST', // or 'PUT'
-            body: JSON.stringify(data), // data can be `string` or {object}!
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        }).then(res => res.json())
-            .then(response => console.log('Success:', JSON.stringify(response)))
-            .catch(error => console.error('Error:', error));
-    }
-</script>
-
-{% endblock main %}
+{% endblock %}

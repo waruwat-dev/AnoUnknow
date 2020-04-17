@@ -3,24 +3,24 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from user.models import User
-
+from user.forms import SignUpForm
+from post.form import PostForm
+from post.models import Post
+from comment.models import Comment
 
 def signup(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/')
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = SignUpForm(request.POST)
         if form.is_valid():
-            form.save()
-            username = form.cleaned_data.get('username')
-            password = form.cleaned_data.get('password')
-            user = authenticate(username=username, password=password)
+            user = form.save()
             login(request, user)
-            return HttpResponseRedirect('/')
+            return redirect('index')
         else:
             return render(request, 'signup.html', {'form': form})
     else:
-        form = UserCreationForm()
+        form = SignUpForm()
         return render(request, 'signup.html', {'form': form})
 
 
@@ -37,6 +37,7 @@ def signin(request):
             return redirect(request.GET.get('next','/'))
         else:
             context['username'] = username
+            print(user)
             context['error'] = "username or password is wrong"
             return render(request, 'signin.html', context)
     else:
@@ -65,3 +66,27 @@ def signout(request):
 @login_required(login_url='login')
 def main(request):
     return render(request, 'homepage.html')
+
+@login_required(login_url='login')
+def profile(request, id):
+    user = request.user
+    posts = Post.objects.filter(createBy=id)
+    post = [i.id for i in posts]
+    comments = Comment.objects.filter(post_id_id__in=post)
+    commentz = set()
+    for i in comments:
+        commentz.add(i.post_id_id)
+    commentz = list(commentz) #commentz เก็บ post_idที่ไม่ซ้ำ
+    comment = dict()
+    for i in comments:
+        for j in commentz:
+            if i.post_id_id == j:
+                comment[j] = i.text
+                commentz.remove(j)
+    print(comment)
+    context={
+        'posts': posts,
+        'form': PostForm(),
+        'comment': comment,
+        'user':user}
+    return render(request, 'profile.html',context=context)
