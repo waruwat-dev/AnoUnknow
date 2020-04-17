@@ -1,16 +1,17 @@
-<form action="{% url 'addComment' post.id %}" method="POST">
-        {% csrf_token %}
-        <div class="card-body">
-            <div class="form-group">
-                <label>Let's comment the POST!</label>
-                {{ form.text }}
-                <small class="form-text text-muted"> {{form.text.errors}} </small>
-            </div>
-            <div class="form-group row">
-                <div class="col-1">
-                    <button type="submit" class="btn btn-primary">Comment</button>
-                </div> 
-            </div>
-        </div>
-    </form>
-  
+<!-- <form action="{% url 'addComment' post.id %}" method="POST">  -->
+
+<div class="card-body">
+    <div class="form-group">
+        <input type="text" class="form-control" id="comment_post{{post.id}}" name="text"
+            placeholder="Let's comment the POST!">
+        <script>
+            var input = document.getElementById(`comment_post{{ post.id }}`)
+            input.addEventListener("keyup", function (event) {
+                if (event.keyCode === 13) {
+                    commentCreate({{ post.id }}, `{% url 'addComment' post.id %}`)
+                }
+            });
+        </script>
+    </div>
+</div>
+<!-- </form>  -->

@@ -16,18 +16,21 @@ class NormalUser(models.Model):
         User, on_delete=models.CASCADE, primary_key=True)
     score = models.IntegerField(default=0, null=True)
 
+
 # class RandomUserModel(models.Model):
-#     user = models.OneToOneField(
-#         User, on_delete=models.CASCADE, primary_key=True)
-#     name = models.CharField(max_length=255, default='')
+#     user = models.ForeignKey(User, on_delete=models.CASCADE)
+#     name = models.CharField(max_length=255, default='', null=True)
+
 class RandomUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='', null=True)
 
+
 class BanUser(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
-    ban_date = models.DateTimeField(null=True, auto_now_add=True)  #.DaField(null=True, default=now())
+    # .DaField(null=True, default=now())
+    ban_date = models.DateTimeField(null=True, auto_now_add=True)
     remark = models.TextField(null=True)
     admin = models.ForeignKey(Admin, on_delete=models.DO_NOTHING)
 
@@ -49,7 +52,7 @@ class Authen_User(models.Model):
             return NormalUser.objects.get(pk=self.user.id)
         else:
             return None
-    
+
     def getAdmin(self):
         if self.admin:
             return Admin.objects.get(pk=self.user.id)

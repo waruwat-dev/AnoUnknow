@@ -20,3 +20,8 @@ class Post(models.Model):
     class Meta:
         ordering = ['time']
 
+    
+
+
+# class DistributePost(models.Model):
+#     post_id = 
