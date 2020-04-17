@@ -42,7 +42,8 @@ INSTALLED_APPS = [
     'channels',
     'user',
     'post',
-    'comment'
+    'comment',
+    'announcement'
 ]
 
 MIDDLEWARE = [
@@ -99,9 +100,9 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project1',
+        'NAME': 'web-pro',
         'USER': 'postgres',
-        'PASSWORD': '123456789',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
     }
