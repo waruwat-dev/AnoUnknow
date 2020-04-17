@@ -13,7 +13,7 @@ class AnnouncementModel(models.Model):
     end_time = models.DateTimeField(auto_now=False)
     adminId = models.ForeignKey(Admin, null=True, on_delete=models.SET_NULL)
     type = models.CharField(max_length=2, choices=typeOfAnnouncement, default='01')
-    is_active = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     class Meta:
         ordering = ['start_time']
