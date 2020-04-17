@@ -69,11 +69,9 @@ def main(request):
 
 @login_required(login_url='login')
 def profile(request, id):
-    user = request.user
     posts = Post.objects.filter(createBy=id)
     post = [i.id for i in posts]
     context={
         'posts': posts,
-        'form': PostForm(),
-        'user':user}
+        'form': PostForm()}
     return render(request, 'profile.html',context=context)
