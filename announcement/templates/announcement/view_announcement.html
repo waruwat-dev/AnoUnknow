@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+{% block main %}
+
+<div class="container">
+    <table class="table">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col">Type</th>
+                <th scope="col">Text</th>
+                <th scope="col">Duration</th>
+                <th scope="col">Admin</th>
+                <th scope="col">Edit</th>
+                <th scope="col">Delete</th>
+            </tr>
+        </thead>
+        {% for announcement in announcements %}
+
+        <tbody>
+            <tr>
+                <td>
+                {% if announcement.type == 'Warning' %} <span class="badge badge-danger">
+                {% else %} <span class="badge badge-primary">
+                {% endif %}
+                {{ announcement.type }}</span>
+                </td>
+                <td>{{ announcement.text }}</td>
+                <td>{{ announcement.start_time }} to {{ announcement.end_time }}</td>
+                <td>{{ announcement.adminId.user.username }}</td>
+                <td><a class="btn btn-secondary btn-sm" href="{% url 'edit_announcement' announcement.id %}" role="button">Edit</a></td>
+                <td><a class="btn btn-danger btn-sm" href="{% url 'delete_announcement' announcement.id %}" role="button">Delete</a></td>
+            </tr>
+        </tbody>
+
+        {% endfor %}
+    </table>
+</div>
+
+{% endblock main %}
