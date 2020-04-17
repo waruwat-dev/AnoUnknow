@@ -63,14 +63,11 @@
                 </div>
             </div>
         </form>
-  
-    {% for i in post.getComment %}
     <div class='card m-1'>
         <div class="card-body">
-            <h6>{{i.text}}</h6>
+            <h6> {{post.getComment.0.text}} </h6>
         </div>
     </div>
-    {% endfor %}
         </div>
     </div>
 

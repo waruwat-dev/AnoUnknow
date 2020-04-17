@@ -72,21 +72,8 @@ def profile(request, id):
     user = request.user
     posts = Post.objects.filter(createBy=id)
     post = [i.id for i in posts]
-    comments = Comment.objects.filter(post_id_id__in=post)
-    commentz = set()
-    for i in comments:
-        commentz.add(i.post_id_id)
-    commentz = list(commentz) #commentz เก็บ post_idที่ไม่ซ้ำ
-    comment = dict()
-    for i in comments:
-        for j in commentz:
-            if i.post_id_id == j:
-                comment[j] = i.text
-                commentz.remove(j)
-    print(comment)
     context={
         'posts': posts,
         'form': PostForm(),
-        'comment': comment,
         'user':user}
     return render(request, 'profile.html',context=context)
