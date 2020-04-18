@@ -77,8 +77,8 @@ class Authen_User(models.Model):
             return None
 
     def ban(self, admin, val=True, remark=""):
-        if val == self.ban_user:
-            return
+        # if val == self.ban_user:
+        #     return
         if val == True:
             self.ban_user = True
             BanUser.objects.create(

@@ -1,14 +1,17 @@
 {% extends 'base.html' %}
-{% load static %}
+
 {% block main %}
+{% load static %}
 <div class='container' style='background-color:pink;'>
     <div class="media">
         <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
         <div class="media-body">
             <h2 class="mt-0">Profile 
-                <a href='{% url "logout" %}'>
-                    <button type="button" class="btn btn-danger">Ban</button> 
-                </a>
+                {% if user.authen_user.admin %}
+                    <a href='{% url "user_list"  %}'>
+                        <button type="button" class="btn btn-danger">Ban</button> 
+                    </a>
+                {% endif %}
             </h2>
             <div class='row'>
                 <div class='col-4'>Username : {{user}} </div>
@@ -19,23 +22,8 @@
 
 <div class='container'>
 
-    <div class="card m-1">
-        <form action="{% url 'create_post' %}" method="POST">
-            {% csrf_token %}
-            <div class="card-body">
-                <div class="form-group">
-                    <label>Let's update your status!</label>
-                    {{ form.text }}
-                    <small class="form-text text-muted"> {{form.text.errors}} </small>
-                </div>
-                <div class="form-group row">
-                    <div class="col-1">
-                        <button type="submit" class="btn btn-primary">Post</button>
-                    </div>
-                </div>
-            </div>
-        </form>
-    </div>
+
+       {% include 'post/createPost.html' %}
 
     {% for post in posts %}
     {% include 'post/post_component.html' %}

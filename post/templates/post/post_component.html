@@ -1,7 +1,12 @@
 <div class="card m-1 bg-secondary" id="post_{{post.id}}">
     <div class="card-body">
 
-        <div>โพสเมื่อ {{post.time}}</div>
+        <div>โพสเมื่อ {{post.time}} 
+            {% if user.authen_user.admin %}
+            {% comment %} Adminเท่านั้นที่จะรู้ว่าใครโพสอะไร {% endcomment %}
+               <span style='color:white;'> ({{post.createBy.user}}) </span>
+            {% endif %}
+        </div>
         <h5 class="card-title">{{post.createBy.name}}</h5>
         <h6 class="card-text">{{post.text}}</h6>
         <div class="btn-group mr-2" role="group" aria-label="First group">
