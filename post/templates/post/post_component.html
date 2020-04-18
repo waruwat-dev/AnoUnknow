@@ -1,7 +1,15 @@
 <div class="card m-1 bg-secondary" id="post_{{post.id}}">
     <div class="card-body">
 
-        <div>โพสเมื่อ {{post.time}}</div>
+        <div>โพสเมื่อ {{post.time}}
+            {% if user != post.createBy.user %}
+            <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">แชท</button>
+            </form>
+            {% endif %}
+
+        </div>
         <h5 class="card-title">{{post.createBy.name}}</h5>
         <h6 class="card-text">{{post.text}}</h6>
         <div class="btn-group mr-2" role="group" aria-label="First group">

@@ -27,31 +27,34 @@
 <script>
     let currentRecipient = '';
     let userList = $('#user-list');
+    var csrftoken = '{{ csrf_token }}';
 
     async function updateUserList() {
-        let get_message = await fetch(`../../user/api/v1/user/`)
+        let get_message = await fetch(`friends/`)
         let data = await get_message.json()
         userList.children('.user').remove();
-        console.log(data)
         for (let i = 0; i < data.length; i++) {
-            const userItem = `<a class="list-group-item user">${data[i]['username']}</a>`;
+            const userItem = `<a class="list-group-item user" name="${data[i]['id']}" id="chat_${data[i]['id']}"  my_id="${data[i]['my_id']}">
+            ${data[i]['name']}
+            </a>`;
             $(userItem).appendTo('#user-list');
         }
         $('.user').click(function () {
             userList.children('.active').removeClass('active');
             let selected = event.target;
             $(selected).addClass('active');
-            setCurrentRecipient(selected.text);
+            selected.style.color = "black"
+            setCurrentRecipient(selected.name, selected.getAttribute('my_id'));
         });
 
     }
 
     async function getConversation(recipient) {
-        let get_message = await fetch(`../api/v1/message/?target=${recipient}`)
+        let get_message = await fetch(`message/${recipient}`)
         let data = await get_message.json()
         messageList.children('.message').remove();
-        for (let i = data['results'].length - 1; i >= 0; i--) {
-            drawMessage(data['results'][i]);
+        for (let i = data.length - 1; i >= 0; i--) {
+            drawMessage(data[i]);
         }
         // messageList.animate({ scrollTop: messageList.prop('scrollHeight') });
 
@@ -59,28 +62,31 @@
 
     async function getMessageById(message) {
         id = JSON.parse(message).message
-        let get_message = await fetch(`../api/v1/message/${id}/`)
+        let get_message = await fetch(`getmessage/${id}`)
         let data = await get_message.json()
-        if (data.user === currentRecipient ||
-            (data.recipient === currentRecipient && data.user == currentUser)) {
+        if (data.chat_id == currentRecipient) {
             drawMessage(data);
+        } else if (document.getElementById(`chat_${data.chat_id}`)) {
+            let chat = document.getElementById(`chat_${data.chat_id}`)
+
+            chat.style.color = "red"
         }
         // messageList.animate({ scrollTop: messageList.prop('scrollHeight') });
     }
 
-    function sendMessage(recipient, body) {
+    function sendMessage(recipient, text) {
         const formData = new FormData();
-        formData.append('recipient', recipient);
-        formData.append('body', body);
-
-        fetch('../api/v1/message/', {
+        formData.append('text', text);
+        formData.append('csrfmiddlewaretoken ', csrftoken);
+        fetch(`message/${recipient}`, {
             method: 'POST',
             body: formData
         }).catch(err => alert("Error Message Not Sent"))
     }
 
-    function setCurrentRecipient(username) {
+    function setCurrentRecipient(username, my_id) {
         currentRecipient = username;
+        currentUser = my_id
         getConversation(currentRecipient);
         enableInput();
     }
