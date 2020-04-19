@@ -1,10 +1,8 @@
-{% extends 'base.html' %}
-{% block main %}
 
-    <form action="" method="POST">
+
+    <form action="{% url 'signup' %}" method="POST">
         {% csrf_token %}
         <div class='container'>
-        <h1>สมัครสมาชิก</h1>
         {% for field in form %}
       <div class="form-group">
         {{ field.label_tag }}<br>
@@ -20,4 +18,3 @@
         <button type="submit" class="btn btn-primary"> submit</button>
         </div>
     </form>
-{% endblock main %}

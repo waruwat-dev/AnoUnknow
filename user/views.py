@@ -7,6 +7,7 @@ from user.forms import SignUpForm
 from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
+from django.http.response import HttpResponse
 
 def signup(request):
     if request.user.is_authenticated:
@@ -19,9 +20,10 @@ def signup(request):
             return redirect('index')
         else:
             return render(request, 'signup.html', {'form': form})
-    else:
-        form = SignUpForm()
-        return render(request, 'signup.html', {'form': form})
+    # else:
+    #     form = SignUpForm()
+    #     return render(request, 'signup.html', {'form': form})
+    return HttpResponse(status=404)
 
 
 def signin(request):
@@ -41,7 +43,9 @@ def signin(request):
             context['error'] = "username or password is wrong"
             return render(request, 'signin.html', context)
     else:
-        return render(request, 'signin.html')
+        form = SignUpForm()
+        # print(form)
+        return render(request, 'signin.html', {'form': form})
 
 
 def signout(request):
