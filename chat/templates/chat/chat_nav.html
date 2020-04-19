@@ -1,0 +1,52 @@
+<div class="container">
+    <div id="user-list" class="list-group" onClick="window.location.href = '/chat/'">
+        <a href="" class="list-group-item disabled">
+            <h4 class="list-group-item-heading">Chat</h4>
+        </a>
+    </div>
+</div>
+<script>
+    async function updateUserList() {
+        let userList = $('#user-list');
+        let get_message = await fetch(`/chat/friends/`)
+        let data = await get_message.json()
+        userList.children('.user').remove();
+        for (let i = 0; i < data.length; i++) {
+            const userItem = `<a class="list-group-item user" name="${data[i]['id']}" id="chat_${data[i]['id']}"  my_id="${data[i]['my_id']}">
+            <img style="width:50px;height:50px;" src="https://www.americanaircraftsales.com/wp-content/uploads/2016/09/no-profile-img.jpg">
+            ${data[i]['name']}
+            </a>`;
+            $(userItem).appendTo('#user-list');
+        }
+        updateUserList2()
+        // $('#user-list').click(function () {
+        //     window.location.href = "/chat/"
+        // });
+        // $('#user-list').onclick = 'window.location.href = "/chat/"'
+    }
+    async function updateUserList2() { }
+
+    async function getMessageById(message) {
+        id = JSON.parse(message).message
+        let get_message = await fetch(`getmessage/${id}`)
+        let data = await get_message.json()
+        if (document.getElementById(`chat_${data.chat_id}`)) {
+            let chat = document.getElementById(`chat_${data.chat_id}`)
+            chat.style.color = "red"
+        }
+    }
+
+    $(document).ready(function () {
+        updateUserList();
+        var socket = new WebSocket(
+            'ws://' + window.location.host +
+            `/ws?session_key=${sessionKey}`)
+
+        socket.onmessage = function (e) {
+            getMessageById(e.data);
+        };
+    });
+
+
+
+</script>
