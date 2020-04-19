@@ -15,8 +15,13 @@ class Post(models.Model):
 
     @property
     def getComment(self):
-        print(self.comment_set.all())
         return self.comment_set.all()
+
+    @property
+    def getNumberOfDis(self):
+        if self.distributeUser.count():
+            return self.distributeUser.count()
+        return 0
 
     class Meta:
         ordering = ['time']

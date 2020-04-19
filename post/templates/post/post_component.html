@@ -25,12 +25,12 @@
             <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                     class="sad">{{post.sad}}</span></button>
         </div>
-        <!-- </form> -->
+        </form> 
         <a href="{% url 'view_post' post.id %}" class="btn btn-secondary">👁 View</a>
         {% if post.distributeUser.all.0.user.id == request.user.id %}
-        <a class="btn btn-secondary">✅ Dis {{ post.distributeUser.all|length }}</a>
+        <a class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
         {% else %}
-        <a onclick="distribute({{post.id}})" class="btn btn-secondary">🔃 Dis {{ post.distributeUser.all|length }}</a>
+        <a onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span> Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
         {% endif %}
         
         {% if request.user.id == post.createBy.user.id %}
@@ -96,7 +96,13 @@
             method: 'POST',
             body: formData
         }).catch(err => alert("Error Message Not Sent"))
-        
-    
+
+        let element = document.getElementById("post_" + post_id)
+        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+        console.log(element)
+        console.log(emo_distribute)
+        emo_distribute.innerText = "✅"
+        //console.log(element)
+        //console.log(emo_distribute
     }
 </script>

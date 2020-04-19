@@ -3,6 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from post.models import Post
 from post.serializers import PostCreateSerializer
+from .views import message
 
 
 def post_list(request):
@@ -30,6 +31,7 @@ def distribute_post(request, post_id):
         post.save()
         post.distributeUser.add(user.authen_user.randomName())
         print("distributed post")
+        message(post.id, {"distribute": post.getNumberOfDis})
     return HttpResponse(200)
 
 def reduce_distribute(posts):
