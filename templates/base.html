@@ -22,6 +22,10 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}" />
     <link rel="stylesheet" href="{% static 'css/font-awesome.min.css' %}" />
     <script src="{% static "js/post.js" %}"></script>
+    <script>
+        let sessionKey = '{{ request.session.session_key }}';
+        var csrftoken = '{{ csrf_token }}';
+    </script>
     {% block head %}
     {% endblock %}
 </head>
@@ -29,45 +33,9 @@
 <body>
 
     {% include 'header.html' %}
-    <div class="row">
-        <div class="col-3">
-            <div class="d-flex justify-content-center container ">
-                <div class=" btn-group btn-group-vertical" role="group" aria-label="Basic example">
-                    <button type="button" class="btn btn-secondary">สำรวจ</button>
-                    <button type="button" class="btn btn-secondary">แจ้งเตือน</button>
-                    <button type="button" class="btn btn-secondary">บุ้คมาร์ก</button>
-                    <button type="button" class="btn btn-secondary">รายชื่อ</button>
-                    <button type="button" class="btn btn-secondary">ข้อมูลส่วนตัว</button>
-                    <button type="button" class="btn btn-secondary">แชท</button>
-                    <button type="button" class="btn btn-secondary">เพิ่มเติม</button>
-                </div>
-            </div>
+    {% block main %}
+    {% endblock %}
 
-        </div>
-        <div class="col-6">
-            {% block main %}
-            {% endblock %}
-        </div>
-        <div class="col-3">
-            <div class="container">
-                <nav class="nav flex-column">
-                    <br />
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" placeholder="ค้นหา" aria-label="Recipient's username"
-                            aria-describedby="button-addon2">
-                        <div class="input-group-append">
-                            <button class="btn btn-outline-secondary" type="button" id="button-addon2">search</button>
-                        </div>
-                    </div>
-                    <h4>เป็นที่นิยมในไทย</h4>
-                    <a class="nav-link active" href="#">#ตำรวยขาโจ๋</a>
-                    <a class="nav-link" href="#">#นักบอลสายดำ</a>
-                    <a class="nav-link" href="#">#น้อนนนนน</a>
-                    <a class="nav-link" href="#">#พอเถอะพอแล้วพอ</a>
-                </nav>
-            </div>
-        </div>
-    </div>
 
     {% include 'notify.html' %}
 
