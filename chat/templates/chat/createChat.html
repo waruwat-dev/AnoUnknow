@@ -1,0 +1,4 @@
+<form action="{% url create_chat randomuser=post.createBy %}" method="post">
+    {% csrf_token %}
+    <button type="submit">แชท</button>
+</form>
