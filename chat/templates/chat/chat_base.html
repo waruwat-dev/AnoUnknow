@@ -25,13 +25,13 @@
 
     function drawMessage(message) {
         let position = 'left';
-        const date = new Date(message.timestamp);
-        if (message.user === currentUser) position = 'right';
+        const date = new Date(message.time);
+        if (message.randomUser1 == currentUser) position = 'right';
         const messageItem = `
             <li class="message ${position}">
-                <div class="avatar">${message.user}</div>
+                <div class="avatar">${message.randomUser1}</div>
                     <div class="text_wrapper">
-                        <div class="text">${message.body}<br>
+                        <div class="text">${message.text}<br>
                             <span class="small">${date}</span>
                     </div>
                 </div>

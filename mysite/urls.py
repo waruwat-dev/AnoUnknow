@@ -16,15 +16,14 @@ Including another URLconf
 from django.conf.urls import include
 from django.urls import path
 from django.contrib import admin
-from chat import views
+from post import views
 
 urlpatterns = [
-    path('', views.chat, name='home'),
+    path('', views.view_all_posts, name='home'),
     path('chat/', include('chat.urls')),
     path('user/', include('user.urls')),
     path('admin/', admin.site.urls),
     path('post/', include('post.urls')),
     path('comment/', include('comment.urls')),
     path('announcement/', include('announcement.urls')),
-    
 ]

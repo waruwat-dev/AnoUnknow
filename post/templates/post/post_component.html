@@ -1,10 +1,16 @@
 <div class="card m-1 bg-secondary" id="post_{{post.id}}">
     <div class="card-body">
 
-        <div>โพสเมื่อ {{post.time}} 
+        <div>โพสเมื่อ {{post.time}}
             {% if user.authen_user.admin %}
             {% comment %} Adminเท่านั้นที่จะรู้ว่าใครโพสอะไร {% endcomment %}
-               <span style='color:white;'> ({{post.createBy.user}}) </span>
+            <span style='color:white;'> ({{post.createBy.user}}) </span>
+            {% endif %}
+            {% if user != post.createBy.user %}
+            <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post">
+                {% csrf_token %}
+                <button type="submit">แชท</button>
+            </form>
             {% endif %}
         </div>
         <h5 class="card-title">{{post.createBy.name}}</h5>
