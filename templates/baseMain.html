@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block main %}
+<div class="row">
+    <div class="col-3">
+        <div class="container">
+            <nav class="nav flex-column">
+                <br />
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" placeholder="ค้นหา" aria-label="Recipient's username"
+                        aria-describedby="button-addon2">
+                    <div class="input-group-append">
+                        <button class="btn btn-outline-secondary" type="button" id="button-addon2">search</button>
+                    </div>
+                </div>
+                <h4>เป็นที่นิยมในไทย</h4>
+                <a class="nav-link active" href="#">#ตำรวยขาโจ๋</a>
+                <a class="nav-link" href="#">#นักบอลสายดำ</a>
+                <a class="nav-link" href="#">#น้อนนนนน</a>
+                <a class="nav-link" href="#">#พอเถอะพอแล้วพอ</a>
+            </nav>
+        </div>
+    </div>
+    <div class="col-6">
+        {% block contents %}
+        {% endblock %}
+    </div>
+    <div class="col-3">
+        {% include "chat/chat_nav.html" %}
+    </div>
+</div>
+{% endblock main %}
