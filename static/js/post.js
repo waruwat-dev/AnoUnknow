@@ -110,6 +110,10 @@ function socketOnMessage(e) {
     } else {
         var element = document.getElementById("post_" + data.post)
     }
+    if (data.distribute) {
+        var distribution = element.getElementsByClassName("distribution")[0]
+        distribution.innerText = data.distribute
+    }
     if (data.like) {
         var like = element.getElementsByClassName("like")[0]
         like.innerText = data.like

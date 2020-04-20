@@ -2,17 +2,17 @@ import json
 import urllib
 from urllib import parse, request
 from urllib.parse import urlencode
-from django.shortcuts import redirect, render
-from rest_framework.decorators import api_view
-from django.http import HttpResponse
-from django.views.decorators.csrf import csrf_exempt
-
-from post.form import PostForm
-from post.models import Post
-from comment.models import Comment
 
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.http import HttpResponse
+from django.shortcuts import redirect, render
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view
+
+from comment.models import Comment
+from post.form import PostForm
+from post.models import Post
 
 
 def view_all_posts(request):
@@ -36,6 +36,15 @@ def view_all_posts(request):
     }
     return render(request, template_name='post/post_index.html', context=context)
 
+def view_posts(request):
+    posts = urllib.request.urlopen('http://127.0.0.1:8000/post/api/post_list/')
+    posts = json.loads(posts.read())
+    posts = Post.objects.filter(id__in=list(map(lambda x: x['id'], posts)))
+    context = {
+        'posts': posts,
+        'form': PostForm()
+    }
+    return render(request, template_name='post/post_index.html', context=context)
 
 
 def create_post(request):
@@ -51,7 +60,7 @@ def create_post(request):
         # return redirect('view_all_posts')
         return redirect('view_post', pk=post.id)
 
-    return redirect('get_post', context={'form': form})
+    return render(request, template_name='post/post_index.html', context={'form': form})
 
 
 def view_post(request, pk):

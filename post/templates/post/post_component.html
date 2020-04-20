@@ -25,12 +25,19 @@
             <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                     class="sad">{{post.sad}}</span></button>
         </div>
-        <!-- </form> -->
-
-        <a href="{% url 'view_post' post.id %}" class="card-link">View</a>
-        <a onclick="distribute()" class="card-link">Distribute {{post.numberOfDistribution}}</a>
-        <a href="{% url 'delete_post' post.id %}" class="card-link">Delete</a>
-        <a href="{% url 'edit_post' post.id %}" class="card-link">Edit</a>
+        </form> 
+        <a href="{% url 'view_post' post.id %}" class="btn btn-secondary">👁 View</a>
+        {% if post.distributeUser.all.0.user.id == request.user.id %}
+        <a class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
+        {% else %}
+        <a onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span> Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
+        {% endif %}
+        
+        {% if request.user.id == post.createBy.user.id %}
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-secondary">🗑 Delete</a>
+        <a href="{% url 'edit_post' post.id %}" class="btn btn-secondary">✏️ Edit</a>
+        {% endif %} 
+        
 
 
 
@@ -80,4 +87,22 @@
     chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
+
+    function distribute(post_id) {
+        var csrftoken = '{{ csrf_token }}';
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken ', csrftoken);
+        fetch(`/post/api/distribute_post/${post_id}`, {
+            method: 'POST',
+            body: formData
+        }).catch(err => alert("Error Message Not Sent"))
+
+        let element = document.getElementById("post_" + post_id)
+        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+        console.log(element)
+        console.log(emo_distribute)
+        emo_distribute.innerText = "✅"
+        //console.log(element)
+        //console.log(emo_distribute
+    }
 </script>

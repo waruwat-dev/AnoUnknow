@@ -100,9 +100,9 @@ CHANNEL_LAYERS = {
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'project2',
+        'NAME': 'web-pro',
         'USER': 'postgres',
-        'PASSWORD': '123456789',
+        'PASSWORD': '',
         'HOST': 'localhost',
         'PORT': '5432',
     }
