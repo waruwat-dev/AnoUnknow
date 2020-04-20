@@ -8,6 +8,7 @@
         {{ field.label_tag }}<br>
         {{ field }}
         {% if field.help_text %}
+        <br>
           <small style="color: grey">{{ field.help_text }}</small>
         {% endif %}
         {% for error in field.errors %}
@@ -15,6 +16,6 @@
         {% endfor %}
       </div>
     {% endfor %}
-        <button type="submit" class="btn btn-primary"> submit</button>
+        <button type="submit" class="btn" style="background-color:#ffe15d;">Register</button>
         </div>
     </form>

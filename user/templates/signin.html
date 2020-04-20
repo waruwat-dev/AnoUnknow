@@ -1,4 +1,7 @@
- {% extends "base.html" %}
+ {% extends "baseforLogin.html" %}
+    {% block leftnav %}
+        <h1></h1>
+    {% endblock %}
 {% block main %} 
 
 
@@ -37,55 +40,73 @@
 <div class='container'>
     
     <div class='row'>
+        <div class='col-6'>
+                <img src="{% static 'img/login.png' %}" width="600px" style='float:right;'>
+        </div>
+        <div class='col-5' style='margin-top:100px;float:right;'>
+    <div class='container'>
     <div class=''>
-            <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
-    </div>
-        <div class=''>
-            <div class="tab">
+        <div class="tab">
             <button class="tablinks" onclick="openPage(event, 'Login')" id="defaultOpen">Login</button>
             <button class="tablinks" onclick="openPage(event, 'Register')">Register</button>
-            </div>
         </div>
     </div>
-</div>
+    <div id="Login" class="tabcontent">
+    <form action="" method="POST">
+                {% csrf_token %}
+                <div class='container'>
+                <div class='row  justify-content-md-center'>
+                    <div>
+                        <label>Username</label><br>
+                        <input type="text" id="login" class="form-group" name="username" placeholder="username"
+                            value="{{username}}"><br>     
+                    </div>
+                </div>
+                <div class='row  justify-content-md-center'>
+                    <div>
+                        <label>Password</label><br>
+                        <input type="password" id="password" class="form-group" name="password" placeholder="password" />
+                        </div>
+                        <br><br><br>
+                    </div>
+                </div>
+                 <center>
+                 <button type="submit" class="btn" style="background-color:#ffe15d;"> Login</button>
+                 </center>
+            </form>
+            {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {{error}}
+            </div>
+            {% endif %}
+    </div>
 
-<div id="Login" class="tabcontent">
-  <h3>Login</h3>
-  <form action="" method="POST">
-            {% csrf_token %}
-            <input type="text" id="login" class="form-group" name="username" placeholder="login"
-                value="{{username}}">
-            <input type="password" id="password" class="form-group" name="password" placeholder="password" />
-            <input type="submit" class="form-group" value="Log In" />
-        </form>
-        {% if error %}
-        <div class="alert alert-danger" role="alert">
-            {{error}}
+    <div id="Register" class="tabcontent">
+        {% comment %} {{form}} {% endcomment %}
+        {% include 'signup.html' %}
+    </div>
+</div>   
         </div>
-        {% endif %}
-</div>
-
-<div id="Register" class="tabcontent">
-  <h3>Register</h3>
-  {% comment %} {{form}} {% endcomment %}
-  {% include 'signup.html' %}
+        
+    </div>
 </div>
 
 <script>
-document.getElementById("defaultOpen").click();
-function openPage(evt, page) {
-  var i, tabcontent, tablinks;
-  tabcontent = document.getElementsByClassName("tabcontent");
-  for (i = 0; i < tabcontent.length; i++) {
-    tabcontent[i].style.display = "none";
-  }
-  tablinks = document.getElementsByClassName("tablinks");
-  for (i = 0; i < tablinks.length; i++) {
-    tablinks[i].className = tablinks[i].className.replace(" active", "");
-  }
-  document.getElementById(page).style.display = "block";
-  evt.currentTarget.className += " active";
-}
+    document.getElementById("defaultOpen").click();
+    function openPage(evt, page) {
+    var i, tabcontent, tablinks;
+    tabcontent = document.getElementsByClassName("tabcontent");
+    for (i = 0; i < tabcontent.length; i++) {
+        tabcontent[i].style.display = "none";
+    }
+    tablinks = document.getElementsByClassName("tablinks");
+    for (i = 0; i < tablinks.length; i++) {
+        tablinks[i].className = tablinks[i].className.replace(" active", "");
+    }
+    document.getElementById(page).style.display = "block";
+    document.querySelector('#navbarTogglerDemo01 > ul > h1').textContent = page;
+    evt.currentTarget.className += " active";
+    }
 </script>
 <style>
     body {font-family: Arial;}

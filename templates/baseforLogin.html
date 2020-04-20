@@ -32,7 +32,7 @@
 
 <body>
     
-    <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color:#ffe15d;">
+    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#ffe15d;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         
         {% comment %} ด้านซ้าย {% endcomment %}
@@ -41,22 +41,7 @@
                 {% endblock %}
         </ul>
         </div>
-
-            {% comment %} ด้านขวา {% endcomment %}
-        {% if user.is_authenticated %}
-            <ul class="nav navbar-nav navbar-right">
-                {% block rightnav %}
-                <li class='m-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
-                <li class='m-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
-                <li class='m-4' style='font-size:20px;'><a href=''>🔔</a></li>
-                <li class='m-4' style='font-size:20px;'><a href='{% url "logout" %}'>⚙️</a></li>
-                {% endblock %}
-            </ul>
-        {% else %}
-            <ul class="nav navbar-nav navbar-right">
-                <li class='m-4' style='font-size:20px;'><a href='{% url "login" %}'>Login</a></li>
-            </ul>
-        {% endif %}
+        
     </nav>
     
     {% block main %}

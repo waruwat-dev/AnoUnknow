@@ -1,7 +1,7 @@
 {% extends 'baseMain.html' %}
 
-{% block contents %}
-{% load static %}
+{% block leftnav %}
+    {% load static %}
 <div class='container' style='background-color:pink;'>
     <div class="media">
         <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
@@ -14,11 +14,14 @@
                 {% endif %}
             </h2>
             <div class='row'>
-                <div class='col-4'>Username : {{user}} </div>
+                <div class='col-12'>Username : {{user}} </div>
             </div>
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block contents %}
 
 <div class='container'>
 

@@ -17,7 +17,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')
+            return redirect('home')
         else:
             return render(request, 'signup.html', {'form': form})
     # else:
@@ -86,7 +86,7 @@ def main(request):
 def profile(request, id):
     user = User.objects.get(pk=id)
     posts = Post.objects.filter(createBy__user=user)
-    print(posts)
+    # print(posts)
     context={
         'posts': posts,
         'form': PostForm()}
