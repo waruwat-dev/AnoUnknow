@@ -1,6 +1,5 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from user.models import User, Authen_User
 from user.forms import SignUpForm
@@ -19,10 +18,14 @@ def signup(request):
             login(request, user)
             return redirect('home')
         else:
-            return render(request, 'signup.html', {'form': form})
+            return render(request, 'signin.html', {'form':form})
+        # else:
+        #     form = SignUpForm()
+        #     return render(request, 'signup.html', {'form': form})
+            # return render(request, 'signup.html', {'form': form})
     # else:
     #     form = SignUpForm()
-    #     return render(request, 'signup.html', {'form': form})
+    #     return render(request, 'signin.html', {'form': form})
     return HttpResponse(status=404)
 
 

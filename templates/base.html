@@ -30,15 +30,27 @@
     {% endblock %}
 </head>
 
-<body>
+<body style='background-color:lightgoldenrodyellow;'>
     
     <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color:#ffe15d;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         
         {% comment %} ด้านซ้าย {% endcomment %}
         <ul class="nav navbar-nav">
-                {% block leftnav %}
-                {% endblock %}
+                    <div class='container' style='background-color:pink;'>
+                        <div class="media">
+                            <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
+                            <div class="media-body">
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <h1 style='margin-top:1.5rem;'>
+                                        {% block titlez %}{% endblock %}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
         </ul>
         </div>
 
@@ -46,10 +58,24 @@
         {% if user.is_authenticated %}
             <ul class="nav navbar-nav navbar-right">
                 {% block rightnav %}
+                {% if user.authen_user.admin %}
+                <div class="dropdown">
+                <button class="btn  dropdown-toggle" type="button" data-toggle="dropdown" style='margin-top: 20px;'>📢
+                    <span class="caret"></span></button>
+                    <ul class="dropdown-menu">
+                        <li><a href='{% url "add_announcement"  %}'>Add Announcemnet</a></li>
+                        <li><a href='{% url "view_announcement"  %}'>View Announcemnet</a></li>
+                    </ul>
+                </div>
+                <li class='m-4' style='font-size:20px;'>
+                    <a href='{% url "user_list"  %}'>🚫</a>
+                </li>
+                    {% endif %}
                 <li class='m-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
                 <li class='m-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
                 <li class='m-4' style='font-size:20px;'><a href=''>🔔</a></li>
                 <li class='m-4' style='font-size:20px;'><a href='{% url "logout" %}'>⚙️</a></li>
+                
                 {% endblock %}
             </ul>
         {% else %}

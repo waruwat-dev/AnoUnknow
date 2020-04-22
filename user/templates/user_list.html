@@ -1,7 +1,9 @@
 {% extends 'base.html' %}
-
+{% block titlez %}
+<h1>All User List</h1>
+{% endblock %}
 {% block main %}
-    <center> <h2>All User List</h2> </center>
+    <br>
     {% for user in all_user %}
         {% include 'profileComponent.html'%}
     {% endfor %}
