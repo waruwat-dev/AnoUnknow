@@ -1,9 +1,12 @@
 import datetime
+from announcement.serializers import AnnouncementSerializer
+from django.contrib.auth.decorators import permission_required
+from django.http import JsonResponse
 from django.shortcuts import redirect, render
 from user.models import Authen_User
 from .form import AnnouncementForm
 from .models import AnnouncementModel, typeOfAnnouncement
-from django.contrib.auth.decorators import permission_required
+
 
 @permission_required('announcement.view_announcement')
 def viewAnnounce(request):
@@ -71,3 +74,9 @@ def deleteAnnounce(request, announcement_id):
     announcement.save()
     print('Deleted --', announcement.id)
     return redirect('view_announcement')
+
+def getAnnounceJSON(request):
+    now = datetime.datetime.now()
+    announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now)
+    json_obj =  AnnouncementSerializer(announces, many=True)
+    return JsonResponse(json_obj.data, safe=False)

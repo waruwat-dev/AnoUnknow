@@ -1,0 +1,35 @@
+<div class="card m-1">
+    <div class="card-body">
+        <p>ประกาศ</p>
+        <marquee direction="left" class='announce'>
+
+        </marquee>
+    </div>
+</div>
+
+
+<script>
+    fetch('/announcement/getAnnounceJSON/')
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            console.log(data)
+            var element = document.querySelector('.announce');
+            var span = document.createElement("SPAN");
+            var label = document.createElement("LABEL");
+            data.forEach(announce => {
+                if (announce.type == 'Normal') {
+                    span.classList.add('badge', 'badge-pill', 'badge-primary');
+                    span.innerText = announce.type;
+                } else {
+                    span.classList.add('badge', 'badge-pill', 'badge-danger');
+                    span.innerText = announce.type;
+                }
+                label.appendChild(span)
+                label.innerHTML += '  ' + announce.text;
+                element.appendChild(label);
+            });
+        });
+
+</script>

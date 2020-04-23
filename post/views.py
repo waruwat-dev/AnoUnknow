@@ -2,17 +2,18 @@ import json
 import urllib
 from urllib import parse, request
 from urllib.parse import urlencode
-
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
-
 from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
+import datetime
+
+
 
 
 def view_all_posts(request):
