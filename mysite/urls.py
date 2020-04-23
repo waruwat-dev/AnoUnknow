@@ -17,6 +17,7 @@ from django.conf.urls import include
 from django.urls import path
 from django.contrib import admin
 from post import views
+from mysite import views as view
 
 urlpatterns = [
     path('', views.view_all_posts, name='home'),
@@ -26,4 +27,5 @@ urlpatterns = [
     path('post/', include('post.urls')),
     path('comment/', include('comment.urls')),
     path('announcement/', include('announcement.urls')),
+    path('page_not_found/', view.not_found, name='404')
 ]
