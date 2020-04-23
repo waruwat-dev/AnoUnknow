@@ -2,8 +2,8 @@
 {% load static %}
 
 
-{% block titlez %}
-    Chat💬
+{% block leftnav %}
+<h1>💬Chat</h1>
 {% endblock %}
 
 {% block main %}
@@ -24,17 +24,22 @@
     let currentUser = '';
     let currentRecipient = '';
 
-    function updateUserList2() {
+    function chatloadded() {
         let userList = $('#user-list');
         document.getElementById('user-list').removeAttribute("onClick")
         $('.user').click(function () {
-            userList.children('.active').removeClass('active');
-            let selected = event.target;
-            $(selected).addClass('active');
-            selected.style.color = "black"
-            setCurrentRecipient(selected.name, selected.getAttribute('my_id'));
+            setCurrent(event.target)
         });
+        getFocus()
 
+    }
+    function setCurrent(target) {
+        let userList = $('#user-list');
+        userList.children('.active').removeClass('active');
+        let selected = target;
+        $(selected).addClass('active');
+        selected.style.color = "black"
+        setCurrentRecipient(selected.name, selected.getAttribute('my_id'));
     }
 
     async function getConversation(recipient) {
@@ -48,7 +53,7 @@
     }
 
     async function getMessageById(message) {
-        id = JSON.parse(message).message
+        id = message
         let get_message = await fetch(`getmessage/${id}`)
         let data = await get_message.json()
         if (data.chat_id == currentRecipient) {
@@ -89,6 +94,16 @@
         chatButton.prop('disabled', true);
     }
 
+    function getFocus() {
+        const queryString = window.location.search;
+        const urlParams = new URLSearchParams(queryString);
+        const focus = urlParams.get('focus')
+        let user = document.querySelector(`#chat_${focus}`)
+        if (!user) {
+            user = document.getElementsByClassName('user')[0]
+        }
+        setCurrent(user)
+    }
     $(document).ready(function () {
         // updateUserList2();
         disableInput();

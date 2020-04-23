@@ -15,7 +15,6 @@ import datetime
 
 
 
-
 def view_all_posts(request):
     posts = Post.objects.all()
     context = {

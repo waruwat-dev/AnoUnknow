@@ -18,6 +18,23 @@ class Chat(models.Model):
                                      )
     is_active = models.BooleanField(default=True)
 
+    def notify(self):
+        notification = {
+            'type': 'recieve_group_message',
+            'message': {"chat":self.id, "random_user1":self.random_user1.id, "random_user2":self.random_user2.id, "name": self.random_user1.name}
+        }
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            "{}".format(self.random_user1.user.id), notification)
+        async_to_sync(channel_layer.group_send)(
+            "{}".format(self.random_user2.user.id), notification)
+
+    def save(self, *args, **kwargs):
+        new = self.id
+        super(Chat, self).save(*args, **kwargs)
+        if new is None:
+            self.notify()
+
     class Meta:
         ordering = ['-create_date']
 
