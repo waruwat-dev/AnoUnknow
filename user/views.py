@@ -1,12 +1,12 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth.decorators import login_required
 from user.models import User, Authen_User
 from user.forms import SignUpForm
 from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
+from django.http.response import HttpResponse
 
 def signup(request):
     if request.user.is_authenticated:
@@ -16,12 +16,17 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             login(request, user)
-            return redirect('index')
+            return redirect('home')
         else:
-            return render(request, 'signup.html', {'form': form})
-    else:
-        form = SignUpForm()
-        return render(request, 'signup.html', {'form': form})
+            return render(request, 'signin.html', {'form':form})
+        # else:
+        #     form = SignUpForm()
+        #     return render(request, 'signup.html', {'form': form})
+            # return render(request, 'signup.html', {'form': form})
+    # else:
+    #     form = SignUpForm()
+    #     return render(request, 'signin.html', {'form': form})
+    return HttpResponse(status=404)
 
 
 def signin(request):
@@ -41,7 +46,9 @@ def signin(request):
             context['error'] = "username or password is wrong"
             return render(request, 'signin.html', context)
     else:
-        return render(request, 'signin.html')
+        form = SignUpForm()
+        # print(form)
+        return render(request, 'signin.html', {'form': form})
 
 
 def signout(request):
@@ -82,7 +89,7 @@ def main(request):
 def profile(request, id):
     user = User.objects.get(pk=id)
     posts = Post.objects.filter(createBy__user=user)
-    print(posts)
+    # print(posts)
     context={
         'posts': posts,
         'form': PostForm()}
