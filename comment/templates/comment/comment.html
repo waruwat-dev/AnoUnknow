@@ -2,16 +2,14 @@
 
 <div class="card-body">
     <div class="form-group">
-        <input type="text" class="form-control" id="comment_post{{post.id}}" name="text"
-            placeholder="Let's comment the POST!">
-        <script>
-            var input = document.getElementById(`comment_post{{ post.id }}`)
-            input.addEventListener("keyup", function (event) {
-                if (event.keyCode === 13) {
-                    commentCreate({{ post.id }}, `{% url 'addComment' post.id %}`)
-                }
-            });
-        </script>
+        <div class="input-group mb-3">
+            <input type="text" class="form-control" id="comment_post{{post.id}}" name="text"
+                placeholder="Let's comment the POST!">
+            <div class="input-group-append">
+                <button class="btn btn-primary" type="button"
+                    onclick="commentCreate({{post.id}}, `{% url 'addComment' post.id %}`)">ส่ง</button>
+            </div>
+        </div>
     </div>
 </div>
 <!-- </form>  -->
