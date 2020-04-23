@@ -117,7 +117,7 @@ function insertComment(comment) {
 
 function socketOnMessage(e) {
     var data = JSON.parse(e.data).message;
-    // console.log(data)
+    console.log(data)
     if (data.addComment) {
         getComment(data.addComment)
         return
