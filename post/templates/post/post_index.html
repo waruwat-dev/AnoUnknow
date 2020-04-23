@@ -3,10 +3,19 @@
 {% block contents %}
 {% block profile%}
 {% endblock %}
+
+
+
 <div class='container'>
+    {% include 'announcement/announcement_component.html' %}
+    <div class="card-body d-flex justify-content-center">
+        <div class="btn-group" role="group">
+            <button type="button" class="btn btn-secondary px-5">Normol</button>
+            <button type="button" class="btn btn-outline-secondary px-5">All post</button>
+        </div>
+    </div>
 
     {% include "post/createPost.html" %}
-
     {% for post in posts %}
     {% include "post/post_component.html" %}
     {% endfor %}
