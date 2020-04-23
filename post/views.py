@@ -36,15 +36,15 @@ def view_all_posts(request):
     }
     return render(request, template_name='post/post_index.html', context=context)
 
-def view_posts(request):
-    posts = urllib.request.urlopen('http://127.0.0.1:8000/post/api/post_list/')
-    posts = json.loads(posts.read())
-    posts = Post.objects.filter(id__in=list(map(lambda x: x['id'], posts)))
+def view_random_posts(request):
+    # posts = urllib.request.urlopen('http://127.0.0.1:8000/post/api/post_list/')
+    # posts = json.loads(posts.read())
+    # posts = Post.objects.filter(id__in=list(map(lambda x: x['id'], posts)))
     context = {
-        'posts': posts,
+        # 'posts': posts,
         'form': PostForm()
     }
-    return render(request, template_name='post/post_index.html', context=context)
+    return render(request, template_name='post/random_post.html', context=context)
 
 
 def create_post(request):

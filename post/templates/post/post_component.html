@@ -70,39 +70,10 @@
 
             {% endfor %}
         </div>
-
-
-
         {% include "comment/comment.html" %}
     </div>
 </div>
 
 <script>
-    var chatSocket = new WebSocket(
-        'ws://' + window.location.host +
-        '/ws/post/post' + "{{post.id}}" + '/');
-    chatSocket.onmessage = socketOnMessage
-
-
-    chatSocket.onclose = function (e) {
-        console.error('Chat socket closed unexpectedly');
-    };
-
-    function distribute(post_id) {
-        var csrftoken = '{{ csrf_token }}';
-        const formData = new FormData();
-        formData.append('csrfmiddlewaretoken ', csrftoken);
-        fetch(`/post/api/distribute_post/${post_id}`, {
-            method: 'POST',
-            body: formData
-        }).catch(err => alert("Error Message Not Sent"))
-
-        let element = document.getElementById("post_" + post_id)
-        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
-        console.log(element)
-        console.log(emo_distribute)
-        emo_distribute.innerText = "✅"
-        //console.log(element)
-        //console.log(emo_distribute
-    }
+    connectPost("{{post.id}}")
 </script>
