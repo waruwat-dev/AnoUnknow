@@ -20,7 +20,7 @@ from post import views
 from mysite import views as view
 
 urlpatterns = [
-    path('', views.view_all_posts, name='home'),
+    path('', views.view_random_posts, name='home'),
     path('chat/', include('chat.urls')),
     path('user/', include('user.urls')),
     path('admin/', admin.site.urls),

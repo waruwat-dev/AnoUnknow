@@ -15,37 +15,19 @@ import datetime
 
 
 
-
 def view_all_posts(request):
     posts = Post.objects.all()
-    # comments = Comment.objects.order_by('post_id_id').all()
-    # commentz = set()
-    # for i in comments:
-    #     commentz.add(i.post_id_id)
-    # commentz = list(commentz)  # commentz เก็บ post_idที่ไม่ซ้ำ
-    # comment = dict()
-    # for i in comments:
-    #     for j in commentz:
-    #         if i.post_id_id == j:
-    #             comment[j] = i.text
-    #             commentz.remove(j)
-    # print(posts[0].comment_set.all())
     context = {
         'posts': posts,
         'form': PostForm(),
-        # 'comment': comment
     }
     return render(request, template_name='post/post_index.html', context=context)
 
-def view_posts(request):
-    posts = urllib.request.urlopen('http://127.0.0.1:8000/post/api/post_list/')
-    posts = json.loads(posts.read())
-    posts = Post.objects.filter(id__in=list(map(lambda x: x['id'], posts)))
+def view_random_posts(request):
     context = {
-        'posts': posts,
-        'form': PostForm(),
+        'form': PostForm()
     }
-    return render(request, template_name='post/post_index.html', context=context)
+    return render(request, template_name='post/random_post.html', context=context)
 
 
 def create_post(request):
@@ -58,7 +40,6 @@ def create_post(request):
         )
         post.save()
         print('post is saved')
-        # return redirect('view_all_posts')
         return redirect('view_post', pk=post.id)
 
     return render(request, template_name='post/post_index.html', context={'form': form})
@@ -93,8 +74,6 @@ def edit_post(request, pk):
 
     return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})
 
-
-# @api_view(['POST'])
 @csrf_exempt
 def emotionPost(request, pk, type_emotion):
     post = Post.objects.get(pk=pk)

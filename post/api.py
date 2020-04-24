@@ -2,11 +2,11 @@ import random
 from django.http import HttpResponse, JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from post.models import Post
-from post.serializers import PostCreateSerializer
+from post.serializers import PostSerializer
 from .views import message
+from django.shortcuts import redirect, render
 
-
-def post_list(request):
+def get_random_posts(request):
     if request.method == 'GET':
         posts = list(Post.objects.filter(numberOfDistribution__gte=1))
         posts = reduce_distribute(posts)
@@ -16,9 +16,15 @@ def post_list(request):
             posts += allPosts[:5-lenght]
             print('Post by Time')
         random.shuffle(posts)
-        serializer = PostCreateSerializer(set(posts), many=True)
-        print('Get Post', serializer.data)
+        serializer = PostSerializer(set(posts), many=True)
+        # print('Get Post', serializer.data)
         return JsonResponse(serializer.data, safe=False)
+        # return render(request, 'post/list_post_components.html', {"posts":posts})
+
+def get_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    return render(request, 'post/post_component.html', {"post":post})
+
 
 def distribute_post(request, post_id):
     user = request.user

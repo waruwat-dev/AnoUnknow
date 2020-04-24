@@ -47,6 +47,23 @@ async function emotion_comment(comment, type, element) {
 
 // }
 
+function distribute(post_id) {
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken ', csrftoken);
+    fetch(`/post/api/distribute_post/${post_id}`, {
+        method: 'POST',
+        body: formData
+    }).catch(err => alert("Error Message Not Sent"))
+
+    let element = document.getElementById("post_" + post_id)
+    let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+    console.log(element)
+    console.log(emo_distribute)
+    emo_distribute.innerText = "✅"
+    //console.log(element)
+    //console.log(emo_distribute
+}
+
 function commentCreate(post_id, url) {
     var comment = document.getElementById("comment_post" + post_id)
     var text = comment.value
@@ -100,7 +117,7 @@ function insertComment(comment) {
 
 function socketOnMessage(e) {
     var data = JSON.parse(e.data).message;
-    // console.log(data)
+    console.log(data)
     if (data.addComment) {
         getComment(data.addComment)
         return
@@ -132,3 +149,17 @@ function socketOnMessage(e) {
     }
 
 };
+
+
+
+
+
+function connectPost(post_id) {
+    var chatSocket = new WebSocket(
+        'ws://' + window.location.host +
+        '/ws/post/post' + `${post_id}` + '/');
+    chatSocket.onmessage = socketOnMessage
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket closed unexpectedly');
+    };
+}

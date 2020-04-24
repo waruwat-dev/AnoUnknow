@@ -1,0 +1,58 @@
+{% extends 'baseMain.html' %}
+
+{% block contents %}
+{% block profile%}
+{% endblock %}
+<div class='container'>
+
+    {% include "post/createPost.html" %}
+    <div id="random_post_list">
+
+    </div>
+    <script>
+        var allPost = []
+
+        $(document).ready(function () {
+            getRamdomPost()
+        });
+
+        function getRamdomPost() {
+            fetch(`/post/api/get_random_posts/`)
+                .then(res => res.json())
+                .then(function (posts) {
+                    for (let i = 0; i < posts.length; i++) {
+                        let post_id = posts[i].id
+                        let found = false
+                        for (let j = 0; j < allPost.length; j++) {
+                            if (allPost[j] === post_id) {
+                                found = true
+                            }
+                        }
+                        if (!found) {
+                            allPost.push(post_id)
+                            getPost(post_id)
+                            connectPost(post_id)
+                        }
+                    }
+                })
+                .catch(err => alert("Error Message Not Sent"))
+        }
+
+
+        function getPost(post_id) {
+            fetch(`/post/api/get_post/${post_id}`)
+                .then(res => res.text())
+                .then(function (html) {
+                    document.getElementById('random_post_list').innerHTML += html
+                })
+                .catch(err => alert("Error Message Not Sent"))
+        }
+        $(window).scroll(function () {
+            if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
+                getRamdomPost()
+            }
+        });
+    </script>
+</div>
+
+{% endblock contents %}
