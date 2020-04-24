@@ -36,6 +36,12 @@ class SignUpForm(ModelForm):
             self.add_error(None, "Email : '%s' is already use." %email)
         if password != confirm_password:
             self.add_error(None, "Password do not match.")
+    def save(self, commit=True):
+        instance = super(SignUpForm, self).save(commit=False)
+        instance.set_password(self.cleaned_data['password'])
+        if commit:
+            instance.save()
+        return instance
         
 
         

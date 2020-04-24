@@ -1,12 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from user.models import User, Authen_User
 from user.forms import SignUpForm
 from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
 from django.http.response import HttpResponse
+from django.contrib import messages
 
 def signup(request):
     if request.user.is_authenticated:
@@ -43,6 +44,7 @@ def signin(request):
         else:
             context['username'] = username
             print(user)
+            context['form'] = SignUpForm()
             context['error'] = "username or password is wrong"
             return render(request, 'signin.html', context)
     else:
@@ -56,6 +58,27 @@ def signout(request):
         logout(request)
     return redirect('home')
 
+@login_required(login_url='login')
+def changePassword(request):
+    context = {}
+    user = User.objects.get(id=request.user.id)
+    if request.method == 'POST':
+        new_password = request.POST.get('new_password')
+        confirm_password = request.POST.get('confirm_password')
+        
+        if new_password != confirm_password:
+            context['error'] = 'Your new password is incorrect.'
+            return render(request, 'changePassword.html', context)
+        else:
+            messages.success(request, 'Your password was successfully updated!')
+            user.set_password(new_password)
+            user.save()
+            return redirect('home')
+    return render(request, 'changePassword.html')
+
+
+@login_required(login_url='login')
+@permission_required('user.add_banuser', raise_exception=True)
 def user_list(request):
     if request.user.authen_user.admin:
         admin = Authen_User.objects.filter(admin=True)
@@ -66,6 +89,9 @@ def user_list(request):
     else:
         return redirect('home')
 
+
+@login_required(login_url='login')
+@permission_required('user.add_banuser', raise_exception=True)
 def ban_use(request, user_id):
     if request.user.authen_user.admin:
         admin = Authen_User.objects.get(user_id=request.user.id).getAdmin() 
