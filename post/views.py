@@ -59,21 +59,6 @@ def delete_post(request, pk):
     print('Post is deleted')
     return redirect('view_all_posts')
 
-
-def edit_post(request, pk):
-    post = Post.objects.get(pk=pk)
-    form = PostForm(instance=post)
-    print(form)
-    if request.method == 'POST':
-        form = PostForm(request.POST)
-        if form.is_valid():
-            post.text = form.cleaned_data['text']
-            post.save()
-            print('post is saved')
-            return redirect('view_post', pk=pk)
-
-    return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})
-
 @csrf_exempt
 def emotionPost(request, pk, type_emotion):
     post = Post.objects.get(pk=pk)

@@ -1,4 +1,4 @@
-<div class="card-body">
+<div class="card-body" id="post_{{post.id}}">
 
     <div>โพสเมื่อ {{post.time}}
         {% if user.authen_user.admin %}
@@ -25,8 +25,6 @@
                 class="sad">{{post.sad}}</span></button>
     </div>
     </form>
-
-    <!-- <a href="{% url 'view_post' post.id %}" class="btn btn-secondary">👁 View</a> -->
 
     {% if post.distributeUser.all.0.user.id == request.user.id %}
     <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>

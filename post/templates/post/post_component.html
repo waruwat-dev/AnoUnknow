@@ -6,15 +6,15 @@
             {% comment %} Adminเท่านั้นที่จะรู้ว่าใครโพสอะไร {% endcomment %}
             <span style='color:white;'> ({{post.createBy.user}}) </span>
             {% endif %}
-            {% if user != post.createBy.user %}
+            {% if user != post.createBy.user and user.is_authenticated %}
             <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post">
                 {% csrf_token %}
-                <button type="submit">แชท</button>
+                <button class="btn btn-secondary btn-sm" type="submit">แชท</button>
             </form>
             {% endif %}
         </div>
         <h5 class="card-title">{{post.createBy.name}}</h5>
-        <h6 class="card-text">{{post.text}}</h6>
+        <h6 class="card-text" id="text_post_{{post.id}}">{{post.text}}</h6>
         <div class="btn-group mr-2" role="group" aria-label="First group">
             <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 1, this)">👍<span
                     class="like">{{post.like}}</span></button>
@@ -25,26 +25,45 @@
             <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                     class="sad">{{post.sad}}</span></button>
         </div>
-        </form> 
-        <a href="{% url 'view_post' post.id %}" class="btn btn-secondary">👁 View</a>
+        </form>
+
+
+        <button type="button" class="btn btn-secondary" onclick="getDetailPost({{post.id}})" data-toggle="modal"
+            data-target="#viewPost">
+            👁 View
+        </button>
+
+        <!-- Modal -->
+        <div class="modal fade" tabindex="-1" role="dialog" id="viewPost">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                        <div id="viewDetailPost"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         {% if post.distributeUser.all.0.user.id == request.user.id %}
-        <a class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
+        <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
         {% else %}
-        <a onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span> Dis <span class="distribution">{{ post.getNumberOfDis }}</span></a>
+        <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
+            Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
         {% endif %}
-        
+
         {% if request.user.id == post.createBy.user.id %}
-        <a href="{% url 'delete_post' post.id %}" class="btn btn-secondary">🗑 Delete</a>
-        <a href="{% url 'edit_post' post.id %}" class="btn btn-secondary">✏️ Edit</a>
-        {% endif %} 
-        
+        <button href="{% url 'delete_post' post.id %}" class="btn btn-secondary">🗑 Delete</button>
+        <button onclick="edit_post(this, {{post.id}})" class="btn btn-secondary">✏️ Edit</button>
+        {% endif %}
 
 
 
-        <!-- {% comment %} {% include 'comment/comment.html'%}  {% endcomment %} -->
 
-
-        <div class="comment_area">
+        <!-- {% comment %} {% include 'comment/comment.html'%}
+            <div class="comment_area">
             {% for comment in post.getComment %}
             <div>
                 <div class="card m-1" id="comment_{{comment.id}}">
@@ -70,6 +89,9 @@
             {% endfor %}
         </div>
         {% include "comment/comment.html" %}
+        {% endcomment %} -->
+
+
     </div>
 </div>
 
