@@ -35,7 +35,10 @@
                         }
                     }
                 })
-                .catch(err => alert("Error Message Not Sent"))
+                .catch(err => {
+                    alert("Error getRamdomPost")
+                    console.log(err)
+                })
         }
 
 
@@ -45,7 +48,10 @@
                 .then(function (html) {
                     document.getElementById('random_post_list').innerHTML += html
                 })
-                .catch(err => alert("Error Message Not Sent"))
+                .catch(err => {
+                    alert("Error getPost")
+                    console.log(err)
+                })
         }
         $(window).scroll(function () {
             if ($(window).scrollTop() + $(window).height() >= $(document).height()) {
