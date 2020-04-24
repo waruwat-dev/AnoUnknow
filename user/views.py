@@ -78,7 +78,7 @@ def changePassword(request):
 
 
 @login_required(login_url='login')
-@permission_required('user.add_banuser', raise_exception=True)
+@permission_required('user.view_authen_user', raise_exception=True)
 def user_list(request):
     if request.user.authen_user.admin:
         admin = Authen_User.objects.filter(admin=True)
@@ -112,6 +112,7 @@ def main(request):
     return render(request, 'homepage.html')
 
 @login_required(login_url='login')
+@permission_required('user.view_profile', raise_exception=True)
 def profile(request, id):
     user = User.objects.get(pk=id)
     posts = Post.objects.filter(createBy__user=user)

@@ -4,8 +4,9 @@
 {% block profile%}
 {% endblock %}
 <div class='container'>
-
-    {% include "post/createPost.html" %}
+    {% if user.authen_user.admin == False %}
+        {% include "post/createPost.html" %}
+    {% endif %}
     <div id="random_post_list">
 
     </div>

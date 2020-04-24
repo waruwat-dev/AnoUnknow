@@ -69,7 +69,9 @@
             </div>
             {% endfor %}
         </div>
+        {% if perms.comment.add_comment %}
         {% include "comment/comment.html" %}
+        {% endif %}
     </div>
 </div>
 

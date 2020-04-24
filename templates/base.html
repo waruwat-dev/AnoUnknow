@@ -70,9 +70,15 @@
                 <li class='mx-4' style='font-size:20px;'>
                     <a href='{% url "user_list"  %}'>🚫</a>
                 </li>
-                    {% endif %}
+                {% endif %}
                 <li class='mx-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
-                <li class='mx-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
+                {% if perms.user.view_profile %}
+                    <li class='mx-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
+                    
+                {% else %}
+                     <li class='mx-4' style='font-size:20px;'>🦸‍♂️Admin : {{user}}</li>
+                {% endif %}
+                
                 
                 <div class="dropdown">
                 <li class="btn  dropdown-toggle mx-3" type="button" data-toggle="dropdown"
