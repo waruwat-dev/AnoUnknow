@@ -4,6 +4,7 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 # from django.utils.timezone import now
 import random
+from django.contrib.auth.models import Group
 
 
 class Admin(models.Model):
@@ -64,7 +65,12 @@ class Authen_User(models.Model):
             return
         if val == True:
             self.admin = True
+            self.normal_user = False
             Admin.objects.create(user=self.user)
+            my_group = Group.objects.get(name='Admin') 
+            my_group.user_set.add(self.user)
+            my_group = Group.objects.get(name='Special') 
+            my_group.user_set.add(self.user)
             self.save()
         else:
             admin = Admin.objects.get(pk=self.user.id)
@@ -81,6 +87,7 @@ class Authen_User(models.Model):
         #     return
         if val == True:
             self.ban_user = True
+            self.normal_user = False
             BanUser.objects.create(
                 user=self.user, remark=remark, admin=admin)
             self.save()
