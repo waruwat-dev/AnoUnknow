@@ -25,6 +25,9 @@ def get_post(request, post_id):
     post = Post.objects.get(pk=post_id)
     return render(request, 'post/post_component.html', {"post":post})
 
+def get_detail_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    return render(request, 'post/DetailPostComponent.html', {"post":post})
 
 def distribute_post(request, post_id):
     user = request.user

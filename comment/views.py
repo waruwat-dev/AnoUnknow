@@ -17,9 +17,11 @@ def addComment(request, pk):
         post = Post.objects.get(pk=pk)
         serializer = CommentCreateSerializer(data=request.POST)
         if serializer.is_valid():
-            comment = serializer.save(post_id=post)
+            user = request.user
+            comment = serializer.save(post_id=post, commentBy=user.authen_user.randomName())
+            serializer = CommentSerializer(comment)
             message(pk, {"addComment": comment.id})
-            return HttpResponse(status=201)
+            return JsonResponse(serializer.data, status=200)
     return HttpResponse(status=400)
 
 def getComment(request, pk):

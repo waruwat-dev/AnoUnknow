@@ -40,7 +40,7 @@ def create_post(request):
         )
         post.save()
         print('post is saved')
-        return redirect('view_post', pk=post.id)
+        return redirect('view_random_posts')
 
     return render(request, template_name='post/post_index.html', context={'form': form})
 

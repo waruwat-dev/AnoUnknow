@@ -13,6 +13,7 @@ class CommentCreateSerializer(ModelSerializer):
         fields = ['text']
 
 class CommentSerializer(ModelSerializer):
+    commentBy = serializers.CharField(read_only=True, source="commentBy.name")
     class Meta:
         model = Comment
         fields = "__all__"

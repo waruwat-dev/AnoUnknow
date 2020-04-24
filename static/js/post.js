@@ -74,7 +74,7 @@ function commentCreate(post_id, url) {
         method: 'POST',
         body: formData
     })
-        // .then(res => console.log(res))
+        .then(res => console.log(res))
         .catch(err => alert(err))
 }
 
@@ -93,7 +93,7 @@ function insertComment(comment) {
     var html = `
     <div class="card m-1" id="comment_${comment.id}">
         <div class="card-body">
-            <h6>${comment.text}</h6>
+            <h6>(${comment.commentBy})  ${comment.text}</h6>
             <div class="btn-group mr-2" role="group" aria-label="First group">
                 <button type="submit" class="btn btn-secondary"
                     onclick="emotion_comment(${comment.id}, 1, this)">👍<span
@@ -150,7 +150,18 @@ function socketOnMessage(e) {
 
 };
 
-
+function getDetailPost(post_id) {
+    fetch(`/post/api/get_detail_post/${post_id}`)
+        .then(res => res.text())
+        .then(function (html) {
+            console.log(`viewDetailPost ${post_id}`)
+            document.getElementById('viewDetailPost').innerHTML = html
+        })
+        .catch(err => {
+            alert("Error getPost")
+            console.log(err)
+        })
+}
 
 
 
