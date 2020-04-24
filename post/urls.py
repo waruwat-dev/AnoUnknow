@@ -8,6 +8,7 @@ urlpatterns = [
     path('api/get_post/<int:post_id>', api.get_post, name='get_post'),
     path('api/distribute_post/<int:post_id>', api.distribute_post, name='distribute_post'),
     path('view_all_posts/', views.view_all_posts, name='view_all_posts'),
+    path('view_random_posts/', views.view_random_posts, name='view_random_posts'),
     path('view_post/<int:pk>', views.view_post, name='view_post'),
     path('create_post/', views.create_post, name='create_post'),
     path('delete_post/<int:pk>', views.delete_post, name='delete_post'),
