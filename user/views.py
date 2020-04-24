@@ -7,7 +7,6 @@ from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
 from django.http.response import HttpResponse
-from django.contrib import messages
 
 def signup(request):
     if request.user.is_authenticated:
@@ -70,7 +69,6 @@ def changePassword(request):
             context['error'] = 'Your new password is incorrect.'
             return render(request, 'changePassword.html', context)
         else:
-            messages.success(request, 'Your password was successfully updated!')
             user.set_password(new_password)
             user.save()
             return redirect('home')
