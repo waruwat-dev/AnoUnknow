@@ -34,6 +34,7 @@ def getComment(request, pk):
 
 @login_required(login_url='login')
 @permission_required('comment.react_comment', raise_exception=True)
+@csrf_exempt
 def emotionComment(request, pk, type_emotion):
     comment = Comment.objects.get(pk=pk)
     if type_emotion == 1:
