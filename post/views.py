@@ -99,7 +99,6 @@ def emotionPost(request, pk, type_emotion):
     post.save()
     return HttpResponse(status=201)
 
-@login_required(login_url='login')
 def message(post_id, json):
     json["post"] = post_id
     channel_layer = get_channel_layer()

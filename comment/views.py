@@ -56,7 +56,6 @@ def emotionComment(request, pk, type_emotion):
     comment.save()
     return HttpResponse(status=201)
 
-@login_required(login_url='login')
 def message(post_id, json):
 
     channel_layer = get_channel_layer()
