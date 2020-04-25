@@ -2,8 +2,6 @@ var baseUrl = window.location.protocol + "//" + window.location.host
 async function emotion_post(post, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
-    console.log(csrftoken)
-    console.log('********')
     fetch(baseUrl + `/post/emotion/${post}/${type}`, {
         method: 'POST',
         body: formData
@@ -15,8 +13,6 @@ async function emotion_post(post, type, element) {
 async function emotion_comment(comment, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
-    console.log(csrftoken)
-    console.log('********')
     fetch(baseUrl + `/comment/emotion/${comment}/${type}`, {
 
         method: 'POST',
@@ -132,7 +128,6 @@ function insertComment(comment) {
 
 function socketOnMessage(e) {
     var data = JSON.parse(e.data).message;
-    console.log(data)
     if (data.addComment) {
         getComment(data.addComment)
         return
@@ -143,7 +138,6 @@ function socketOnMessage(e) {
         var element = document.getElementById("post_" + data.post)
     }
     let observers = ['distribute', 'like', 'haha', 'angry', 'sad']
-    console.log(data)
     for (let k = 0; k < observers.length; k++) {
         if (data[observers[k]]) {
             let component = element.getElementsByClassName(observers[k])[0]
@@ -163,12 +157,10 @@ function getDetailPost(post_id) {
     fetch(`/post/api/get_detail_post/${post_id}`)
         .then(res => res.text())
         .then(function (html) {
-            console.log(`viewDetailPost ${post_id}`)
             document.getElementById('viewDetailPost').innerHTML = html
         })
         .catch(err => {
             alert("Error getPost")
-            console.log(err)
         })
 }
 
