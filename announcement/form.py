@@ -10,13 +10,22 @@ class AnnouncementForm(ModelForm):
             'text': forms.Textarea(attrs= {
                 'class': 'form-control card-text',
                 'rows': '3'
+            }),
+            'start_time': forms.DateTimeInput(attrs= {
+                'type': 'datetime-local'
+            }),
+            'end_time': forms.DateTimeInput(attrs= {
+                'type': 'datetime-local'
             })
         }
+    
+    def clean_start_time(self):
+        data = self.cleaned_data['start_time']
+        return data
 
     def clean(self):
         cleaned_data = super().clean()
         start_time = cleaned_data.get("start_time")
         end_time = cleaned_data.get("end_time")
-
         if start_time > end_time:
             raise forms.ValidationError('End date should be greater than Start date')

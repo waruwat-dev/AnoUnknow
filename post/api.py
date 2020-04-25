@@ -1,10 +1,11 @@
+import json
 import random
 from django.http import HttpResponse, JsonResponse
+from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from post.models import Post
 from post.serializers import PostSerializer
 from .views import message
-from django.shortcuts import redirect, render
 
 def get_random_posts(request):
     if request.method == 'GET':
@@ -25,6 +26,9 @@ def get_post(request, post_id):
     post = Post.objects.get(pk=post_id)
     return render(request, 'post/post_component.html', {"post":post})
 
+def get_detail_post(request, post_id):
+    post = Post.objects.get(pk=post_id)
+    return render(request, 'post/DetailPostComponent.html', {"post":post})
 
 def distribute_post(request, post_id):
     user = request.user
@@ -46,3 +50,22 @@ def reduce_distribute(posts):
         post.numberOfDistribution -= 1
         post.save()
     return posts[:5]
+
+def edit_post(request):
+    data = dict(request.POST)
+    print(data['id'][0])
+    post = Post.objects.get(pk=int(data['id'][0]))
+    post.text = data['text'][0]
+    post.save()
+    return HttpResponse(200)
+    # form = PostForm(instance=post)
+    # print(form)
+    # if request.method == 'POST':
+    #     form = PostForm(request.POST)
+    #     if form.is_valid():
+    #         post.text = form.cleaned_data['text']
+    #         post.save()
+    #         print('post is saved')
+    #         return redirect('view_post', pk=pk)
+
+    # return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})

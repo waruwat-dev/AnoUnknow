@@ -1,0 +1,79 @@
+<div class="card-body" id="post_{{post.id}}">
+
+    <div>โพสเมื่อ {{post.time}}
+        {% if user.authen_user.admin %}
+        {% comment %} Adminเท่านั้นที่จะรู้ว่าใครโพสอะไร {% endcomment %}
+        <span style='color:white;'> ({{post.createBy.user}}) </span>
+        {% endif %}
+        {% if user != post.createBy.user and user.is_authenticated %}
+        <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post">
+            {% csrf_token %}
+            <button class="btn btn-secondary btn-sm" type="submit">แชท</button>
+        </form>
+        {% endif %}
+    </div>
+    <h5 class="card-title">{{post.createBy.name}}</h5>
+    <h6 class="card-text">{{post.text}}</h6>
+    <div class="btn-group mr-2" role="group" aria-label="First group">
+        <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 1, this)">👍<span
+                class="like">{{post.like}}</span></button>
+        <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 2, this)">😂<span
+                class="haha">{{post.haha}}</span></button>
+        <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 3, this)">😠<span
+                class="angry">{{post.angry}}</span></button>
+        <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
+                class="sad">{{post.sad}}</span></button>
+    </div>
+    </form>
+
+    {% if post.distributeUser.all.0.user.id == request.user.id %}
+    <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+    {% else %}
+    <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
+        Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+    {% endif %}
+
+    {% if request.user.id == post.createBy.user.id %}
+    <div class="btn-group mr-2" role="group" aria-label="Second group">
+    <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
+    <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
+    </div>
+    {% endif %}
+
+
+
+
+    <!-- {% comment %} {% include 'comment/comment.html'%}  {% endcomment %} -->
+
+
+    <div class="comment_area mt-3">
+        {% for comment in post.getComment %}
+        <div>
+            <div class="card m-1" id="comment_{{comment.id}}">
+                <div class="card-body">
+                    <h6>({{ comment.commentBy.name }})  {{comment.text}}</h6>
+                    <div class="btn-group mr-2" role="group" aria-label="First group">
+                        <button type="submit" class="btn btn-secondary"
+                            onclick="emotion_comment({{comment.id}}, 1, this)">👍<span
+                                class="like">{{comment.like}}</span></button>
+                        <button type="submit" class="btn btn-secondary"
+                            onclick="emotion_comment({{comment.id}}, 2, this)">😂<span
+                                class="haha">{{comment.haha}}</span></button>
+                        <button type="submit" class="btn btn-secondary"
+                            onclick="emotion_comment({{comment.id}}, 3, this)">😠<span
+                                class="angry">{{comment.angry}}</span></button>
+                        <button type="submit" class="btn btn-secondary"
+                            onclick="emotion_comment({{comment.id}}, 4, this)">😭<span
+                                class="sad">{{comment.sad}}</span></button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% include "comment/comment.html" %}
+</div>
+
+<script>
+    connectPost("{{post.id}}")
+</script>
