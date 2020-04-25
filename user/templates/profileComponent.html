@@ -4,8 +4,13 @@
         <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
         <div class="media-body">
             <div class='row'>
-                <div class='col'>Username : {{user}} </div>
+            {% if user.authen_user.ban_user == False %}
+                <div class='col'><h3>Username : {{user}} </h3></div>
+            {% else %}
+                <div class='col'><h3>Username : <span style='color:red;'>{{user.user}}</span> </h3></div>
+            {% endif %}
             </div>
+            {% if user.authen_user.ban_user == False %}
             <form action="{% url "ban" user.id %}" method="POST">
                     {% csrf_token %}
                 <div class="form-group">
@@ -14,7 +19,11 @@
                     <button type="submit" class="btn btn-danger">Ban</button> 
                     </div>
                 </form>
-            
+            {% else %}
+                {% comment %} <div class="form-group"> {% endcomment %}
+                <h3> <b>   หมายเหตุ : </b><span style='color:red;'>{{user.remark}}</span></h3>
+                {% comment %} </div> {% endcomment %}
+            {% endif %}
             
         </div>
     </div>
