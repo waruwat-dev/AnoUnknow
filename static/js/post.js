@@ -5,9 +5,9 @@ async function emotion_post(post, type, element) {
     console.log(csrftoken)
     console.log('********')
     fetch(baseUrl + `/post/emotion/${post}/${type}`, {
-            method: 'POST',
-            body: formData
-        })
+        method: 'POST',
+        body: formData
+    })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -19,9 +19,9 @@ async function emotion_comment(comment, type, element) {
     console.log('********')
     fetch(baseUrl + `/comment/emotion/${comment}/${type}`, {
 
-            method: 'POST',
-            body: formData
-        })
+        method: 'POST',
+        body: formData
+    })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -63,15 +63,17 @@ function distribute(post_id) {
     fetch(`/post/api/distribute_post/${post_id}`, {
         method: 'POST',
         body: formData
-    }).catch(err => alert("Error Message Not Sent"))
+    }).then(function () {
+        let element = document.getElementById("post_" + post_id)
+        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+        emo_distribute.innerText = "✅"
+        let modal = document.getElementsByClassName('modal-body')[0]
+        emo_distribute = modal.getElementsByClassName("emo_distribute")[0]
+        emo_distribute.innerText = "✅"
+    })
+        .catch(err => alert("Error Message Not Sent"))
 
-    let element = document.getElementById("post_" + post_id)
-    let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
-    console.log(element)
-    console.log(emo_distribute)
-    emo_distribute.innerText = "✅"
-        //console.log(element)
-        //console.log(emo_distribute
+
 }
 
 function commentCreate(post_id, url) {
@@ -121,7 +123,10 @@ function insertComment(comment) {
         </div>
     </div>`
     div.innerHTML = html
-    commentArea.appendChild(div)
+    if (commentArea) {
+        commentArea.appendChild(div)
+    }
+
 }
 
 
@@ -137,22 +142,19 @@ function socketOnMessage(e) {
     } else {
         var element = document.getElementById("post_" + data.post)
     }
-    if (data.distribute) {
-        var distribution = element.getElementsByClassName("distribution")[0]
-        distribution.innerText = data.distribute
-    }
-    if (data.like) {
-        var like = element.getElementsByClassName("like")[0]
-        like.innerText = data.like
-    } else if (data.haha) {
-        var haha = element.getElementsByClassName("haha")[0]
-        haha.innerText = data.haha
-    } else if (data.angry) {
-        var angry = element.getElementsByClassName("angry")[0]
-        angry.innerText = data.angry
-    } else if (data.sad) {
-        var sad = element.getElementsByClassName("sad")[0]
-        sad.innerText = data.sad
+    let observers = ['distribute', 'like', 'haha', 'angry', 'sad']
+    console.log(data)
+    for (let k = 0; k < observers.length; k++) {
+        if (data[observers[k]]) {
+            let component = element.getElementsByClassName(observers[k])[0]
+            component.innerText = data[observers[k]]
+            if (!data.comment) {
+                let modal = document.getElementsByClassName('modal-body')[0]
+                component = modal.getElementsByClassName(observers[k])[0]
+                component.innerText = data[observers[k]]
+            }
+
+        }
     }
 
 };
@@ -205,7 +207,7 @@ function updatePost(event, post_id) {
         })
 
         .catch(err => alert(err))
-    
+
     //input = document.createElement('INPUT')
     // input.setAttribute('class', 'form-control mb-2')
     // input.type = 'text'
@@ -222,7 +224,7 @@ function connectPost(post_id) {
         'ws://' + window.location.host +
         '/ws/post/post' + `${post_id}` + '/');
     chatSocket.onmessage = socketOnMessage
-    chatSocket.onclose = function(e) {
+    chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
 }

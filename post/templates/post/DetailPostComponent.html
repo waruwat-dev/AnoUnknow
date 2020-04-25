@@ -1,4 +1,4 @@
-<div class="card-body" id="post_{{post.id}}">
+<div class="card-body">
 
     <div>โพสเมื่อ {{post.time}}
         {% if user.authen_user.admin %}
@@ -24,19 +24,19 @@
         <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                 class="sad">{{post.sad}}</span></button>
     </div>
-    </form>
+    <!-- </form> -->
 
     {% if post.distributeUser.all.0.user.id == request.user.id %}
-    <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+    <button class="btn btn-secondary">✅ Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
     {% else %}
     <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
-        Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+        Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
     {% endif %}
 
     {% if request.user.id == post.createBy.user.id %}
     <div class="btn-group mr-2" role="group" aria-label="Second group">
-    <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
-    <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
+        <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
     </div>
     {% endif %}
 
@@ -51,7 +51,13 @@
         <div>
             <div class="card m-1" id="comment_{{comment.id}}">
                 <div class="card-body">
-                    <h6>({{ comment.commentBy.name }})  {{comment.text}}</h6>
+                    <h6>({{ comment.commentBy.name }}) {{comment.text}}</h6>
+                    {% if user != comment.commentBy.user and user.is_authenticated %}
+                    <form action="{% url 'create_chat' randomuser=comment.commentBy.id %}" method="post">
+                        {% csrf_token %}
+                        <button class="btn btn-light btn-sm" type="submit">💬 Start Chat</button>
+                    </form>
+                    {% endif %}
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                         <button type="submit" class="btn btn-secondary"
                             onclick="emotion_comment({{comment.id}}, 1, this)">👍<span

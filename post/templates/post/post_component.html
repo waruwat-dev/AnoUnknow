@@ -48,16 +48,16 @@
         </div>
 
         {% if post.distributeUser.all.0.user.id == request.user.id %}
-        <button class="btn btn-dark">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+        <button class="btn btn-dark">✅ Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
         {% else %}
         <button onclick="distribute({{post.id}})" class="btn btn-dark"><span class='emo_distribute'>🔃</span>
-            Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+            Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
         {% endif %}
 
         {% if request.user.id == post.createBy.user.id %}
         <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
-        <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
+            <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
+            <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
         </div>
         {% endif %}
 
@@ -97,7 +97,7 @@
         {% endcomment %} -->
 
 
-        
+
     </div>
 </div>
 
