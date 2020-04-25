@@ -13,5 +13,6 @@ urlpatterns = [
     path('view_random_posts/', views.view_random_posts, name='view_random_posts'),
     path('create_post/', views.create_post, name='create_post'),
     path('delete_post/<int:pk>', views.delete_post, name='delete_post'),
-    path('emotion/<int:pk>/<int:type_emotion>', views.emotionPost, name='emotion_post')
+    path('emotion/<int:pk>/<int:type_emotion>', views.emotionPost, name='emotion_post'),
+    path('view_hashtag/<word>', views.view_hashtag, name='view_hashtag')
 ]

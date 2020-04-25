@@ -18,10 +18,6 @@ class AnnouncementForm(ModelForm):
                 'type': 'datetime-local'
             })
         }
-    
-    def clean_start_time(self):
-        data = self.cleaned_data['start_time']
-        return data
 
     def clean(self):
         cleaned_data = super().clean()

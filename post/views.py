@@ -1,18 +1,21 @@
 import json
 import urllib
+from datetime import datetime, timedelta
 from urllib import parse, request
 from urllib.parse import urlencode
+
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.decorators import api_view
+import re
 from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
-from datetime import datetime
-from django.contrib.auth.decorators import permission_required, login_required
+
 
 @login_required(login_url='login')
 @permission_required('post.view_all_post', raise_exception=True)
@@ -26,11 +29,30 @@ def view_all_posts(request):
 
 
 def view_random_posts(request):
-    getHashtag()
     context = {
-        'form': PostForm()
+        'form': PostForm(),
+        'hashtags': getHashtag()
     }
     return render(request, template_name='post/random_post.html', context=context)
+
+def view_hashtag(request, word):
+    if request.method == 'POST':
+        word = request.POST.get('word')
+        print(word)
+        posts = Post.objects.filter(text__icontains=word)
+    else:
+        posts = Post.objects.filter(text__icontains=word)
+        all_post = list()
+        for post in posts:
+            if re.search(r"#[\wก-๙]*", post.text):
+                all_post.append(post) 
+        posts = all_post
+
+    context = {
+        'hashtags': getHashtag(),
+        'posts': posts
+    }
+    return render(request, template_name='post/hashtag.html', context=context)
 
 @login_required(login_url='login')
 @permission_required('post.add_post', raise_exception=True)
@@ -93,6 +115,19 @@ def message(post_id, json):
 
 def getHashtag():
     now = datetime.now()
-    #[\wก-๙]*
-    print(now)
-    return HttpResponse(200)
+    time = now - timedelta(hours=24) 
+    hashtags = list()
+    stemp = now
+
+    while time > (now - timedelta(weeks=4)) and len(set(hashtags)) < 5:
+        posts = Post.objects.filter(time__gte=time, time__lt=stemp)
+        for i in posts:
+            hashtags +=re.findall(r"#[\wก-๙]*", i.text)
+        time -= timedelta(hours=24) 
+        stemp -= timedelta(hours=24)
+    
+    top = dict()
+    for hashtag in set(hashtags):
+        top[hashtag] = hashtags.count(hashtag)
+    top = sorted(top.items(), key=lambda x: x[1], reverse=True)
+    return top[:5]

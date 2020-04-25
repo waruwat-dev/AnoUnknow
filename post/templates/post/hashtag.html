@@ -1,0 +1,15 @@
+{% extends 'baseMain.html' %}
+
+{% block contents %}
+{% block profile%}
+{% endblock %}
+
+
+
+<div class='container'>
+    {% for post in posts %}
+    {% include "post/post_component.html" %}
+    {% endfor %}
+</div>
+
+{% endblock contents %}
