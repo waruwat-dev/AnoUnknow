@@ -8,9 +8,14 @@ from channels.layers import get_channel_layer
 from django.http import HttpResponse, JsonResponse
 from .serializers import CommentCreateSerializer, CommentSerializer
 from rest_framework.decorators import api_view
-
+from django.contrib.auth.decorators import login_required, permission_required
 
 # @api_view(['POST'])
+
+
+
+@login_required(login_url='login')
+@permission_required('comment.add_comment', raise_exception=True)
 @csrf_exempt
 def addComment(request, pk):
     if request.method == 'POST':
@@ -28,7 +33,8 @@ def getComment(request, pk):
     serializer = CommentSerializer(comment)
     return JsonResponse(serializer.data, status=200)
 
-
+@login_required(login_url='login')
+@permission_required('comment.react_comment', raise_exception=True)
 @csrf_exempt
 def emotionComment(request, pk, type_emotion):
     comment = Comment.objects.get(pk=pk)
@@ -51,7 +57,6 @@ def emotionComment(request, pk, type_emotion):
                 "sad": comment.sad, "comment": comment.id})
     comment.save()
     return HttpResponse(status=201)
-
 
 def message(post_id, json):
 

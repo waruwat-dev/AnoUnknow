@@ -12,9 +12,10 @@ from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
 import datetime
+from django.contrib.auth.decorators import permission_required, login_required
 
-
-
+@login_required(login_url='login')
+@permission_required('post.view_all_post', raise_exception=True)
 def view_all_posts(request):
     posts = Post.objects.all()
     context = {
@@ -23,13 +24,15 @@ def view_all_posts(request):
     }
     return render(request, template_name='post/post_index.html', context=context)
 
+
 def view_random_posts(request):
     context = {
         'form': PostForm()
     }
     return render(request, template_name='post/random_post.html', context=context)
 
-
+@login_required(login_url='login')
+@permission_required('post.add_post', raise_exception=True)
 def create_post(request):
     user = request.user
     form = PostForm(request.POST)
@@ -44,7 +47,7 @@ def create_post(request):
 
     return render(request, template_name='post/post_index.html', context={'form': form})
 
-
+@login_required(login_url='login')
 def view_post(request, pk):
     post = Post.objects.get(pk=pk)
     context = {
@@ -52,7 +55,8 @@ def view_post(request, pk):
     }
     return render(request, template_name='post/view_post.html', context=context)
 
-
+@login_required(login_url='login')
+@permission_required('post.delete_post', raise_exception=True)
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete()
@@ -76,7 +80,6 @@ def emotionPost(request, pk, type_emotion):
         message(post.id, {"sad": post.sad})
     post.save()
     return HttpResponse(status=201)
-
 
 def message(post_id, json):
     json["post"] = post_id

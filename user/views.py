@@ -1,13 +1,12 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
 from user.models import User, Authen_User
-from user.forms import SignUpForm
+from user.forms import SignUpForm, ChangePassForm
 from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
 from django.http.response import HttpResponse
-from django.contrib import messages
 
 def signup(request):
     if request.user.is_authenticated:
@@ -20,13 +19,6 @@ def signup(request):
             return redirect('home')
         else:
             return render(request, 'signin.html', {'form':form})
-        # else:
-        #     form = SignUpForm()
-        #     return render(request, 'signup.html', {'form': form})
-            # return render(request, 'signup.html', {'form': form})
-    # else:
-    #     form = SignUpForm()
-    #     return render(request, 'signin.html', {'form': form})
     return HttpResponse(status=404)
 
 
@@ -60,25 +52,21 @@ def signout(request):
 
 @login_required(login_url='login')
 def changePassword(request):
-    context = {}
-    user = User.objects.get(id=request.user.id)
     if request.method == 'POST':
-        new_password = request.POST.get('new_password')
-        confirm_password = request.POST.get('confirm_password')
-        
-        if new_password != confirm_password:
-            context['error'] = 'Your new password is incorrect.'
-            return render(request, 'changePassword.html', context)
-        else:
-            messages.success(request, 'Your password was successfully updated!')
-            user.set_password(new_password)
-            user.save()
+        form = ChangePassForm(request.POST)
+        if form.is_valid():
+            new_pass = form.cleaned_data.get('newpassword')
+            request.user.set_password(new_pass)
+            request.user.save()
+            update_session_auth_hash(request, request.user) #save new password and keep user stay logged in
             return redirect('home')
-    return render(request, 'changePassword.html')
+    else:
+        form = ChangePassForm()
+    return render(request, 'changePassword.html', {'form':form})
 
 
 @login_required(login_url='login')
-@permission_required('user.add_banuser', raise_exception=True)
+@permission_required('user.view_authen_user', raise_exception=True)
 def user_list(request):
     if request.user.authen_user.admin:
         admin = Authen_User.objects.filter(admin=True)
@@ -112,6 +100,7 @@ def main(request):
     return render(request, 'homepage.html')
 
 @login_required(login_url='login')
+@permission_required('user.view_profile', raise_exception=True)
 def profile(request, id):
     user = User.objects.get(pk=id)
     posts = Post.objects.filter(createBy__user=user)
