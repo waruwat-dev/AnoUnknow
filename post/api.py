@@ -5,9 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
 from post.models import Post
 from post.serializers import PostSerializer
-
 from .views import message
-
 
 def get_random_posts(request):
     if request.method == 'GET':
