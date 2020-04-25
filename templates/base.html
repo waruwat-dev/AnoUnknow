@@ -67,16 +67,21 @@
                         <li><a href='{% url "view_announcement"  %}'>View Announcemnet</a></li>
                     </ul>
                 </div>
-                <li class='mx-4' style='font-size:20px;'>
-                    <a href='{% url "user_list"  %}'>🚫</a>
+                <div class="dropdown">
+                <li class="btn  dropdown-toggle mx-3" type="button" data-toggle="dropdown"
+                style='font-size:20px;padding:0px;'>🚫
+                <span class="caret"></span></li>
+                    <ul class="dropdown-menu">
+                        <li> <a href='{% url "user_list"  %}'>All User List</a></li>
+                        <li><a href='{% url "ban_list" %}'>Ban User List</a></li>
+                    </ul>
+                </div>
                 </li>
+                </div>
                 {% endif %}
                 <li class='mx-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
                 {% if perms.user.view_profile %}
                     <li class='mx-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
-                    
-                {% else %}
-                     <li class='mx-4' style='font-size:20px;'>🦸‍♂️Admin : {{user}}</li>
                 {% endif %}
                 
                 

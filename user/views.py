@@ -1,7 +1,7 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
-from user.models import User, Authen_User
+from user.models import User, Authen_User, BanUser
 from user.forms import SignUpForm, ChangePassForm
 from post.form import PostForm
 from post.models import Post
@@ -77,6 +77,16 @@ def user_list(request):
     else:
         return redirect('home')
 
+@login_required(login_url='login')
+@permission_required('user.view_authen_user', raise_exception=True)
+def ban_list(request):
+    if request.user.authen_user.admin:
+        admin = Authen_User.objects.filter(admin=True)
+        all_ban_user = BanUser.objects.all()
+        context={'all_ban_user':all_ban_user}
+        return render(request, 'ban_list.html',context=context)
+    else:
+        return redirect('home')
 
 @login_required(login_url='login')
 @permission_required('user.add_banuser', raise_exception=True)

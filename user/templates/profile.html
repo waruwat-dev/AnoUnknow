@@ -1,7 +1,16 @@
 {% extends 'baseMain.html' %}
 
 
-    {% block titlez %}User : {{user}}{% endblock %}
+    {% block titlez %}
+        {% if user.authen_user.admin %}
+            Admin :
+        {% elif perms.post.view_all_post %}
+            Special User : 
+        {% else %}
+            User :
+        {% endif %}
+            {{user}}
+    {% endblock %}
 
 
 {% block contents %}

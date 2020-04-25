@@ -1,10 +1,10 @@
 {% extends 'base.html' %}
 {% block titlez %}
-All User List
+Ban User List
 {% endblock %}
 {% block main %}
     <br>
-    {% for user in all_user %}
+    {% for user in all_ban_user %}
         {% include 'profileComponent.html'%}
     {% endfor %}
 {% endblock %}
