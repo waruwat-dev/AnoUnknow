@@ -179,6 +179,7 @@ function edit_post(event, post_id) {
 function updatePost(event, post_id) {
     input = document.getElementById(`text_post_${post_id}`);
     const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', csrftoken);
     formData.append('text', input.value);
     formData.append('id', post_id);
     fetch('/post/api/edit_post/', {

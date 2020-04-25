@@ -53,7 +53,6 @@ def reduce_distribute(posts):
         post.save()
     return posts[:5]
 
-@csrf_exempt
 def edit_post(request):
     data = dict(request.POST)
     print(data['id'][0])

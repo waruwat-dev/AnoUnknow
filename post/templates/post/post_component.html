@@ -9,26 +9,26 @@
             {% if user != post.createBy.user and user.is_authenticated %}
             <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post">
                 {% csrf_token %}
-                <button class="btn btn-secondary btn-sm" type="submit">แชท</button>
+                <button class="btn btn-light btn-sm" type="submit">💬 Start Chat</button>
             </form>
             {% endif %}
         </div>
         <h5 class="card-title">{{post.createBy.name}}</h5>
         <h6 class="card-text" id="text_post_{{post.id}}">{{post.text}}</h6>
         <div class="btn-group mr-2" role="group" aria-label="First group">
-            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 1, this)">👍<span
+            <button type="submit" class="btn btn-dark" onclick="emotion_post({{post.id}}, 1, this)">👍<span
                     class="like">{{post.like}}</span></button>
-            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 2, this)">😂<span
+            <button type="submit" class="btn btn-dark" onclick="emotion_post({{post.id}}, 2, this)">😂<span
                     class="haha">{{post.haha}}</span></button>
-            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 3, this)">😠<span
+            <button type="submit" class="btn btn-dark" onclick="emotion_post({{post.id}}, 3, this)">😠<span
                     class="angry">{{post.angry}}</span></button>
-            <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
+            <button type="submit" class="btn btn-dark" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                     class="sad">{{post.sad}}</span></button>
         </div>
         </form>
 
 
-        <button type="button" class="btn btn-secondary" onclick="getDetailPost({{post.id}})" data-toggle="modal"
+        <button type="button" class="btn btn-dark" onclick="getDetailPost({{post.id}})" data-toggle="modal"
             data-target="#viewPost">
             👁 View
         </button>
@@ -48,15 +48,17 @@
         </div>
 
         {% if post.distributeUser.all.0.user.id == request.user.id %}
-        <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+        <button class="btn btn-dark">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
         {% else %}
-        <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
+        <button onclick="distribute({{post.id}})" class="btn btn-dark"><span class='emo_distribute'>🔃</span>
             Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
         {% endif %}
 
         {% if request.user.id == post.createBy.user.id %}
-        <button href="{% url 'delete_post' post.id %}" class="btn btn-secondary">🗑 Delete</button>
-        <button onclick="edit_post(this, {{post.id}})" class="btn btn-secondary">✏️ Edit</button>
+        <div class="btn-group mr-2" role="group" aria-label="Second group">
+        <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
+        </div>
         {% endif %}
 
 
