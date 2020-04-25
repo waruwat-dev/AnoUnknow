@@ -11,9 +11,11 @@ from rest_framework.decorators import api_view
 from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
-from datetime import datetime 
+from datetime import datetime
+from django.contrib.auth.decorators import permission_required, login_required
 
-
+@login_required(login_url='login')
+@permission_required('post.view_all_post', raise_exception=True)
 def view_all_posts(request):
     posts = Post.objects.all()
     context = {
@@ -22,6 +24,7 @@ def view_all_posts(request):
     }
     return render(request, template_name='post/post_index.html', context=context)
 
+
 def view_random_posts(request):
     getHashtag()
     context = {
@@ -29,7 +32,8 @@ def view_random_posts(request):
     }
     return render(request, template_name='post/random_post.html', context=context)
 
-
+@login_required(login_url='login')
+@permission_required('post.add_post', raise_exception=True)
 def create_post(request):
     user = request.user
     form = PostForm(request.POST)
@@ -44,7 +48,7 @@ def create_post(request):
 
     return render(request, template_name='post/post_index.html', context={'form': form})
 
-
+@login_required(login_url='login')
 def view_post(request, pk):
     post = Post.objects.get(pk=pk)
     context = {
@@ -52,13 +56,32 @@ def view_post(request, pk):
     }
     return render(request, template_name='post/view_post.html', context=context)
 
-
+@login_required(login_url='login')
+@permission_required('post.delete_post', raise_exception=True)
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete()
     print('Post is deleted')
     return redirect('view_all_posts')
 
+@login_required(login_url='login')
+@permission_required('post.change_post', raise_exception=True)
+def edit_post(request, pk):
+    post = Post.objects.get(pk=pk)
+    form = PostForm(instance=post)
+    print(form)
+    if request.method == 'POST':
+        form = PostForm(request.POST)
+        if form.is_valid():
+            post.text = form.cleaned_data['text']
+            post.save()
+            print('post is saved')
+            return redirect('view_post', pk=pk)
+
+    return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})
+
+@login_required(login_url='login')
+@permission_required('post.react_post', raise_exception=True)
 @csrf_exempt
 def emotionPost(request, pk, type_emotion):
     post = Post.objects.get(pk=pk)
@@ -76,7 +99,6 @@ def emotionPost(request, pk, type_emotion):
         message(post.id, {"sad": post.sad})
     post.save()
     return HttpResponse(status=201)
-
 
 def message(post_id, json):
     json["post"] = post_id

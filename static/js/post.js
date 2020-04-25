@@ -1,17 +1,27 @@
-
 var baseUrl = window.location.protocol + "//" + window.location.host
 async function emotion_post(post, type, element) {
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken ', csrftoken);
+    console.log(csrftoken)
+    console.log('********')
     fetch(baseUrl + `/post/emotion/${post}/${type}`, {
-        method: 'POST'
-    })
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
 
 async function emotion_comment(comment, type, element) {
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken ', csrftoken);
+    console.log(csrftoken)
+    console.log('********')
     fetch(baseUrl + `/comment/emotion/${comment}/${type}`, {
-        method: 'POST'
-    })
+
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -60,8 +70,8 @@ function distribute(post_id) {
     console.log(element)
     console.log(emo_distribute)
     emo_distribute.innerText = "✅"
-    //console.log(element)
-    //console.log(emo_distribute
+        //console.log(element)
+        //console.log(emo_distribute
 }
 
 function commentCreate(post_id, url) {
@@ -71,10 +81,10 @@ function commentCreate(post_id, url) {
     const formData = new FormData();
     formData.append('text', text);
     fetch(url, {
-        method: 'POST',
-        body: formData
-    })
-        .then(res => console.log(res))
+            method: 'POST',
+            body: formData
+        })
+        // .then(res => console.log(res))
         .catch(err => alert(err))
 }
 
@@ -134,16 +144,13 @@ function socketOnMessage(e) {
     if (data.like) {
         var like = element.getElementsByClassName("like")[0]
         like.innerText = data.like
-    }
-    else if (data.haha) {
+    } else if (data.haha) {
         var haha = element.getElementsByClassName("haha")[0]
         haha.innerText = data.haha
-    }
-    else if (data.angry) {
+    } else if (data.angry) {
         var angry = element.getElementsByClassName("angry")[0]
         angry.innerText = data.angry
-    }
-    else if (data.sad) {
+    } else if (data.sad) {
         var sad = element.getElementsByClassName("sad")[0]
         sad.innerText = data.sad
     }
@@ -215,7 +222,7 @@ function connectPost(post_id) {
         'ws://' + window.location.host +
         '/ws/post/post' + `${post_id}` + '/');
     chatSocket.onmessage = socketOnMessage
-    chatSocket.onclose = function (e) {
+    chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
 }

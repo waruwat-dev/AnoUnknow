@@ -7,7 +7,9 @@
     {% include 'announcement/announcement_component.html' %}
 
     {% if user.is_authenticated %}
-    {% include "post/createPost.html" %}
+        {% if user.authen_user.admin == False %}
+            {% include "post/createPost.html" %}
+        {% endif %}
     {% endif %}
     <div id="random_post_list">
     <div class="card-body d-flex justify-content-center">

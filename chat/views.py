@@ -1,4 +1,4 @@
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 from user.models import RandomUser
@@ -12,11 +12,13 @@ from channels.layers import get_channel_layer
 
 
 @login_required
+@permission_required('chat.view_chat', raise_exception=True)
 def index(request):
     return render(request, 'chat/chat_friend.html', {})
 
 
 @login_required
+@permission_required('chat.add_chat', raise_exception=True)
 def createChat(request, randomuser):
     user = request.user
     randomuser1 = user.authen_user.randomName()
@@ -49,6 +51,7 @@ def getFriend(request):
 
 
 @login_required
+@permission_required('chat.view_message', raise_exception=True)
 def messageView(request, chat_id):
     chat = Chat.objects.get(pk=chat_id)
     if chat.random_user1.user == request.user:

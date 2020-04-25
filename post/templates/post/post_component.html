@@ -70,6 +70,7 @@
             <div>
                 <div class="card m-1" id="comment_{{comment.id}}">
                     <div class="card-body">
+                        <h5>Antza</h5>
                         <h6>{{comment.text}}</h6>
                         <div class="btn-group mr-2" role="group" aria-label="First group">
                             <button type="submit" class="btn btn-secondary"
@@ -90,6 +91,7 @@
             </div>
             {% endfor %}
         </div>
+        {% if perms.comment.add_comment %}
         {% include "comment/comment.html" %}
         {% endcomment %} -->
 

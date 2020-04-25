@@ -67,10 +67,12 @@ class Authen_User(models.Model):
             self.admin = True
             self.normal_user = False
             Admin.objects.create(user=self.user)
+            my_group = Group.objects.get(name='NormalUser') 
+            my_group.user_set.remove(self.user)
             my_group = Group.objects.get(name='Admin') 
             my_group.user_set.add(self.user)
-            my_group = Group.objects.get(name='Special') 
-            my_group.user_set.add(self.user)
+            # my_group = Group.objects.get(name='Special') 
+            # my_group.user_set.add(self.user)
             self.save()
         else:
             admin = Admin.objects.get(pk=self.user.id)
@@ -101,6 +103,8 @@ def create_user(sender, instance, created, **kwargs):  # create_normal_user
     if created:
         Authen_User.objects.create(user=instance)
         NormalUser.objects.create(user=instance)
+        my_group = Group.objects.get(name='NormalUser') 
+        my_group.user_set.add(instance)
 
 
 @receiver(post_save, sender=User)

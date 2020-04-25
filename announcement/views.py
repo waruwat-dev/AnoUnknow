@@ -3,6 +3,8 @@ from datetime import datetime as dtm
 from django.forms.models import model_to_dict
 
 from django.contrib.auth.decorators import permission_required
+from announcement.serializers import AnnouncementSerializer
+from django.contrib.auth.decorators import permission_required, login_required
 from django.http import JsonResponse
 from django.shortcuts import redirect, render
 
@@ -12,8 +14,8 @@ from user.models import Authen_User
 from .form import AnnouncementForm
 from .models import AnnouncementModel, typeOfAnnouncement
 
-
-@permission_required('announcement.view_announcement')
+@login_required(login_url='login')
+@permission_required('announcement.view_announcement', raise_exception=True)
 def viewAnnounce(request):
     announcements = AnnouncementModel.objects.filter(is_active=True)
     typeDict = {t[0]: t[1] for t in typeOfAnnouncement}
@@ -25,7 +27,8 @@ def viewAnnounce(request):
 
     return render(request, 'announcement/view_announcement.html', context=context)
 
-@permission_required('announcement.add_announcement')
+@login_required(login_url='login')
+@permission_required('announcement.add_announcement', raise_exception=True)
 def announce(request):
     admin = request.user.authen_user.getAdmin()
 
@@ -50,7 +53,8 @@ def announce(request):
 
     return render(request, 'announcement/add_announcement.html', context=context)
 
-@permission_required('announcement.change_announcement')
+@login_required(login_url='login')
+@permission_required('announcement.change_announcement', raise_exception=True)
 def editAnnounce(request, announcement_id):
     admin = request.user.authen_user.getAdmin()
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
@@ -76,8 +80,8 @@ def editAnnounce(request, announcement_id):
 
     return render(request, 'announcement/add_announcement.html', context=context)
     
-
-@permission_required('announcement.delete_announcement')
+@login_required(login_url='login')
+@permission_required('announcement.delete_announcement', raise_exception=True)
 def deleteAnnounce(request, announcement_id):
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
     announcement.is_active = False
