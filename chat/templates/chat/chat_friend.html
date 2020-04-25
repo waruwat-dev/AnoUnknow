@@ -23,7 +23,7 @@ Chat💬
 <script>
     let currentUser = '';
     let currentRecipient = '';
-
+    let currentRecipientName = '';
     function blockFriend() {
         const formData = new FormData();
         formData.append('csrfmiddlewaretoken', csrftoken);
@@ -58,6 +58,7 @@ Chat💬
         } else {
             enableInput();
         }
+        currentRecipientName = selected.innerText
         setCurrentRecipient(selected.name, selected.getAttribute('my_id'));
     }
 

@@ -1,4 +1,5 @@
 var baseUrl = window.location.protocol + "//" + window.location.host
+let currentPost = ""
 async function emotion_post(post, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
@@ -96,8 +97,12 @@ function getComment(comment_id) {
 
 function insertComment(comment) {
     var div = document.createElement('div');
-    var post = document.getElementById("post_" + comment.post_id)
-    var commentArea = post.getElementsByClassName('comment_area')[0]
+
+    if (comment.post_id != currentPost) {
+        return
+    }
+    let modal = document.getElementsByClassName('modal-body')[0]
+    var commentArea = modal.getElementsByClassName('comment_area')[0]
     var html = `
     <div class="card m-1" id="comment_${comment.id}">
         <div class="card-body">
@@ -119,9 +124,9 @@ function insertComment(comment) {
         </div>
     </div>`
     div.innerHTML = html
-    if (commentArea) {
-        commentArea.appendChild(div)
-    }
+
+    commentArea.appendChild(div)
+
 
 }
 
@@ -158,6 +163,7 @@ function getDetailPost(post_id) {
         .then(res => res.text())
         .then(function (html) {
             document.getElementById('viewDetailPost').innerHTML = html
+            currentPost = post_id
         })
         .catch(err => {
             alert("Error getPost")
