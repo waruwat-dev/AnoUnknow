@@ -32,18 +32,18 @@
 
 <body style='background-color:lightgoldenrodyellow;'>
     
-    <nav class="navbar navbar-expand-lg navbar-dark"  style="background-color:#ffe15d;">
+    <nav class="navbar navbar-expand navbar-dark mb-4"  style="background-color:#ffe15d;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         
         {% comment %} ด้านซ้าย {% endcomment %}
         <ul class="nav navbar-nav">
-                    <div class='container' style='background-color:pink;'>
+                    <div class='container'>
                         <div class="media">
-                            <img src="{% static 'img/logo.png' %}" width="100px" class="mr-3">
+                            <img src="{% static 'img/logo.png' %}" width="50px" class="mr-3">
                             <div class="media-body">
                                 <div class='row'>
                                     <div class='col-12'>
-                                        <h1 style='margin-top:1.5rem;'>
+                                        <h1>
                                         {% block titlez %}{% endblock %}
                                         </h1>
                                     </div>
@@ -60,22 +60,36 @@
                 {% block rightnav %}
                 {% if user.authen_user.admin %}
                 <div class="dropdown">
-                <button class="btn  dropdown-toggle" type="button" data-toggle="dropdown" style='margin-top: 20px;'>📢
-                    <span class="caret"></span></button>
+                <li class="btn  dropdown-toggle" type="button" data-toggle="dropdown" style='font-size:20px;padding:0px;'>📢
+                    <span class="caret"></span></li>
                     <ul class="dropdown-menu">
                         <li><a href='{% url "add_announcement"  %}'>Add Announcemnet</a></li>
                         <li><a href='{% url "view_announcement"  %}'>View Announcemnet</a></li>
                     </ul>
                 </div>
-                <li class='m-4' style='font-size:20px;'>
+                <li class='mx-4' style='font-size:20px;'>
                     <a href='{% url "user_list"  %}'>🚫</a>
                 </li>
-                    {% endif %}
-                <li class='m-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
-                <li class='m-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
-                <li class='m-4' style='font-size:20px;'><a href=''>🔔</a></li>
-                <li class='m-4' style='font-size:20px;'><a href='{% url "logout" %}'>⚙️</a></li>
+                {% endif %}
+                <li class='mx-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
+                {% if perms.user.view_profile %}
+                    <li class='mx-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
+                    
+                {% else %}
+                     <li class='mx-4' style='font-size:20px;'>🦸‍♂️Admin : {{user}}</li>
+                {% endif %}
                 
+                
+                <div class="dropdown">
+                <li class="btn  dropdown-toggle mx-3" type="button" data-toggle="dropdown"
+                style='font-size:20px;padding:0px;'>⚙️
+                    <span class="caret"></span></li>
+                    <ul class="dropdown-menu">
+                        <li><a href='{% url "changePassword"  %}'>Change Password</a></li>
+                        <li><a href='{% url "logout" %}'>Logout</a></li>
+                    </ul>
+                </div>
+                <li class='mx-4' style='font-size:20px;'><a href=''>🔔</a></li>
                 {% endblock %}
             </ul>
         {% else %}
