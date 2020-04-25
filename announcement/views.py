@@ -19,7 +19,6 @@ def viewAnnounce(request):
     typeDict = {t[0]: t[1] for t in typeOfAnnouncement}
     for announcement in announcements:
         announcement.type = typeDict[announcement.type]
-    print(announcements)
     context = {
         'announcements': announcements
     }
@@ -32,7 +31,6 @@ def announce(request):
 
     if request.method == 'POST':
         data = localToDate(dict(request.POST), ['start_time', 'end_time'])
-        print(request.POST, 'Format')
         form = AnnouncementForm(data)
         if form.is_valid():
             object_announce = form.save()
@@ -90,7 +88,6 @@ def deleteAnnounce(request, announcement_id):
 def getAnnounceJSON(request):
     now = datetime.datetime.now()
     announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now)
-    print(announces, now)
     json_obj =  AnnouncementSerializer(announces, many=True)
     return JsonResponse(json_obj.data, safe=False)
 

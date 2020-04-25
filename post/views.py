@@ -11,8 +11,7 @@ from rest_framework.decorators import api_view
 from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
-import datetime
-
+from datetime import datetime 
 
 
 def view_all_posts(request):
@@ -24,6 +23,7 @@ def view_all_posts(request):
     return render(request, template_name='post/post_index.html', context=context)
 
 def view_random_posts(request):
+    getHashtag()
     context = {
         'form': PostForm()
     }
@@ -86,3 +86,9 @@ def message(post_id, json):
             'type': 'chat_message',
             'message': json
         })
+
+def getHashtag():
+    now = datetime.now()
+    #[\wก-๙]*
+    print(now-20, '------------------------------>')
+    return HttpResponse(200)
