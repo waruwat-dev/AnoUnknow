@@ -21,7 +21,7 @@
             <input id="chat-input" type="text" class="form-control input" placeholder="Type your message here ..."
                 maxlength="500">
             <span class="input-group-btn">
-                <button class="btn btn-info btn" id="btn-send">
+                <button class="btn btn-primary" id="btn-send">
                     Send</button>
             </span>
         </div>
@@ -38,7 +38,7 @@
         if (message.randomUser1 == currentUser) position = 'right';
         const messageItem = `
             <li class="message ${position}">
-                <div class="avatar">${message.randomUser1}</div>
+                <div class="avatar">ไม่ทราบ</div>
                     <div class="text_wrapper">
                         <div class="text">${message.text}<br>
                             <span class="small">${date}</span>
@@ -46,11 +46,6 @@
                 </div>
             </li>`;
         $(messageItem).appendTo('#messages');
-        // if (message.user != currentUser) sent_notify(message.user, message.body)
-        // messageList.animate({
-        // scrollTop : messageList.prop.position().top
-        // scrollTop: messageList.prop('scrollHeight')
-        // });
     }
 
 </script>
