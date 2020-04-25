@@ -6,6 +6,8 @@ from django.views.decorators.csrf import csrf_exempt
 from post.models import Post
 from post.serializers import PostSerializer
 from .views import message
+import re
+from datetime import datetime, timedelta
 
 def get_random_posts(request):
     if request.method == 'GET':
@@ -58,14 +60,22 @@ def edit_post(request):
     post.text = data['text'][0]
     post.save()
     return HttpResponse(200)
-    # form = PostForm(instance=post)
-    # print(form)
-    # if request.method == 'POST':
-    #     form = PostForm(request.POST)
-    #     if form.is_valid():
-    #         post.text = form.cleaned_data['text']
-    #         post.save()
-    #         print('post is saved')
-    #         return redirect('view_post', pk=pk)
 
-    # return render(request, template_name='post/edit_post.html', context={'form': form, 'pk': pk})
+def getHashtag(request):
+    now = datetime.now()
+    time = now - timedelta(hours=24) 
+    hashtags = list()
+    stemp = now
+
+    while time > (now - timedelta(weeks=4)) and len(set(hashtags)) < 5:
+        posts = Post.objects.filter(time__gte=time, time__lt=stemp)
+        for i in posts:
+            hashtags += re.findall(r"#[\wก-๙]*", i.text)
+        time -= timedelta(hours=24) 
+        stemp -= timedelta(hours=24)
+    
+    top = dict()
+    for hashtag in set(hashtags):
+        top[hashtag] = hashtags.count(hashtag)
+    top = sorted(top.items(), key=lambda x: x[1], reverse=True)[:5]
+    return JsonResponse(top, safe=False)

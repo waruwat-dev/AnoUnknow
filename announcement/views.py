@@ -14,7 +14,7 @@ from .form import AnnouncementForm
 from .models import AnnouncementModel, typeOfAnnouncement
 
 @login_required(login_url='login')
-@permission_required('announcement.view_announcementmodel', raise_exception=True)
+@permission_required('announcement.view_announcement', raise_exception=True)
 def viewAnnounce(request):
     announcements = AnnouncementModel.objects.filter(is_active=True)
     typeDict = {t[0]: t[1] for t in typeOfAnnouncement}
@@ -27,7 +27,7 @@ def viewAnnounce(request):
     return render(request, 'announcement/view_announcement.html', context=context)
 
 @login_required(login_url='login')
-@permission_required('announcement.add_announcementmodel', raise_exception=True)
+@permission_required('announcement.add_announcement', raise_exception=True)
 def announce(request):
     admin = request.user.authen_user.getAdmin()
 
@@ -53,7 +53,7 @@ def announce(request):
     return render(request, 'announcement/add_announcement.html', context=context)
 
 @login_required(login_url='login')
-@permission_required('announcement.change_announcementmodel', raise_exception=True)
+@permission_required('announcement.change_announcement', raise_exception=True)
 def editAnnounce(request, announcement_id):
     admin = request.user.authen_user.getAdmin()
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
@@ -80,7 +80,7 @@ def editAnnounce(request, announcement_id):
     return render(request, 'announcement/add_announcement.html', context=context)
     
 @login_required(login_url='login')
-@permission_required('announcement.delete_announcementmodel', raise_exception=True)
+@permission_required('announcement.delete_announcement', raise_exception=True)
 def deleteAnnounce(request, announcement_id):
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
     announcement.is_active = False
