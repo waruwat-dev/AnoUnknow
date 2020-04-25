@@ -32,23 +32,32 @@
 
 <body style='background-color:lightgoldenrodyellow;'>
     
-    <nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#ffe15d;">
+    <nav class="navbar navbar-expand navbar-dark mb-4"  style="background-color:#ffe15d;">
         <div class="collapse navbar-collapse" id="navbarTogglerDemo01">
         
         {% comment %} ด้านซ้าย {% endcomment %}
         <ul class="nav navbar-nav">
-                {% block leftnav %}
-                {% endblock %}
+                    <div class='container'>
+                        <div class="media">
+                            <img src="{% static 'img/logo.png' %}" width="50px" class="mr-3">
+                            <div class="media-body">
+                                <div class='row'>
+                                    <div class='col-12'>
+                                        <h1>
+                                        {% block titlez %}{% endblock %}
+                                        </h1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
         </ul>
         </div>
-        
     </nav>
     
     {% block main %}
     {% endblock main%}
 
-
-    {% include 'notify.html' %}
 
 </body>
 
