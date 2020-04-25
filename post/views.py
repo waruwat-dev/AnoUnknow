@@ -90,5 +90,5 @@ def message(post_id, json):
 def getHashtag():
     now = datetime.now()
     #[\wก-๙]*
-    print(now-20, '------------------------------>')
+    print(now)
     return HttpResponse(200)
