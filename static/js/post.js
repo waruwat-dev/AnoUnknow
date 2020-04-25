@@ -81,10 +81,10 @@ function commentCreate(post_id, url) {
     const formData = new FormData();
     formData.append('text', text);
     fetch(url, {
-            method: 'POST',
-            body: formData
-        })
-        // .then(res => console.log(res))
+        method: 'POST',
+        body: formData
+    })
+        .then(res => console.log(res))
         .catch(err => alert(err))
 }
 
@@ -103,7 +103,7 @@ function insertComment(comment) {
     var html = `
     <div class="card m-1" id="comment_${comment.id}">
         <div class="card-body">
-            <h6>${comment.text}</h6>
+            <h6>(${comment.commentBy})  ${comment.text}</h6>
             <div class="btn-group mr-2" role="group" aria-label="First group">
                 <button type="submit" class="btn btn-secondary"
                     onclick="emotion_comment(${comment.id}, 1, this)">👍<span
@@ -157,8 +157,64 @@ function socketOnMessage(e) {
 
 };
 
+function getDetailPost(post_id) {
+    fetch(`/post/api/get_detail_post/${post_id}`)
+        .then(res => res.text())
+        .then(function (html) {
+            console.log(`viewDetailPost ${post_id}`)
+            document.getElementById('viewDetailPost').innerHTML = html
+        })
+        .catch(err => {
+            alert("Error getPost")
+            console.log(err)
+        })
+}
 
+function edit_post(event, post_id) {
+    text = document.getElementById(`text_post_${post_id}`);
+    input = document.createElement('textarea')
+    input.setAttribute('class', `form-control mb-2`)
+    input.setAttribute('id', `text_post_${post_id}`)
+    input.type = 'text'
+    input.value = text.innerText
+    text.parentNode.insertBefore(input, text.nextSibling);
+    text.remove()
+    event.innerText = '☑️ Finish'
+    event.setAttribute('onclick', `updatePost(this, ${post_id})`)
+}
 
+function updatePost(event, post_id) {
+    input = document.getElementById(`text_post_${post_id}`);
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken', csrftoken);
+    formData.append('text', input.value);
+    formData.append('id', post_id);
+    fetch('/post/api/edit_post/', {
+        method: 'POST',
+        body: formData
+    })
+        .then(res => {
+            text = document.createElement('H6')
+            text.setAttribute('class', 'card-text')
+            text.setAttribute('id', `text_post_${post_id}`)
+            text.innerText = input.value
+            input.parentNode.insertBefore(text, input.nextSibling);
+            input.remove()
+            event.innerText = '✏️ Edit'
+            event.setAttribute('onclick', `edit_post(this, ${post_id})`)
+        })
+
+        .catch(err => alert(err))
+    
+    //input = document.createElement('INPUT')
+    // input.setAttribute('class', 'form-control mb-2')
+    // input.type = 'text'
+    // input.value = text.innerText
+    // text.parentNode.insertBefore(input, text.nextSibling);
+    // text.remove()
+    // event.innerText = '☑️ Finish'
+    // event.setAttribute('onclick', `updatePost(${post_id})`)
+}
 
 
 function connectPost(post_id) {

@@ -22,7 +22,8 @@ def addComment(request, pk):
         post = Post.objects.get(pk=pk)
         serializer = CommentCreateSerializer(data=request.POST)
         if serializer.is_valid():
-            comment = serializer.save(post_id=post)
+            user = request.user
+            comment = serializer.save(post_id=post, commentBy=user.authen_user.randomName())
             message(pk, {"addComment": comment.id})
             return HttpResponse(status=201)
     return HttpResponse(status=400)
