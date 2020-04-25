@@ -74,9 +74,6 @@
                 <li class='mx-4' style='font-size:20px;'><a href='{% url "home" %}'>🏠</a></li>
                 {% if perms.user.view_profile %}
                     <li class='mx-4' style='font-size:20px;'><a href='{% url "profile" user.id %}'>👤</a></li>
-                    
-                {% else %}
-                     <li class='mx-4' style='font-size:20px;'>🦸‍♂️Admin : {{user}}</li>
                 {% endif %}
                 
                 
