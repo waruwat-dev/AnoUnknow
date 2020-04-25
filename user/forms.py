@@ -2,7 +2,16 @@ from django import forms
 from django.contrib.auth.models import User
 from django.forms import ModelForm, widgets
 # from django.contrib.auth.forms import UserCreationForm
-
+class ChangePassForm(forms.Form):
+    newpassword=forms.CharField(widget=forms.PasswordInput())
+    confirm=forms.CharField(widget=forms.PasswordInput()) 
+    def clean(self):
+        cleaned_data = super().clean()
+        print(cleaned_data)
+        newpassword = cleaned_data.get("newpassword")
+        confirm = cleaned_data.get("confirm")
+        if newpassword != confirm:
+            self.add_error(None, "New Password do not match.")
 
 class SignUpForm(ModelForm):
     password=forms.CharField(widget=forms.PasswordInput())
