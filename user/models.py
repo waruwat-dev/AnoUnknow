@@ -65,10 +65,9 @@ class Authen_User(models.Model):
             return
         if val == True:
             self.admin = True
-            self.normal_user = False
             Admin.objects.create(user=self.user)
-            my_group = Group.objects.get(name='NormalUser') 
-            my_group.user_set.remove(self.user)
+            # my_group = Group.objects.get(name='NormalUser') 
+            # my_group.user_set.remove(self.user)
             my_group = Group.objects.get(name='Admin') 
             my_group.user_set.add(self.user)
             # my_group = Group.objects.get(name='Special') 
@@ -89,7 +88,6 @@ class Authen_User(models.Model):
         #     return
         if val == True:
             self.ban_user = True
-            self.normal_user = False
             BanUser.objects.create(
                 user=self.user, remark=remark, admin=admin)
             self.save()
