@@ -2,10 +2,10 @@ from django.db import models
 from user.models import Admin
 
 # Create your models here.
-typeOfAnnouncement = {
+typeOfAnnouncement = (
     ('01', 'Normal'),
     ('02', 'Warning')
-}
+)
 
 class AnnouncementModel(models.Model):
     text =models.TextField()
