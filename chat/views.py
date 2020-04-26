@@ -41,10 +41,10 @@ def getFriend(request):
         Q(random_user1__user=request.user) | Q(random_user2__user=request.user))
     user1 = chats.filter(random_user1__user=request.user)
     user1 = map(lambda x: {
-                "id": x.id, "name": x.random_user2.name, "my_id": x.random_user1.id}, user1)
+                "id": x.id, "name": x.random_user2.name, "my_id": x.random_user1.id, "active":x.is_active}, user1)
     user2 = chats.filter(random_user2__user=request.user)
     user2 = map(lambda x: {
-                "id": x.id, "name": x.random_user1.name, "my_id": x.random_user2.id}, user2)
+                "id": x.id, "name": x.random_user1.name, "my_id": x.random_user2.id, "active":x.is_active}, user2)
     friends = list(user1) + list(user2)
 
     return JsonResponse(data=friends, status=200, safe=False)
@@ -63,6 +63,8 @@ def messageView(request, chat_id):
         serializer = MessageSerializer(messages, many=True)
         return JsonResponse(data=serializer.data, status=200, safe=False)
     elif request.method == "POST":
+        if not chat.is_active:
+            return HttpResponse(status=400)
         serializer = MessageSendSerializer(data=request.POST)
         if serializer.is_valid():
             chat = serializer.save(randomUser1=user, chat_id=chat)
@@ -74,3 +76,10 @@ def getMessage(request, message_id):
     message = Message.objects.get(pk=message_id)
     serializer = MessageSerializer(message)
     return JsonResponse(data=serializer.data, status=200, safe=False)
+
+@login_required
+def blockChat(request, chatId):
+    chat = Chat.objects.get(pk=chatId)
+    chat.is_active = False
+    chat.save()
+    return HttpResponse(status=200)
