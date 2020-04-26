@@ -35,7 +35,7 @@
 
     {% if request.user.id == post.createBy.user.id %}
     <div class="btn-group mr-2" role="group" aria-label="Second group">
-        <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
+        <!-- <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button> -->
         <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
     </div>
     {% endif %}
