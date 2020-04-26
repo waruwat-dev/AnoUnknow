@@ -1,24 +1,26 @@
-<div class="card-body" id="post_{{post.id}}">
+<div class="card-body">
 
     <div>โพสเมื่อ {{post.time}}
         {% if user.authen_user.admin %}
         {% comment %} Adminเท่านั้นที่จะรู้ว่าใครโพสอะไร {% endcomment %}
-       <span style='color:red;'>[ ผู้โพสต์ : {{post.createBy.user}} ]</span>
+        <span style='color:red;'>[ ผู้โพสต์ : {{post.createBy.user}} ]</span>
         {% endif %}
     </div>
     <h5 class="card-title">{{post.createBy.name}}
-    {% if user != post.createBy.user %}
-        <button type="submit" class='btn btn-primary btn-sm' onclick="score({{post.createBy.user.id}})" style='float:right;'>ให้คะแนน <i class="fa fa-check-circle-o"></i></button>
-    {% endif %}
-    
-    {% if user != post.createBy.user and user.is_authenticated %}
-        <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post" style='float:right;margin-right:10px;'>
+        {% if user != post.createBy.user %}
+        <button type="submit" class='btn btn-primary btn-sm' onclick="score({{post.createBy.user.id}})"
+            style='float:right;'>ให้คะแนน <i class="fa fa-check-circle-o"></i></button>
+        {% endif %}
+
+        {% if user != post.createBy.user and user.is_authenticated %}
+        <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post"
+            style='float:right;margin-right:10px;'>
             {% csrf_token %}
             <button class="btn btn-success btn-sm" type="submit">💬 Start Chat</button>
         </form>
         {% endif %}
-    
-                    </h5>
+
+    </h5>
     <h6 class="card-text">{{post.text}} </h6>
     <div class="btn-group mr-2" role="group" aria-label="First group">
         <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 1, this)">👍<span
@@ -30,19 +32,19 @@
         <button type="submit" class="btn btn-secondary" onclick="emotion_post({{post.id}}, 4, this)">😭<span
                 class="sad">{{post.sad}}</span></button>
     </div>
-    </form>
+    <!-- </form> -->
 
     {% if post.distributeUser.all.0.user.id == request.user.id %}
-    <button class="btn btn-secondary">✅ Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+    <button class="btn btn-secondary">✅ Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
     {% else %}
     <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
-        Dis <span class="distribution">{{ post.getNumberOfDis }}</span></button>
+        Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
     {% endif %}
 
     {% if request.user.id == post.createBy.user.id %}
     <div class="btn-group mr-2" role="group" aria-label="Second group">
-    <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button>
-    <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
+        <!-- <button onclick="edit_post(this, {{post.id}})" class="btn btn-info">✏️ Edit</button> -->
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-info">🗑 Delete</a>
     </div>
     {% endif %}
 
@@ -58,11 +60,15 @@
             <div class="card m-1" id="comment_{{comment.id}}">
                 <div class="card-body">
                     <h6>({{ comment.commentBy.name }}) : {{comment.text}}
-                {% if comment.commentBy.user != user %}
-                    <span style='float:right;'><button type="submit" onclick="score({{comment.commentBy.user.id}})"
-                    class='btn btn-primary'>ให้คะแนน <i class="fa fa-check-circle-o"></i></button>
-                    </span>
-                {% endif %}
+                        {% if comment.commentBy.user != user and user.is_authenticated %}
+                        <form action="{% url 'create_chat' randomuser=comment.commentBy.id %}" method="post">
+                            {% csrf_token %}
+                            <button class="btn btn-light btn-sm" type="submit">💬 Start Chat</button>
+                        </form>
+                        <span style='float:right;'><button type="submit" onclick="score({{comment.commentBy.user.id}})"
+                                class='btn btn-primary'>ให้คะแนน <i class="fa fa-check-circle-o"></i></button>
+                        </span>
+                        {% endif %}
                     </h6>
                     <div class="btn-group mr-2" role="group" aria-label="First group">
                         <button type="submit" class="btn btn-secondary"

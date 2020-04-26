@@ -23,6 +23,20 @@ Chat💬
 <script>
     let currentUser = '';
     let currentRecipient = '';
+    let currentRecipientName = '';
+    function blockFriend() {
+        const formData = new FormData();
+        formData.append('csrfmiddlewaretoken', csrftoken);
+        fetch(`block/${currentRecipient}`, {
+            method: 'POST',
+            body: formData
+        })
+            .then(res => {
+                disableInput();
+            })
+            .catch(err => alert("Error block friend"))
+        alert("Blocked")
+    }
 
     function chatloadded() {
         let userList = $('#user-list');
@@ -39,6 +53,12 @@ Chat💬
         let selected = target;
         $(selected).addClass('active');
         selected.style.color = "black"
+        if (selected.getAttribute('active') == 'false') {
+            disableInput()
+        } else {
+            enableInput();
+        }
+        currentRecipientName = selected.innerText
         setCurrentRecipient(selected.name, selected.getAttribute('my_id'));
     }
 
@@ -79,7 +99,6 @@ Chat💬
         currentRecipient = username;
         currentUser = my_id
         getConversation(currentRecipient);
-        enableInput();
     }
 
 
