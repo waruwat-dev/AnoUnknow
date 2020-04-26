@@ -29,19 +29,19 @@
 
 
         <button type="button" class="btn btn-secondary" onclick="getDetailPost({{post.id}})" data-toggle="modal"
-            data-target="#viewPost_{{post.id}}">
+            data-target="#viewPost">
             👁 View
         </button>
 
         <!-- Modal -->
-        <div class="modal fade" tabindex="-1" role="dialog" id="viewPost_{{post.id}}">
+        <div class="modal fade" tabindex="-1" role="dialog" id="viewPost">
             <div class="modal-dialog modal-lg" role="document">
                 <div class="modal-content">
                     <div class="modal-body">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                             <span aria-hidden="true">&times;</span>
                         </button>
-                        <div id="viewDetailPost_{{post.id}}"></div>
+                        <div id="viewDetailPost"></div>
                     </div>
                 </div>
             </div>
