@@ -20,7 +20,7 @@ async function emotion_comment(comment, type, element) {
         body: formData
     })
         // .then(res => console.log(res))
-        .catch(err => alert(err))
+        .catch(err => console.log(err))
 }
 
 
@@ -64,12 +64,12 @@ function distribute(post_id) {
         let element = document.getElementById("post_" + post_id)
         let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
         emo_distribute.innerText = "✅"
-        let modal = document.getElementsByClassName('modal-body')[0]
-        emo_distribute = modal.getElementsByClassName("emo_distribute")[0]
-        emo_distribute.innerText = "✅"
-    })
-        .catch(err => alert("Error Message Not Sent"))
 
+    })
+        .catch(err => console.log(err))
+    let modal = document.getElementsByClassName('modal-body')[0]
+    emo_distribute = modal.getElementsByClassName("emo_distribute")[0]
+    emo_distribute.innerText = "✅"
 
 }
 
@@ -80,9 +80,9 @@ function commentCreate(post_id, url) {
     const formData = new FormData();
     formData.append('text', text);
     fetch(url, {
-            method: 'POST',
-            body: formData
-        })
+        method: 'POST',
+        body: formData
+    })
         .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -91,7 +91,7 @@ function getComment(comment_id) {
     fetch('/comment/getcomment/' + comment_id)
         .then(res => res.json())
         .then(data => insertComment(data))
-        .catch(err => alert(err))
+        .catch(err => console.log(err))
 
 }
 
@@ -161,12 +161,12 @@ function socketOnMessage(e) {
 function getDetailPost(post_id) {
     fetch(`/post/api/get_detail_post/${post_id}`)
         .then(res => res.text())
-        .then(function(html) {
+        .then(function (html) {
             document.getElementById('viewDetailPost').innerHTML = html
             currentPost = post_id
         })
         .catch(err => {
-            alert("Error getPost")
+            console.log("Error getPost")
         })
 }
 
@@ -190,9 +190,9 @@ function updatePost(event, post_id) {
     formData.append('text', input.value);
     formData.append('id', post_id);
     fetch('/post/api/edit_post/', {
-            method: 'POST',
-            body: formData
-        })
+        method: 'POST',
+        body: formData
+    })
         .then(res => {
             text = document.createElement('H6')
             text.setAttribute('class', 'card-text')
@@ -204,7 +204,7 @@ function updatePost(event, post_id) {
             event.setAttribute('onclick', `edit_post(this, ${post_id})`)
         })
 
-    .catch(err => alert(err))
+        .catch(err => console.log(err))
 
     //input = document.createElement('INPUT')
     // input.setAttribute('class', 'form-control mb-2')
@@ -233,8 +233,8 @@ function score(user_id) {
     console.log(csrftoken)
     console.log('Score เข้านะจ๊ะ')
     fetch(`/user/score/${user_id}/`, {
-            method: 'POST',
-            body: formData
-        })
-        .catch(err => alert(err))
+        method: 'POST',
+        body: formData
+    })
+        .catch(err => console.log(err))
 }
