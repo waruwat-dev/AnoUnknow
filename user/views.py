@@ -1,13 +1,13 @@
 from django.shortcuts import render, HttpResponseRedirect, redirect, get_object_or_404
 from django.contrib.auth import authenticate, login, logout, update_session_auth_hash
 from django.contrib.auth.decorators import login_required, permission_required
-from user.models import User, Authen_User, BanUser
+from user.models import User, Authen_User, BanUser, NormalUser
 from user.forms import SignUpForm, ChangePassForm
 from post.form import PostForm
 from post.models import Post
 from comment.models import Comment
 from django.http.response import HttpResponse
-
+from django.contrib.auth.models import Group
 def signup(request):
     if request.user.is_authenticated:
         return HttpResponseRedirect('/')
@@ -119,3 +119,15 @@ def profile(request, id):
         'posts': posts,
         'form': PostForm()}
     return render(request, 'profile.html',context=context)
+
+def score(request, user_id):
+    norm = NormalUser.objects.get(pk=user_id)
+    user = User.objects.get(pk=user_id)
+    print(norm.user, '(score : ', norm.score, ')')
+    norm.score += 1
+    norm.save()
+    # ให้ 20 ไว้ก่อนอิอิ
+    if norm.score >= 20 and norm.user.has_perm('post.view_all_post') == False:
+        my_group = Group.objects.get(name='Special') 
+        my_group.user_set.add(user)
+    return HttpResponse(status=201)
