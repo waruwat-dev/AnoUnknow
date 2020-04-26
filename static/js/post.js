@@ -1,12 +1,13 @@
 var baseUrl = window.location.protocol + "//" + window.location.host
-let currentPost = ""
 async function emotion_post(post, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
+    console.log(csrftoken)
+    console.log('********')
     fetch(baseUrl + `/post/emotion/${post}/${type}`, {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -14,11 +15,13 @@ async function emotion_post(post, type, element) {
 async function emotion_comment(comment, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
+    console.log(csrftoken)
+    console.log('********')
     fetch(baseUrl + `/comment/emotion/${comment}/${type}`, {
 
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -60,17 +63,15 @@ function distribute(post_id) {
     fetch(`/post/api/distribute_post/${post_id}`, {
         method: 'POST',
         body: formData
-    }).then(function () {
-        let element = document.getElementById("post_" + post_id)
-        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
-        emo_distribute.innerText = "✅"
-        let modal = document.getElementsByClassName('modal-body')[0]
-        emo_distribute = modal.getElementsByClassName("emo_distribute")[0]
-        emo_distribute.innerText = "✅"
-    })
-        .catch(err => alert("Error Message Not Sent"))
+    }).catch(err => alert("Error Message Not Sent"))
 
-
+    let element = document.getElementById("post_" + post_id)
+    let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+    console.log(element)
+    console.log(emo_distribute)
+    emo_distribute.innerText = "✅"
+        //console.log(element)
+        //console.log(emo_distribute
 }
 
 function commentCreate(post_id, url) {
@@ -97,12 +98,8 @@ function getComment(comment_id) {
 
 function insertComment(comment) {
     var div = document.createElement('div');
-
-    if (comment.post_id != currentPost) {
-        return
-    }
-    let modal = document.getElementsByClassName('modal-body')[0]
-    var commentArea = modal.getElementsByClassName('comment_area')[0]
+    var post = document.getElementById("post_" + comment.post_id)
+    var commentArea = post.getElementsByClassName('comment_area')[0]
     var html = `
     <div class="card m-1" id="comment_${comment.id}">
         <div class="card-body">
@@ -124,15 +121,17 @@ function insertComment(comment) {
         </div>
     </div>`
     div.innerHTML = html
-
-    commentArea.appendChild(div)
-
-
+    console.log(commentArea)
+    if (!(commentArea === undefined)) {
+        commentArea.appendChild(div)
+    }
+    
 }
 
 
 function socketOnMessage(e) {
     var data = JSON.parse(e.data).message;
+    console.log(data)
     if (data.addComment) {
         getComment(data.addComment)
         return
@@ -142,18 +141,22 @@ function socketOnMessage(e) {
     } else {
         var element = document.getElementById("post_" + data.post)
     }
-    let observers = ['distribute', 'like', 'haha', 'angry', 'sad']
-    for (let k = 0; k < observers.length; k++) {
-        if (data[observers[k]]) {
-            let component = element.getElementsByClassName(observers[k])[0]
-            component.innerText = data[observers[k]]
-            if (!data.comment) {
-                let modal = document.getElementsByClassName('modal-body')[0]
-                component = modal.getElementsByClassName(observers[k])[0]
-                component.innerText = data[observers[k]]
-            }
-
-        }
+    if (data.distribute) {
+        var distribution = element.getElementsByClassName("distribution")[0]
+        distribution.innerText = data.distribute
+    }
+    if (data.like) {
+        var like = element.getElementsByClassName("like")[0]
+        like.innerText = data.like
+    } else if (data.haha) {
+        var haha = element.getElementsByClassName("haha")[0]
+        haha.innerText = data.haha
+    } else if (data.angry) {
+        var angry = element.getElementsByClassName("angry")[0]
+        angry.innerText = data.angry
+    } else if (data.sad) {
+        var sad = element.getElementsByClassName("sad")[0]
+        sad.innerText = data.sad
     }
 
 };
@@ -162,11 +165,12 @@ function getDetailPost(post_id) {
     fetch(`/post/api/get_detail_post/${post_id}`)
         .then(res => res.text())
         .then(function(html) {
-            document.getElementById('viewDetailPost').innerHTML = html
-            currentPost = post_id
+            console.log(`viewDetailPost ${post_id}`)
+            document.getElementById(`viewDetailPost_${post_id}`).innerHTML = html
         })
         .catch(err => {
             alert("Error getPost")
+            console.log(err)
         })
 }
 
@@ -222,7 +226,7 @@ function connectPost(post_id) {
         'ws://' + window.location.host +
         '/ws/post/post' + `${post_id}` + '/');
     chatSocket.onmessage = socketOnMessage
-    chatSocket.onclose = function (e) {
+    chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
 }
