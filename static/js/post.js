@@ -121,11 +121,7 @@ function insertComment(comment) {
         </div>
     </div>`
     div.innerHTML = html
-    console.log(commentArea)
-    if (!(commentArea === undefined)) {
-        commentArea.appendChild(div)
-    }
-    
+    commentArea.appendChild(div)
 }
 
 
@@ -166,7 +162,7 @@ function getDetailPost(post_id) {
         .then(res => res.text())
         .then(function(html) {
             console.log(`viewDetailPost ${post_id}`)
-            document.getElementById(`viewDetailPost_${post_id}`).innerHTML = html
+            document.getElementById('viewDetailPost').innerHTML = html
         })
         .catch(err => {
             alert("Error getPost")
