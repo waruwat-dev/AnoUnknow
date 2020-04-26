@@ -25,8 +25,14 @@ def get_random_posts(request):
         # return render(request, 'post/list_post_components.html', {"posts":posts})
 
 def get_post(request, post_id):
+    user = request.user
     post = Post.objects.get(pk=post_id)
-    return render(request, 'post/post_component.html', {"post":post})
+    if user.is_authenticated:
+        user_dis = post.distributeUser.all().filter(user=user)
+        print(user_dis)
+    else:
+        user_dis = False
+    return render(request, 'post/post_component.html', {"post":post, "user_dis":user_dis})
 
 def get_detail_post(request, post_id):
     post = Post.objects.get(pk=post_id)

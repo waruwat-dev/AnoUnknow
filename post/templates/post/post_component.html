@@ -47,7 +47,7 @@
             </div>
         </div>
 
-        {% if post.distributeUser.all.0.user.id == request.user.id %}
+        {% if user_dis %}
         <button class="btn btn-secondary">✅ Dis <span class="distribute">{{ post.getNumberOfDis }}</span></button>
         {% else %}
         <button onclick="distribute({{post.id}})" class="btn btn-secondary"><span class='emo_distribute'>🔃</span>
