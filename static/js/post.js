@@ -167,6 +167,7 @@ function getDetailPost(post_id) {
         })
         .catch(err => {
             alert("Error getPost")
+            console.log(err)
         })
 }
 
