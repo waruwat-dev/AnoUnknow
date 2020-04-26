@@ -32,8 +32,7 @@ def announce(request):
     admin = request.user.authen_user.getAdmin()
 
     if request.method == 'POST':
-        data = localToDate(dict(request.POST), ['start_time', 'end_time'])
-        form = AnnouncementForm(data)
+        form = AnnouncementForm(request.POST)
         if form.is_valid():
             object_announce = form.save()
             object_announce.adminId = admin
@@ -57,10 +56,8 @@ def announce(request):
 def editAnnounce(request, announcement_id):
     admin = request.user.authen_user.getAdmin()
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
-    # announcement = dateTolocal(model_to_dict(announcement), ['start_time', 'end_time'])
     if request.method == 'POST':
-        data = localToDate(dict(request.POST), ['start_time', 'end_time'])
-        form = AnnouncementForm(data, instance=announcement)
+        form = AnnouncementForm(request.POST, instance=announcement)
         if form.is_valid():
             object_announce = form.save()
             object_announce.adminId = admin
