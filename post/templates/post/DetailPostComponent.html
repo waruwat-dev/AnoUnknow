@@ -53,16 +53,16 @@
                 <div class="card-body">
                     <h6>({{ comment.commentBy.name }})  {{comment.text}}</h6>
                     <div class="btn-group mr-2" role="group" aria-label="First group">
-                        <button type="submit" class="btn btn-dark"
+                        <button type="submit" class="btn btn-secondary"
                             onclick="emotion_comment({{comment.id}}, 1, this)">👍<span
                                 class="like">{{comment.like}}</span></button>
-                        <button type="submit" class="btn btn-dark"
+                        <button type="submit" class="btn btn-secondary"
                             onclick="emotion_comment({{comment.id}}, 2, this)">😂<span
                                 class="haha">{{comment.haha}}</span></button>
-                        <button type="submit" class="btn btn-dark"
+                        <button type="submit" class="btn btn-secondary"
                             onclick="emotion_comment({{comment.id}}, 3, this)">😠<span
                                 class="angry">{{comment.angry}}</span></button>
-                        <button type="submit" class="btn btn-dark"
+                        <button type="submit" class="btn btn-secondary"
                             onclick="emotion_comment({{comment.id}}, 4, this)">😭<span
                                 class="sad">{{comment.sad}}</span></button>
                     </div>
