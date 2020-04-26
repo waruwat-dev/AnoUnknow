@@ -7,7 +7,7 @@
                 . . .
             </button>
             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                <a class="dropdown-item" href="#">Block</a>
+                <a class="dropdown-item" href="#" onclick="blockFriend()">Block</a>
             </div>
         </div>
     </div>
@@ -21,7 +21,7 @@
             <input id="chat-input" type="text" class="form-control input" placeholder="Type your message here ..."
                 maxlength="500">
             <span class="input-group-btn">
-                <button class="btn btn-info btn" id="btn-send">
+                <button class="btn btn-primary" id="btn-send">
                     Send</button>
             </span>
         </div>
@@ -34,11 +34,18 @@
 
     function drawMessage(message) {
         let position = 'left';
+        let name = ""
         const date = new Date(message.time);
-        if (message.randomUser1 == currentUser) position = 'right';
+        if (message.randomUser1 == currentUser) {
+            position = 'right'
+            name = 'ฉัน'
+        } else {
+            name = currentRecipientName
+        }
+        ;
         const messageItem = `
             <li class="message ${position}">
-                <div class="avatar">${message.randomUser1}</div>
+                <div class="avatar">${name}</div>
                     <div class="text_wrapper">
                         <div class="text">${message.text}<br>
                             <span class="small">${date}</span>
@@ -46,11 +53,6 @@
                 </div>
             </li>`;
         $(messageItem).appendTo('#messages');
-        // if (message.user != currentUser) sent_notify(message.user, message.body)
-        // messageList.animate({
-        // scrollTop : messageList.prop.position().top
-        // scrollTop: messageList.prop('scrollHeight')
-        // });
     }
 
 </script>

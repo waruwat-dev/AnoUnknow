@@ -6,6 +6,11 @@ from django.dispatch import receiver
 import random
 from django.contrib.auth.models import Group
 
+from django.contrib.staticfiles.storage import staticfiles_storage
+p = staticfiles_storage.path('name.txt')
+f = open(p, encoding="utf8")
+name_list = f.read().split('\n')
+
 
 class Admin(models.Model):
     user = models.OneToOneField(
@@ -17,11 +22,6 @@ class NormalUser(models.Model):
         User, on_delete=models.CASCADE, primary_key=True)
     score = models.IntegerField(default=0, null=True)
 
-
-# class RandomUserModel(models.Model):
-#     user = models.ForeignKey(User, on_delete=models.CASCADE)
-#     name = models.CharField(max_length=255, default='', null=True)
-
 class RandomUser(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
     name = models.CharField(max_length=255, default='', null=True)
@@ -30,7 +30,6 @@ class RandomUser(models.Model):
 class BanUser(models.Model):
     user = models.OneToOneField(
         User, on_delete=models.CASCADE, primary_key=True)
-    # .DaField(null=True, default=now())
     ban_date = models.DateTimeField(null=True, auto_now_add=True)
     remark = models.TextField(null=True)
     admin = models.ForeignKey(Admin, on_delete=models.DO_NOTHING)
@@ -44,9 +43,13 @@ class Authen_User(models.Model):
     admin = models.BooleanField(default=False)
 
     def randomName(self):
-        randomlist = ['A', 'B', 'C', 'D']
-        random.shuffle(randomlist)
-        return RandomUser.objects.create(name=randomlist[0], user=self.user)
+        p = staticfiles_storage.path('name.txt')
+        f = open(p, encoding="utf8")
+        name_list = f.read().split('\n')
+        number_of_name = 1386
+        random_index = random.randrange(number_of_name)
+        random_name = name_list[random_index]
+        return RandomUser.objects.create(name=random_name, user=self.user)
 
     def getNormalUser(self):
         if self.normal_user:
@@ -66,12 +69,8 @@ class Authen_User(models.Model):
         if val == True:
             self.admin = True
             Admin.objects.create(user=self.user)
-            # my_group = Group.objects.get(name='NormalUser') 
-            # my_group.user_set.remove(self.user)
-            my_group = Group.objects.get(name='Admin') 
+            my_group = Group.objects.get(name='Admin')
             my_group.user_set.add(self.user)
-            # my_group = Group.objects.get(name='Special') 
-            # my_group.user_set.add(self.user)
             self.save()
         else:
             admin = Admin.objects.get(pk=self.user.id)
@@ -84,8 +83,6 @@ class Authen_User(models.Model):
             return None
 
     def ban(self, admin, val=True, remark=""):
-        # if val == self.ban_user:
-        #     return
         if val == True:
             self.ban_user = True
             BanUser.objects.create(
@@ -101,7 +98,7 @@ def create_user(sender, instance, created, **kwargs):  # create_normal_user
     if created:
         Authen_User.objects.create(user=instance)
         NormalUser.objects.create(user=instance)
-        my_group = Group.objects.get(name='NormalUser') 
+        my_group = Group.objects.get(name='NormalUser')
         my_group.user_set.add(instance)
 
 
