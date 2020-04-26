@@ -19,7 +19,7 @@
 
     function createChatItem(chat) {
         const userItem = `<a class="list-group-item user" name="${chat['id']}" id="chat_${chat['id']}"  my_id="${chat['my_id']}" active=${chat['active']}>
-            <img style="width:50px;height:50px;" src="https://www.americanaircraftsales.com/wp-content/uploads/2016/09/no-profile-img.jpg">
+            <img style="width:50px;height:50px;" name="${chat['id']}" src="https://www.americanaircraftsales.com/wp-content/uploads/2016/09/no-profile-img.jpg">
             ${chat.name}
             </a>`;
         $(userItem).appendTo('#user-list');
