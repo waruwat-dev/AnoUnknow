@@ -39,7 +39,10 @@ def distribute_post(request, post_id):
         print("You've already distributed this post")
     else:
         post = Post.objects.get(pk=post_id)
-        post.numberOfDistribution += 5
+        if user.authen_user.admin == False and user.has_perm('post.view_all_post'): #special user distribute * 2
+            post.numberOfDistribution += 10
+        else:
+            post.numberOfDistribution += 5
         post.save()
         post.distributeUser.add(user.authen_user.randomName())
         print("distributed post")

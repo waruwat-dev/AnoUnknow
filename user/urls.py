@@ -17,5 +17,6 @@ urlpatterns = [
     path('ban_list/', views.ban_list, name='ban_list'),
     path('ban/<int:user_id>/', views.ban_use, name='ban'),
     path('changepassword/', views.changePassword, name='changePassword'),
+    path('score/<int:user_id>/', views.score, name='score'),
 ]
 
