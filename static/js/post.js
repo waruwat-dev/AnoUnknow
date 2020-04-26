@@ -80,9 +80,9 @@ function commentCreate(post_id, url) {
     const formData = new FormData();
     formData.append('text', text);
     fetch(url, {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -161,7 +161,7 @@ function socketOnMessage(e) {
 function getDetailPost(post_id) {
     fetch(`/post/api/get_detail_post/${post_id}`)
         .then(res => res.text())
-        .then(function (html) {
+        .then(function(html) {
             document.getElementById('viewDetailPost').innerHTML = html
             currentPost = post_id
         })
@@ -190,9 +190,9 @@ function updatePost(event, post_id) {
     formData.append('text', input.value);
     formData.append('id', post_id);
     fetch('/post/api/edit_post/', {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         .then(res => {
             text = document.createElement('H6')
             text.setAttribute('class', 'card-text')
@@ -204,7 +204,7 @@ function updatePost(event, post_id) {
             event.setAttribute('onclick', `edit_post(this, ${post_id})`)
         })
 
-        .catch(err => alert(err))
+    .catch(err => alert(err))
 
     //input = document.createElement('INPUT')
     // input.setAttribute('class', 'form-control mb-2')
@@ -225,4 +225,16 @@ function connectPost(post_id) {
     chatSocket.onclose = function (e) {
         console.error('Chat socket closed unexpectedly');
     };
+}
+
+function score(user_id) {
+    const formData = new FormData();
+    formData.append('csrfmiddlewaretoken ', csrftoken);
+    console.log(csrftoken)
+    console.log('Score เข้านะจ๊ะ')
+    fetch(`/user/score/${user_id}/`, {
+            method: 'POST',
+            body: formData
+        })
+        .catch(err => alert(err))
 }
