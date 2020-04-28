@@ -87,6 +87,6 @@ def deleteAnnounce(request, announcement_id):
 
 def getAnnounceJSON(request):
     now = datetime.datetime.now()
-    announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now)
+    announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now, is_active=True)
     json_obj =  AnnouncementSerializer(announces, many=True)
     return JsonResponse(json_obj.data, safe=False)

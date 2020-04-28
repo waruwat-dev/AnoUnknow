@@ -13,21 +13,15 @@ def get_random_posts(request):
     if request.method == 'GET':
         print(request.GET)
         my_post =  request.GET.get('my_post')
-        
-        posts = Post.objects.filter(numberOfDistribution__gte=1)
         if my_post:
             my_post = json.loads(my_post)
-            posts = posts.exclude(id__in=my_post)
-        print(posts)
-        posts = list(posts)
+            posts = Post.objects.exclude(id__in=my_post)
+        else:
+            posts = Post.objects.all()
+        disPost = list(posts.filter(numberOfDistribution__gte=1))
+        posts = disPost + list(posts.filter(numberOfDistribution=0))[:5-len(disPost)]
         posts = reduce_distribute(posts)
-        lenght = len(posts)
-        if lenght < 5:
-            allPosts = list(Post.objects.all().order_by('-time'))
-            posts += allPosts[:5-lenght]
-            print('Post by Time')
-        random.shuffle(posts)
-        serializer = PostSerializer(set(posts), many=True)
+        serializer = PostSerializer(posts, many=True)
         # print('Get Post', serializer.data)
         return JsonResponse(serializer.data, safe=False)
         # return render(request, 'post/list_post_components.html', {"posts":posts})

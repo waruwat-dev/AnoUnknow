@@ -24,7 +24,7 @@ class Post(models.Model):
         return 0
 
     class Meta:
-        ordering = ['time']
+        ordering = ['-time']
 
     
 
