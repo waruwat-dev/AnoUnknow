@@ -11,7 +11,15 @@ from datetime import datetime, timedelta
 
 def get_random_posts(request):
     if request.method == 'GET':
-        posts = list(Post.objects.filter(numberOfDistribution__gte=1))
+        print(request.GET)
+        my_post =  request.GET.get('my_post')
+        
+        posts = Post.objects.filter(numberOfDistribution__gte=1)
+        if my_post:
+            my_post = json.loads(my_post)
+            posts = posts.exclude(id__in=my_post)
+        print(posts)
+        posts = list(posts)
         posts = reduce_distribute(posts)
         lenght = len(posts)
         if lenght < 5:
