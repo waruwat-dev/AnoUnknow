@@ -4,9 +4,9 @@ async function emotion_post(post, type, element) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
     fetch(baseUrl + `/post/emotion/${post}/${type}`, {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -16,9 +16,9 @@ async function emotion_comment(comment, type, element) {
     formData.append('csrfmiddlewaretoken ', csrftoken);
     fetch(baseUrl + `/comment/emotion/${comment}/${type}`, {
 
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         // .then(res => console.log(res))
         .catch(err => console.log(err))
 }
@@ -58,14 +58,14 @@ function distribute(post_id) {
     const formData = new FormData();
     formData.append('csrfmiddlewaretoken ', csrftoken);
     fetch(`/post/api/distribute_post/${post_id}`, {
-        method: 'POST',
-        body: formData
-    }).then(function () {
-        let element = document.getElementById("post_" + post_id)
-        let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
-        emo_distribute.innerText = "✅"
+            method: 'POST',
+            body: formData
+        }).then(function() {
+            let element = document.getElementById("post_" + post_id)
+            let emo_distribute = element.getElementsByClassName("emo_distribute")[0]
+            emo_distribute.innerText = "✅"
 
-    })
+        })
         .catch(err => console.log(err))
     let modal = document.getElementsByClassName('modal-body')[0]
     emo_distribute = modal.getElementsByClassName("emo_distribute")[0]
@@ -80,9 +80,9 @@ function commentCreate(post_id, url) {
     const formData = new FormData();
     formData.append('text', text);
     fetch(url, {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         .then(res => console.log(res))
         .catch(err => alert(err))
 }
@@ -161,7 +161,7 @@ function socketOnMessage(e) {
 function getDetailPost(post_id) {
     fetch(`/post/api/get_detail_post/${post_id}`)
         .then(res => res.text())
-        .then(function (html) {
+        .then(function(html) {
             document.getElementById('viewDetailPost').innerHTML = html
             currentPost = post_id
         })
@@ -190,9 +190,9 @@ function updatePost(event, post_id) {
     formData.append('text', input.value);
     formData.append('id', post_id);
     fetch('/post/api/edit_post/', {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
         .then(res => {
             text = document.createElement('H6')
             text.setAttribute('class', 'card-text')
@@ -204,7 +204,7 @@ function updatePost(event, post_id) {
             event.setAttribute('onclick', `edit_post(this, ${post_id})`)
         })
 
-        .catch(err => console.log(err))
+    .catch(err => console.log(err))
 
     //input = document.createElement('INPUT')
     // input.setAttribute('class', 'form-control mb-2')
@@ -222,7 +222,7 @@ function connectPost(post_id) {
         'ws://' + window.location.host +
         '/ws/post/post' + `${post_id}` + '/');
     chatSocket.onmessage = socketOnMessage
-    chatSocket.onclose = function (e) {
+    chatSocket.onclose = function(e) {
         console.error('Chat socket closed unexpectedly');
     };
 }
@@ -233,8 +233,9 @@ function score(user_id) {
     console.log(csrftoken)
     console.log('Score เข้านะจ๊ะ')
     fetch(`/user/score/${user_id}/`, {
-        method: 'POST',
-        body: formData
-    })
+            method: 'POST',
+            body: formData
+        })
+        .then(alert("ให้คะแนนแล้วจ้าา"))
         .catch(err => console.log(err))
 }
