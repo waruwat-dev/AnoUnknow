@@ -14,7 +14,7 @@ from .form import AnnouncementForm
 from .models import AnnouncementModel, typeOfAnnouncement
 
 @login_required(login_url='login')
-@permission_required('announcement.view_announcement', raise_exception=True)
+@permission_required('announcement.view_announcementmodel', raise_exception=True)
 def viewAnnounce(request):
     announcements = AnnouncementModel.objects.filter(is_active=True)
     typeDict = {t[0]: t[1] for t in typeOfAnnouncement}
@@ -27,7 +27,7 @@ def viewAnnounce(request):
     return render(request, 'announcement/view_announcement.html', context=context)
 
 @login_required(login_url='login')
-@permission_required('announcement.add_announcement', raise_exception=True)
+@permission_required('announcement.add_announcementmodel', raise_exception=True)
 def announce(request):
     admin = request.user.authen_user.getAdmin()
 
@@ -52,7 +52,7 @@ def announce(request):
     return render(request, 'announcement/add_announcement.html', context=context)
 
 @login_required(login_url='login')
-@permission_required('announcement.change_announcement', raise_exception=True)
+@permission_required('announcement.change_announcementmodel', raise_exception=True)
 def editAnnounce(request, announcement_id):
     admin = request.user.authen_user.getAdmin()
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
@@ -77,7 +77,7 @@ def editAnnounce(request, announcement_id):
     return render(request, 'announcement/add_announcement.html', context=context)
     
 @login_required(login_url='login')
-@permission_required('announcement.delete_announcement', raise_exception=True)
+@permission_required('announcement.delete_announcementmodel', raise_exception=True)
 def deleteAnnounce(request, announcement_id):
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
     announcement.is_active = False
@@ -90,17 +90,3 @@ def getAnnounceJSON(request):
     announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now)
     json_obj =  AnnouncementSerializer(announces, many=True)
     return JsonResponse(json_obj.data, safe=False)
-
-def localToDate(data, change):
-    new_data = dict()
-    for k, v in data.items():
-        new_data[k] = v[0]
-
-    for name in change:
-        new_data[name] = new_data[name].replace('T', ' ')
-    return new_data
-
-def dateTolocal(data, change):
-    for name in change:
-        data[name] = data[name].strftime("%Y/%m/%d %H:%M:%S").replace(' ', 'T')
-    return data

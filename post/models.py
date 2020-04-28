@@ -9,7 +9,7 @@ class Post(models.Model):
     haha = models.IntegerField(default=0)
     sad = models.IntegerField(default=0)
     angry = models.IntegerField(default=0)
-    numberOfDistribution = models.IntegerField(default=0)
+    numberOfDistribution = models.IntegerField(default=20)
     createBy = models.ForeignKey(RandomUser, null=True,on_delete=models.CASCADE, related_name='createBy')
     distributeUser = models.ManyToManyField(RandomUser, related_name='distributeUser')
 

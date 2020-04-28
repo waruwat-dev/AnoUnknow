@@ -79,8 +79,7 @@ def view_post(request, pk):
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete()
-    print('Post is deleted')
-    return redirect('view_all_posts')
+    return redirect('view_random_posts')
 
 @csrf_exempt
 def emotionPost(request, pk, type_emotion):
