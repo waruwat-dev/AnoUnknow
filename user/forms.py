@@ -12,6 +12,8 @@ class ChangePassForm(forms.Form):
         confirm = cleaned_data.get("confirm")
         if newpassword != confirm:
             self.add_error(None, "New Password do not match.")
+        if len(newpassword) < 6:
+            self.add_error(None, "Password should have a minimum of 6 characters.")
 
 class SignUpForm(ModelForm):
     password=forms.CharField(widget=forms.PasswordInput())
@@ -45,6 +47,8 @@ class SignUpForm(ModelForm):
             self.add_error(None, "Email : '%s' is already use." %email)
         if password != confirm_password:
             self.add_error(None, "Password do not match.")
+        if len(password) < 6:
+            self.add_error(None, "Password should have a minimum of 6 characters.")
     def save(self, commit=True):
         instance = super(SignUpForm, self).save(commit=False)
         instance.set_password(self.cleaned_data['password'])
