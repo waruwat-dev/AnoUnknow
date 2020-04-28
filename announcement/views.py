@@ -32,8 +32,7 @@ def announce(request):
     admin = request.user.authen_user.getAdmin()
 
     if request.method == 'POST':
-        data = localToDate(dict(request.POST), ['start_time', 'end_time'])
-        form = AnnouncementForm(data)
+        form = AnnouncementForm(request.POST)
         if form.is_valid():
             object_announce = form.save()
             object_announce.adminId = admin
@@ -57,10 +56,8 @@ def announce(request):
 def editAnnounce(request, announcement_id):
     admin = request.user.authen_user.getAdmin()
     announcement = AnnouncementModel.objects.get(pk=announcement_id)
-    # announcement = dateTolocal(model_to_dict(announcement), ['start_time', 'end_time'])
     if request.method == 'POST':
-        data = localToDate(dict(request.POST), ['start_time', 'end_time'])
-        form = AnnouncementForm(data, instance=announcement)
+        form = AnnouncementForm(request.POST, instance=announcement)
         if form.is_valid():
             object_announce = form.save()
             object_announce.adminId = admin
@@ -93,17 +90,3 @@ def getAnnounceJSON(request):
     announces = AnnouncementModel.objects.filter(start_time__lte=now, end_time__gt=now)
     json_obj =  AnnouncementSerializer(announces, many=True)
     return JsonResponse(json_obj.data, safe=False)
-
-def localToDate(data, change):
-    new_data = dict()
-    for k, v in data.items():
-        new_data[k] = v[0]
-
-    for name in change:
-        new_data[name] = new_data[name].replace('T', ' ')
-    return new_data
-
-def dateTolocal(data, change):
-    for name in change:
-        data[name] = data[name].strftime("%Y/%m/%d %H:%M:%S").replace(' ', 'T')
-    return data

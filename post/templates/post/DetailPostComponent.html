@@ -16,7 +16,7 @@
         <form action="{% url 'create_chat' randomuser=post.createBy.id %}" method="post"
             style='float:right;margin-right:10px;'>
             {% csrf_token %}
-            <button class="btn btn-success btn-sm" type="submit">แชท</button>
+            <button class="btn btn-success btn-sm" type="submit">💬 Start Chat</button>
         </form>
         {% endif %}
 
@@ -89,7 +89,9 @@
         </div>
         {% endfor %}
     </div>
-    {% include "comment/comment.html" %}
+    {% if perms.comment.add_comment %}
+        {% include "comment/comment.html" %}
+    {% endif %}
 </div>
 
 <script>

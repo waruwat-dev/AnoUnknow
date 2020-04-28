@@ -1,9 +1,11 @@
 import json
 import urllib
+from datetime import datetime, timedelta
 from urllib import parse, request
 from urllib.parse import urlencode
 from asgiref.sync import async_to_sync
 from channels.layers import get_channel_layer
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.views.decorators.csrf import csrf_exempt
@@ -11,13 +13,12 @@ from rest_framework.decorators import api_view
 from comment.models import Comment
 from post.form import PostForm
 from post.models import Post
-from datetime import datetime
-from django.contrib.auth.decorators import permission_required, login_required
+import re
 
 @login_required(login_url='login')
 @permission_required('post.view_all_post', raise_exception=True)
 def view_all_posts(request):
-    posts = Post.objects.all()
+    posts = Post.objects.all().order_by('-time')
     context = {
         'posts': posts,
         'form': PostForm(),
@@ -26,11 +27,28 @@ def view_all_posts(request):
 
 
 def view_random_posts(request):
-    getHashtag()
     context = {
         'form': PostForm()
     }
     return render(request, template_name='post/random_post.html', context=context)
+
+def view_hashtag(request, word):
+    if request.method == 'POST':
+        word = request.POST.get('word')
+        posts = Post.objects.filter(text__icontains=word).order_by('-time')
+    else:
+        posts = Post.objects.filter(text__icontains=word).order_by('-time')
+        all_post = list()
+        for post in posts:
+            if re.search(r"#[\wก-๙]*", post.text):
+                all_post.append(post) 
+        posts = all_post
+
+    context = {
+        'posts': posts,
+        'word': word
+    }
+    return render(request, template_name='post/hashtag.html', context=context)
 
 @login_required(login_url='login')
 @permission_required('post.add_post', raise_exception=True)
@@ -61,8 +79,7 @@ def view_post(request, pk):
 def delete_post(request, pk):
     post = Post.objects.get(pk=pk)
     post.delete()
-    print('Post is deleted')
-    return redirect('view_all_posts')
+    return redirect('view_random_posts')
 
 @csrf_exempt
 def emotionPost(request, pk, type_emotion):
@@ -90,9 +107,3 @@ def message(post_id, json):
             'type': 'chat_message',
             'message': json
         })
-
-def getHashtag():
-    now = datetime.now()
-    #[\wก-๙]*
-    print(now)
-    return HttpResponse(200)

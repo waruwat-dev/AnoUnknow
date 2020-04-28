@@ -14,8 +14,8 @@
     <div class="card-body d-flex justify-content-center">
         <div class="btn-group" role="group">
     {% if perms.post.view_all_post %}
-            <button type="button" class="btn btn-dark px-5">Normal</button>
-            <a href="{% url 'view_all_posts' %}" class="btn btn-outline-dark px-5">All post</a>
+            <button type="button" class="btn btn-warning px-5">Normal</button>
+            <a href="{% url 'view_all_posts' %}" class="btn btn-outline-warning px-5 bg-white">All post</a>
     {% endif %}
         </div>
     </div>
