@@ -19,8 +19,8 @@ def get_random_posts(request):
         else:
             posts = Post.objects.all()
         disPost = list(posts.filter(numberOfDistribution__gte=1))
+        disPost = reduce_distribute(disPost)
         posts = disPost + list(posts.filter(numberOfDistribution=0))[:5-len(disPost)]
-        posts = reduce_distribute(posts)
         serializer = PostSerializer(posts, many=True)
         # print('Get Post', serializer.data)
         return JsonResponse(serializer.data, safe=False)
