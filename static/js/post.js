@@ -177,7 +177,7 @@ function edit_post(event, post_id) {
     input.setAttribute('id', `text_post_${post_id}`)
     input.type = 'text'
     input.value = text.innerText
-    text.parentNode.insertBefore(input, text.nextSibling);
+    text.parentNode.insertBefore(input, text);
     text.remove()
     event.innerText = '☑️ Finish'
     event.setAttribute('onclick', `updatePost(this, ${post_id})`)
@@ -198,7 +198,7 @@ function updatePost(event, post_id) {
             text.setAttribute('class', 'card-text')
             text.setAttribute('id', `text_post_${post_id}`)
             text.innerText = input.value
-            input.parentNode.insertBefore(text, input.nextSibling);
+            input.parentNode.insertBefore(text, input);
             input.remove()
             event.innerText = '✏️ Edit'
             event.setAttribute('onclick', `edit_post(this, ${post_id})`)

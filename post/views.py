@@ -35,9 +35,9 @@ def view_random_posts(request):
 def view_hashtag(request, word):
     if request.method == 'POST':
         word = request.POST.get('word')
-        posts = Post.objects.filter(text__icontains=word).order_by('-time')
+        posts = Post.objects.filter(text__icontains=word)
     else:
-        posts = Post.objects.filter(text__icontains=word).order_by('-time')
+        posts = Post.objects.filter(text__icontains=word)
         all_post = list()
         for post in posts:
             if re.search(r"#[\wก-๙]*", post.text):
