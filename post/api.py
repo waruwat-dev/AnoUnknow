@@ -12,7 +12,7 @@ from datetime import datetime, timedelta
 def get_random_posts(request):
     if request.method == 'GET':
         print(request.GET)
-        my_post =  request.GET.get('my_post')
+        my_post =  request.GET.get('myPost')
         if my_post:
             my_post = json.loads(my_post)
             posts = Post.objects.exclude(id__in=my_post)
