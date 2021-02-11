@@ -16,7 +16,6 @@
 
 <h1>Run command follow by this list 🎮</h1>
 
-
   <ul>
   <li><h3>Run in Docker</h3></li>
   </ul>
@@ -34,3 +33,21 @@ and goto localhost:8000/admin
 </li>
   <li>python manage.py runserver</li>
  </ol>
+ 
+<h1>ตัวอย่างเว็บไซต์ 💻</h1>
+
+![login](./images_for_readme/1.png)
+![register](./images_for_readme/2.png)
+![post](./images_for_readme/3.png)
+![hashtag](./images_for_readme/4.png)
+![admin](./images_for_readme/5.png)
+![ban](./images_for_readme/6.png)
+![anouncement](./images_for_readme/7.png)
+![allpost](./images_for_readme/9.png)
+![chat](./images_for_readme/10.png)
+![post_comment](./images_for_readme/11.png)
+![post2](./images_for_readme/12.png)
+![ban3](./images_for_readme/13.png)
+![edit_an](./images_for_readme/14.png)
+![view_ban](./images_for_readme/15.png)
+![view_an](./images_for_readme/16.png)
