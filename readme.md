@@ -1,3 +1,4 @@
+[Recommend] python version: 3.6
 (optional) goto mysite/setting 
 -DATABASES
 -CHANNEL_LAYERS
