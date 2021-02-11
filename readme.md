@@ -2,7 +2,6 @@
 <ul>
   <li> Python Version: 3.6 [Recommend]</li>
   <li> Docker Desktop</li>
-  <li> Virtual Environment </li>
  </ul>
  
  <h1>Settings [แก้ไขให้ตรงกับของตัวเอง] ⚙</h1>
