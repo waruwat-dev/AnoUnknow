@@ -1,6 +1,7 @@
-[Recommend] python version: 3.6
+[Recommend] python version: 3.6 <br>
+
 (optional) goto mysite/setting 
--DATABASES
+-DATABASES *** แก้ไขให้ตรงกับของตัวเองนะ
 -CHANNEL_LAYERS
 
 
