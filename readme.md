@@ -10,7 +10,7 @@ run command follow by this list
 1.docker run -p 6379:6379 -d redis:5
 
 2.pip install -r requirements.txt
-*หากใช้ macOS ให้ลง psycopg2-binary แทน psycopg2
+* หากใช้ macOS ให้ลง psycopg2-binary แทน psycopg2
 
 3.python manage.py migrate
 
