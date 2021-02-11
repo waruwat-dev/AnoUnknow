@@ -1,3 +1,4 @@
+django
 djangorestframework
 channels==2.3.1
 channels_redis
