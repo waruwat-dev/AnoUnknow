@@ -34,19 +34,38 @@ and goto localhost:8000/admin
  </ol>
  
 <h1>ตัวอย่างเว็บไซต์ 💻</h1>
+<h3>หน้าเข้าสู่ระบบ</h3>
+<img src="./images_for_readme/1.png"/>
+<h3>หน้าสมัครสมาชิก</h3>
+<img src="./images_for_readme/2.png"/>
+<h3>หน้าแรก</h3>
+<img src="./images_for_readme/3.png"/>
+<h3>หน้าเทรนด์</h3>
+<img src="./images_for_readme/4.png"/>
+<h3>หน้าแอดมิน</h3>
+<img src="./images_for_readme/5.png"/>
+<h3>หน้ารายชื่อผู้ใช้งานที่ถูกแบน</h3>
+<img src="./images_for_readme/6.png"/>
+<h3>หน้าเพิ่มประกาศ</h3>
+<img src="./images_for_readme/7.png"/>
+<h3>หน้าดูโพสต์ทั้งหมด</h3>
+<img src="./images_for_readme/9.png"/>
+<h3>หน้าแชท</h3>
+<img src="./images_for_readme/10.png"/>
+<h3>หน้ากดดูคอมเม้นในโพสต์</h3>
+<img src="./images_for_readme/11.png"/>
+<h3>หน้าดูโพสต์สำหรับผู้ใช้งานปกติ</h3>
+<img src="./images_for_readme/12.png"/>
 
-![login](./images_for_readme/1.png)
-![register](./images_for_readme/2.png)
-![post](./images_for_readme/3.png)
-![hashtag](./images_for_readme/4.png)
-![admin](./images_for_readme/5.png)
-![ban](./images_for_readme/6.png)
-![anouncement](./images_for_readme/7.png)
-![allpost](./images_for_readme/9.png)
-![chat](./images_for_readme/10.png)
-![post_comment](./images_for_readme/11.png)
-![post2](./images_for_readme/12.png)
-![ban3](./images_for_readme/13.png)
-![edit_an](./images_for_readme/14.png)
-![view_ban](./images_for_readme/15.png)
-![view_an](./images_for_readme/16.png)
+<h3>หน้าดูรายชื่อผู้ใช้ทั้งหมดของแอดมิน</h3>
+
+<img src="./images_for_readme/13.png"/>
+
+<h3>หน้าแก้ไขประกาศ</h3>
+
+<img src="./images_for_readme/14.png"/>
+
+<h3>หน้าดูประกาศทั้งหมดของแอดมิน</h3>
+
+<img src="./images_for_readme/16.png"/>
+
